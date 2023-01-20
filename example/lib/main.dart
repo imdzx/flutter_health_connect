@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
-
-import 'package:flutter/services.dart';
 import 'package:flutter_health_connect/flutter_health_connect.dart';
 
 void main() {
@@ -16,48 +13,129 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
-  final _flutterHealthConnectPlugin = FlutterHealthConnect();
+  List<HealthConnectDataType> types = [
+    HealthConnectDataType.ActiveCaloriesBurned,
+    HealthConnectDataType.BasalBodyTemperature,
+    HealthConnectDataType.BasalMetabolicRate,
+    HealthConnectDataType.BloodGlucose,
+    HealthConnectDataType.BloodPressure,
+    HealthConnectDataType.BodyFat,
+    HealthConnectDataType.BodyTemperature,
+    HealthConnectDataType.BoneMass,
+    HealthConnectDataType.CervicalMucus,
+    HealthConnectDataType.CyclingPedalingCadence,
+    HealthConnectDataType.Distance,
+    HealthConnectDataType.ElevationGained,
+    HealthConnectDataType.ExerciseEvent,
+    HealthConnectDataType.ExerciseLap,
+    HealthConnectDataType.ExerciseRepetitions,
+    HealthConnectDataType.ExerciseSession,
+    HealthConnectDataType.FloorsClimbed,
+    HealthConnectDataType.HeartRate,
+    HealthConnectDataType.Height,
+    HealthConnectDataType.HipCircumference,
+    HealthConnectDataType.Hydration,
+    HealthConnectDataType.LeanBodyMass,
+    HealthConnectDataType.MenstruationFlow,
+    HealthConnectDataType.Nutrition,
+    HealthConnectDataType.OvulationTest,
+    HealthConnectDataType.OxygenSaturation,
+    HealthConnectDataType.Power,
+    HealthConnectDataType.RespiratoryRate,
+    HealthConnectDataType.RestingHeartRate,
+    HealthConnectDataType.SexualActivity,
+    HealthConnectDataType.SleepSession,
+    HealthConnectDataType.SleepStage,
+    HealthConnectDataType.Speed,
+    HealthConnectDataType.StepsCadence,
+    HealthConnectDataType.Steps,
+    HealthConnectDataType.SwimmingStrokes,
+    HealthConnectDataType.TotalCaloriesBurned,
+    HealthConnectDataType.Vo2Max,
+    HealthConnectDataType.WaistCircumference,
+    HealthConnectDataType.Weight,
+    HealthConnectDataType.WheelchairPushes,
+  ];
 
-  @override
-  void initState() {
-    super.initState();
-    initPlatformState();
-  }
+  HealthConnectDataType getRecord = HealthConnectDataType.ActiveCaloriesBurned;
 
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    // We also handle the message potentially returning null.
-    try {
-      platformVersion =
-          await _flutterHealthConnectPlugin.getPlatformVersion() ?? 'Unknown platform version';
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _platformVersion = platformVersion;
-    });
-  }
+  String resultText = '';
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Plugin example app'),
+          title: const Text('Health Connect'),
         ),
-        body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+        body: ListView(
+          padding: const EdgeInsets.all(16),
+          children: [
+            ElevatedButton(
+              onPressed: () async {
+                var result = await HealthConnectFactory.isApiSupported();
+                resultText = 'isApiSupported: $result';
+                _updateResultText();
+              },
+              child: const Text('isApiSupported'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                var result = await HealthConnectFactory.isAvailable();
+                resultText = 'isAvailable: $result';
+                _updateResultText();
+              },
+              child: const Text('Check installed'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                await HealthConnectFactory.installHealthConnect();
+              },
+              child: const Text('Install Health Connect'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                await HealthConnectFactory.openHealthConnectSettings();
+              },
+              child: const Text('Open Health Connect Settings'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                var result = await HealthConnectFactory.hasPermissions(types);
+                resultText = 'hasPermissions: $result';
+                _updateResultText();
+              },
+              child: const Text('Has Permissions'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                var result =
+                    await HealthConnectFactory.requestPermissions(types);
+                resultText = 'requestPermissions: $result';
+                _updateResultText();
+              },
+              child: const Text('Request Permissions'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                var startTime =
+                    DateTime.now().subtract(const Duration(days: 4));
+                var endTime = DateTime.now();
+                var result = await HealthConnectFactory.getRecord(
+                    type: getRecord, startTime: startTime, endTime: endTime);
+                resultText = '\ntype: $getRecord\n\n$result';
+                _updateResultText();
+              },
+              child: const Text('Get Record'),
+            ),
+            Text(resultText),
+          ],
         ),
       ),
     );
+  }
+
+  void _updateResultText() {
+    setState(() {});
   }
 }

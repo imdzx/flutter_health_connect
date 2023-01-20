@@ -1,8 +1,9 @@
+library flutter_health_connect;
 
-import 'flutter_health_connect_platform_interface.dart';
+import 'dart:async';
 
-class FlutterHealthConnect {
-  Future<String?> getPlatformVersion() {
-    return FlutterHealthConnectPlatform.instance.getPlatformVersion();
-  }
-}
+import 'package:flutter/services.dart';
+
+part 'src/data_types.dart';
+
+part 'src/flutter_health_connect_factory.dart';

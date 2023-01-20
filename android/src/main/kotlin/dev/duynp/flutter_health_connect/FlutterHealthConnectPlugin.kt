@@ -1,35 +1,69 @@
 package dev.duynp.flutter_health_connect
 
-import androidx.annotation.NonNull
+import androidx.health.connect.client.HealthConnectClient
+import androidx.health.connect.client.PermissionController
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
+import kotlinx.coroutines.*
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.temporal.ChronoUnit
+import java.util.ArrayList
+import java.util.HashMap
 
 /** FlutterHealthConnectPlugin */
-class FlutterHealthConnectPlugin: FlutterPlugin, MethodCallHandler {
-  /// The MethodChannel that will the communication between Flutter and native Android
-  ///
-  /// This local reference serves to register the plugin with the Flutter Engine and unregister it
-  /// when the Flutter Engine is detached from the Activity
-  private lateinit var channel : MethodChannel
+class FlutterHealthConnectPlugin : ContextAwarePlugin() {
+  override val pluginName: String = "flutter_health_connect"
 
-  override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-    channel = MethodChannel(flutterPluginBinding.binaryMessenger, "flutter_health_connect")
-    channel.setMethodCallHandler(this)
-  }
-
-  override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
-    if (call.method == "getPlatformVersion") {
-      result.success("Android ${android.os.Build.VERSION.RELEASE}")
-    } else {
-      result.notImplemented()
+  override fun onMethodCall(call: MethodCall, result: Result) {
+//    activity //Do something
+//    applicationContext //Do something
+    val permissionsManager = PermissionsManager(applicationContext!!, activity)
+    val permissionsCallHandler =
+      PermissionsCallHandler(applicationContext!!, permissionsManager)
+    PermissionController.createRequestPermissionResultContract()
+    when (call.method) {
+      "isApiSupported" -> {
+        permissionsCallHandler.isApiSupported(result)
+      }
+      "isAvailable" -> {
+        permissionsCallHandler.checkAvailability(result)
+      }
+      "installHealthConnect" -> {
+        permissionsCallHandler.installHealthConnect(result)
+      }
+      "hasPermissions" -> {
+        scope.launch {
+          val args = call.arguments as HashMap<*, *>
+          val types = (args["types"] as? ArrayList<*>)?.filterIsInstance<String>()
+          permissionsCallHandler.hasAllPermissions(result, types)
+        }
+      }
+      "requestPermissions" -> {
+        val args = call.arguments as HashMap<*, *>
+        val types = (args["types"] as? ArrayList<*>)?.filterIsInstance<String>()
+        permissionsCallHandler.requestAllPermissions(result, types)
+      }
+      "getRecord" -> {
+        scope.launch {
+          val type = call.argument<String>("type")!!
+          val startTime = call.argument<String>("startTime")!!
+          val endTime = call.argument<String>("endTime")!!
+          permissionsCallHandler.getRecord(result, type, startTime, endTime)
+        }
+      }
+      "openHealthConnectSettings" -> {
+        permissionsCallHandler.openHealthConnectSettings(result)
+      }
+      else -> {
+        result.notImplemented()
+      }
     }
   }
 
-  override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
-    channel.setMethodCallHandler(null)
-  }
 }

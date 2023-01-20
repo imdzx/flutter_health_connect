@@ -1,6 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="dev.duynp.flutter_health_connect_example">
-   <application
+<!--    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />-->
+    <queries>
+        <package android:name="com.google.android.apps.healthdata" />
+    </queries>
+    <application
         android:label="flutter_health_connect_example"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
@@ -16,6 +20,12 @@
                  the Android process has started. This theme is visible to the user
                  while the Flutter UI initializes. After that, this theme continues
                  to determine the Window background behind the Flutter UI. -->
+            <meta-data
+                    android:name="health_permissions"
+                    android:resource="@array/health_permissions" />
+            <intent-filter>
+                <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
+            </intent-filter>
             <meta-data
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
