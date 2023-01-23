@@ -1,7 +1,7 @@
 # Flutter Health Connect
 [![pub package](https://img.shields.io/badge/flutter__health__connect-1.0.0-blue)](https://pub.dev/packages/flutter_health_connect)
 
-This package allows apps to extract data from Google Health Connect with Flutter.
+Flutter plugin for Google Health Connect integration.
 
 
 ## Requirements
@@ -46,6 +46,8 @@ Inside your MainActivity declaration add a reference to `health_permissions` and
     </intent-filter>
 </activity>
 ```
+
+Health connect developer toolbox: http://goo.gle/health-connect-toolbox
 
 ## Usage
 ```dart

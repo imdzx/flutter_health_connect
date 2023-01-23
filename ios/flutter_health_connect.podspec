@@ -5,9 +5,9 @@
 Pod::Spec.new do |s|
   s.name             = 'flutter_health_connect'
   s.version          = '0.0.1'
-  s.summary          = 'This package allows apps to extract data from Google Health Connect with Flutter.'
+  s.summary          = 'Flutter plugin for Google Health Connect integration.'
   s.description      = <<-DESC
-This package allows apps to extract data from Google Health Connect with Flutter.
+Flutter plugin for Google Health Connect integration.
                        DESC
   s.homepage         = 'http://example.com'
   s.license          = { :file => '../LICENSE' }

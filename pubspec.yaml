@@ -1,6 +1,6 @@
 name: flutter_health_connect
-description: This package allows apps to extract data from Google Health Connect with Flutter.
-version: 1.0.0
+description: Flutter plugin for Google Health Connect integration.
+version: 1.0.1
 homepage: https://github.com/duynguyen242/flutter_health_connect
 
 environment:
