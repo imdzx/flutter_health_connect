@@ -1,7 +1,7 @@
 # Flutter Health Connect
 [![pub package](https://img.shields.io/badge/flutter__health__connect-1.0.0-blue)](https://pub.dev/packages/flutter_health_connect)
 
-Flutter plugin for Google Health Connect integration.
+Flutter plugin for Google Health Connect integration. Health Connect gives you a simple way to store and connect the data between your health and fitness apps.
 
 
 ## Requirements
@@ -10,7 +10,7 @@ Flutter plugin for Google Health Connect integration.
 
 - minSdkVersion: `26` (Recommend 28)
 - compileSdkVersion: `33`
-- This package requires Flutter `3.3.0` or higher.
+- This package requires Flutter `2.5.0` or higher.
 
 ## How to install
 
