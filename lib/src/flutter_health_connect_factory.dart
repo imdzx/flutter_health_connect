@@ -37,7 +37,7 @@ class HealthConnectFactory {
       return null;
     }
     final start = startTime.toIso8601String().substring(0, 10);
-    final end = endTime.toIso8601String().substring(0, 10);
+    final end = endTime.add(const Duration(days: 1)).toIso8601String().substring(0, 10);
     final args = <String, dynamic>{
       'type': _enumToString(type),
       'startTime': start,

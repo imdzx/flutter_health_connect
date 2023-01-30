@@ -57,7 +57,7 @@ class _MyAppState extends State<MyApp> {
     HealthConnectDataType.WheelchairPushes,
   ];
 
-  HealthConnectDataType getRecord = HealthConnectDataType.ActiveCaloriesBurned;
+  HealthConnectDataType getRecord = HealthConnectDataType.Distance;
 
   String resultText = '';
 
