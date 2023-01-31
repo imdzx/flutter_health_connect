@@ -104,8 +104,8 @@ class PermissionsManager(
         return true
     }
 
-    fun requestAllPermissions(types: List<String>?): Boolean {
-        val allPermissions = emptySet<HealthPermission>().plus(mapToHealthPermissions(types))
+    fun requestAllPermissions(types: List<String>?, readOnly: Boolean): Boolean {
+        val allPermissions = emptySet<HealthPermission>().plus(mapToHealthPermissions(types, readOnly))
         return if (activity == null) {
             false
         } else {
@@ -114,8 +114,8 @@ class PermissionsManager(
         }
     }
 
-    suspend fun hasAllPermissions(types: List<String>?): Boolean {
-        val permissions = mapToHealthPermissions(types)
+    suspend fun hasAllPermissions(types: List<String>?, readOnly: Boolean): Boolean {
+        val permissions = mapToHealthPermissions(types, readOnly)
         val granted = client.permissionController.getGrantedPermissions(permissions)
         return granted.containsAll(permissions)
     }
@@ -294,8 +294,14 @@ class PermissionsManager(
                         "endZoneOffset" to dataPoint.endZoneOffset?.toString(),
                         "startTime" to dataPoint.startTime.toString(),
                         "endTime" to dataPoint.endTime.toString(),
-                        "samples" to dataPoint.samples,
-                    )
+                        "samples" to dataPoint.samples.mapIndexed { _, sample ->
+                            hashMapOf(
+                                "time" to sample.time.toString(),
+                                "revolutionsPerMinute" to sample.revolutionsPerMinute.toString(),
+                            )
+                        },
+
+                        )
                 }
                 return healthData
             }
@@ -440,7 +446,12 @@ class PermissionsManager(
                         "endZoneOffset" to dataPoint.endZoneOffset?.toString(),
                         "startTime" to dataPoint.startTime.toString(),
                         "endTime" to dataPoint.endTime.toString(),
-                        "samples" to dataPoint.samples,
+                        "samples" to dataPoint.samples.mapIndexed { _, sample ->
+                            hashMapOf(
+                                "time" to sample.time.toString(),
+                                "beatsPerMinute" to sample.beatsPerMinute.toString(),
+                            )
+                        },
                     )
                 }
                 return healthData
@@ -633,7 +644,12 @@ class PermissionsManager(
                         "endZoneOffset" to dataPoint.endZoneOffset?.toString(),
                         "startTime" to dataPoint.startTime.toString(),
                         "endTime" to dataPoint.endTime.toString(),
-                        "samples" to dataPoint.samples,
+                        "samples" to dataPoint.samples.mapIndexed { _, sample ->
+                            hashMapOf(
+                                "time" to sample.time.toString(),
+                                "power" to sample.power.toString(),
+                            )
+                        },
                     )
                 }
                 return healthData
@@ -736,7 +752,12 @@ class PermissionsManager(
                         "endZoneOffset" to dataPoint.endZoneOffset?.toString(),
                         "startTime" to dataPoint.startTime.toString(),
                         "endTime" to dataPoint.endTime.toString(),
-                        "samples" to dataPoint.samples,
+                        "samples" to dataPoint.samples.mapIndexed { _, sample ->
+                            hashMapOf(
+                                "time" to sample.time.toString(),
+                                "speed" to sample.speed.toString(),
+                            )
+                        },
                     )
                 }
                 return healthData
@@ -754,7 +775,12 @@ class PermissionsManager(
                         "endZoneOffset" to dataPoint.endZoneOffset?.toString(),
                         "startTime" to dataPoint.startTime.toString(),
                         "endTime" to dataPoint.endTime.toString(),
-                        "samples" to dataPoint.samples,
+                        "samples" to dataPoint.samples.mapIndexed { _, sample ->
+                            hashMapOf(
+                                "time" to sample.time.toString(),
+                                "rate" to sample.rate.toString(),
+                            )
+                        },
                     )
                 }
                 return healthData
@@ -900,17 +926,19 @@ class PermissionsManager(
 
 //    private suspend fun insertHealthData(type: String, timeRangeFilter: TimeRangeFilter): Any {}
 
-    private fun mapToHealthPermissions(types: List<String>?): MutableSet<HealthPermission> {
+    private fun mapToHealthPermissions(types: List<String>?, readOnly: Boolean): MutableSet<HealthPermission> {
         val permissions = mutableSetOf<HealthPermission>()
         if (types != null) {
             for (item: String in types) {
                 when (item) {
                     ActiveCaloriesBurned -> {
-                        permissions.add(
-                            HealthPermission.createWritePermission(
-                                ActiveCaloriesBurnedRecord::class
+                        if (!readOnly) {
+                            permissions.add(
+                                HealthPermission.createWritePermission(
+                                    ActiveCaloriesBurnedRecord::class
+                                )
                             )
-                        )
+                        }
                         permissions.add(
                             HealthPermission.createReadPermission(
                                 ActiveCaloriesBurnedRecord::class
@@ -918,11 +946,13 @@ class PermissionsManager(
                         )
                     }
                     BasalBodyTemperature -> {
-                        permissions.add(
-                            HealthPermission.createWritePermission(
-                                BasalBodyTemperatureRecord::class
+                        if (!readOnly) {
+                            permissions.add(
+                                HealthPermission.createWritePermission(
+                                    BasalBodyTemperatureRecord::class
+                                )
                             )
-                        )
+                        }
                         permissions.add(
                             HealthPermission.createReadPermission(
                                 BasalBodyTemperatureRecord::class
@@ -930,11 +960,13 @@ class PermissionsManager(
                         )
                     }
                     BasalMetabolicRate -> {
-                        permissions.add(
-                            HealthPermission.createWritePermission(
-                                BasalMetabolicRateRecord::class
+                        if (!readOnly) {
+                            permissions.add(
+                                HealthPermission.createWritePermission(
+                                    BasalMetabolicRateRecord::class
+                                )
                             )
-                        )
+                        }
                         permissions.add(
                             HealthPermission.createReadPermission(
                                 BasalMetabolicRateRecord::class
@@ -942,35 +974,49 @@ class PermissionsManager(
                         )
                     }
                     BloodGlucose -> {
-                        permissions.add(HealthPermission.createWritePermission(BloodGlucoseRecord::class))
+                        if (!readOnly) {
+                            permissions.add(HealthPermission.createWritePermission(BloodGlucoseRecord::class))
+                        }
                         permissions.add(HealthPermission.createReadPermission(BloodGlucoseRecord::class))
                     }
                     BloodPressure -> {
-                        permissions.add(HealthPermission.createWritePermission(BloodPressureRecord::class))
+                        if (!readOnly) {
+                            permissions.add(HealthPermission.createWritePermission(BloodPressureRecord::class))
+                        }
                         permissions.add(HealthPermission.createReadPermission(BloodPressureRecord::class))
                     }
                     BodyFat -> {
-                        permissions.add(HealthPermission.createWritePermission(BodyFatRecord::class))
+                        if (!readOnly) {
+                            permissions.add(HealthPermission.createWritePermission(BodyFatRecord::class))
+                        }
                         permissions.add(HealthPermission.createReadPermission(BodyFatRecord::class))
                     }
                     BodyTemperature -> {
-                        permissions.add(HealthPermission.createWritePermission(BodyTemperatureRecord::class))
+                        if (!readOnly) {
+                            permissions.add(HealthPermission.createWritePermission(BodyTemperatureRecord::class))
+                        }
                         permissions.add(HealthPermission.createReadPermission(BodyTemperatureRecord::class))
                     }
                     BoneMass -> {
-                        permissions.add(HealthPermission.createWritePermission(BoneMassRecord::class))
+                        if (!readOnly) {
+                            permissions.add(HealthPermission.createWritePermission(BoneMassRecord::class))
+                        }
                         permissions.add(HealthPermission.createReadPermission(BoneMassRecord::class))
                     }
                     CervicalMucus -> {
-                        permissions.add(HealthPermission.createWritePermission(CervicalMucusRecord::class))
+                        if (!readOnly) {
+                            permissions.add(HealthPermission.createWritePermission(CervicalMucusRecord::class))
+                        }
                         permissions.add(HealthPermission.createReadPermission(CervicalMucusRecord::class))
                     }
                     CyclingPedalingCadence -> {
-                        permissions.add(
-                            HealthPermission.createWritePermission(
-                                CyclingPedalingCadenceRecord::class
+                        if (!readOnly) {
+                            permissions.add(
+                                HealthPermission.createWritePermission(
+                                    CyclingPedalingCadenceRecord::class
+                                )
                             )
-                        )
+                        }
                         permissions.add(
                             HealthPermission.createReadPermission(
                                 CyclingPedalingCadenceRecord::class
@@ -978,27 +1024,37 @@ class PermissionsManager(
                         )
                     }
                     Distance -> {
-                        permissions.add(HealthPermission.createWritePermission(DistanceRecord::class))
+                        if (!readOnly) {
+                            permissions.add(HealthPermission.createWritePermission(DistanceRecord::class))
+                        }
                         permissions.add(HealthPermission.createReadPermission(DistanceRecord::class))
                     }
                     ElevationGained -> {
-                        permissions.add(HealthPermission.createWritePermission(ElevationGainedRecord::class))
+                        if (!readOnly) {
+                            permissions.add(HealthPermission.createWritePermission(ElevationGainedRecord::class))
+                        }
                         permissions.add(HealthPermission.createReadPermission(ElevationGainedRecord::class))
                     }
                     ExerciseEvent -> {
-                        permissions.add(HealthPermission.createWritePermission(ExerciseEventRecord::class))
+                        if (!readOnly) {
+                            permissions.add(HealthPermission.createWritePermission(ExerciseEventRecord::class))
+                        }
                         permissions.add(HealthPermission.createReadPermission(ExerciseEventRecord::class))
                     }
                     ExerciseLap -> {
-                        permissions.add(HealthPermission.createWritePermission(ExerciseLapRecord::class))
+                        if (!readOnly) {
+                            permissions.add(HealthPermission.createWritePermission(ExerciseLapRecord::class))
+                        }
                         permissions.add(HealthPermission.createReadPermission(ExerciseLapRecord::class))
                     }
                     ExerciseRepetitions -> {
-                        permissions.add(
-                            HealthPermission.createWritePermission(
-                                ExerciseRepetitionsRecord::class
+                        if (!readOnly) {
+                            permissions.add(
+                                HealthPermission.createWritePermission(
+                                    ExerciseRepetitionsRecord::class
+                                )
                             )
-                        )
+                        }
                         permissions.add(
                             HealthPermission.createReadPermission(
                                 ExerciseRepetitionsRecord::class
@@ -1006,111 +1062,157 @@ class PermissionsManager(
                         )
                     }
                     ExerciseSession -> {
-                        permissions.add(HealthPermission.createWritePermission(ExerciseSessionRecord::class))
+                        if (!readOnly) {
+                            permissions.add(HealthPermission.createWritePermission(ExerciseSessionRecord::class))
+                        }
                         permissions.add(HealthPermission.createReadPermission(ExerciseSessionRecord::class))
                     }
                     FloorsClimbed -> {
-                        permissions.add(HealthPermission.createWritePermission(FloorsClimbedRecord::class))
+                        if (!readOnly) {
+                            permissions.add(HealthPermission.createWritePermission(FloorsClimbedRecord::class))
+                        }
                         permissions.add(HealthPermission.createReadPermission(FloorsClimbedRecord::class))
                     }
                     HeartRate -> {
-                        permissions.add(HealthPermission.createWritePermission(HeartRateRecord::class))
+                        if (!readOnly) {
+                            permissions.add(HealthPermission.createWritePermission(HeartRateRecord::class))
+                        }
                         permissions.add(HealthPermission.createReadPermission(HeartRateRecord::class))
                     }
                     Height -> {
-                        permissions.add(HealthPermission.createWritePermission(HeightRecord::class))
+                        if (!readOnly) {
+                            permissions.add(HealthPermission.createWritePermission(HeightRecord::class))
+                        }
                         permissions.add(HealthPermission.createReadPermission(HeightRecord::class))
                     }
                     HipCircumference -> {
-                        permissions.add(
-                            HealthPermission.createWritePermission(
-                                HipCircumferenceRecord::class
+                        if (!readOnly) {
+                            permissions.add(
+                                HealthPermission.createWritePermission(
+                                    HipCircumferenceRecord::class
+                                )
                             )
-                        )
+                        }
                         permissions.add(HealthPermission.createReadPermission(HipCircumferenceRecord::class))
                     }
                     Hydration -> {
-                        permissions.add(HealthPermission.createWritePermission(HydrationRecord::class))
+                        if (!readOnly) {
+                            permissions.add(HealthPermission.createWritePermission(HydrationRecord::class))
+                        }
                         permissions.add(HealthPermission.createReadPermission(HydrationRecord::class))
                     }
                     LeanBodyMass -> {
-                        permissions.add(HealthPermission.createWritePermission(LeanBodyMassRecord::class))
+                        if (!readOnly) {
+                            permissions.add(HealthPermission.createWritePermission(LeanBodyMassRecord::class))
+                        }
                         permissions.add(HealthPermission.createReadPermission(LeanBodyMassRecord::class))
                     }
                     MenstruationFlow -> {
-                        permissions.add(
-                            HealthPermission.createWritePermission(
-                                MenstruationFlowRecord::class
+                        if (!readOnly) {
+                            permissions.add(
+                                HealthPermission.createWritePermission(
+                                    MenstruationFlowRecord::class
+                                )
                             )
-                        )
+                        }
                         permissions.add(HealthPermission.createReadPermission(MenstruationFlowRecord::class))
                     }
                     Nutrition -> {
+                        if (!readOnly) {
+
+                        }
                         permissions.add(HealthPermission.createWritePermission(NutritionRecord::class))
                         permissions.add(HealthPermission.createReadPermission(NutritionRecord::class))
                     }
                     OvulationTest -> {
+                        if (!readOnly) {
+
+                        }
                         permissions.add(HealthPermission.createWritePermission(OvulationTestRecord::class))
                         permissions.add(HealthPermission.createReadPermission(OvulationTestRecord::class))
                     }
                     OxygenSaturation -> {
-                        permissions.add(
-                            HealthPermission.createWritePermission(
-                                OxygenSaturationRecord::class
+                        if (!readOnly) {
+                            permissions.add(
+                                HealthPermission.createWritePermission(
+                                    OxygenSaturationRecord::class
+                                )
                             )
-                        )
+                        }
                         permissions.add(HealthPermission.createReadPermission(OxygenSaturationRecord::class))
                     }
                     Power -> {
-                        permissions.add(HealthPermission.createWritePermission(PowerRecord::class))
+                        if (!readOnly) {
+                            permissions.add(HealthPermission.createWritePermission(PowerRecord::class))
+                        }
                         permissions.add(HealthPermission.createReadPermission(PowerRecord::class))
                     }
                     RespiratoryRate -> {
-                        permissions.add(HealthPermission.createWritePermission(RespiratoryRateRecord::class))
+                        if (!readOnly) {
+                            permissions.add(HealthPermission.createWritePermission(RespiratoryRateRecord::class))
+                        }
                         permissions.add(HealthPermission.createReadPermission(RespiratoryRateRecord::class))
                     }
                     RestingHeartRate -> {
-                        permissions.add(
-                            HealthPermission.createWritePermission(
-                                RestingHeartRateRecord::class
+                        if (!readOnly) {
+                            permissions.add(
+                                HealthPermission.createWritePermission(
+                                    RestingHeartRateRecord::class
+                                )
                             )
-                        )
+                        }
                         permissions.add(HealthPermission.createReadPermission(RestingHeartRateRecord::class))
                     }
                     SexualActivity -> {
-                        permissions.add(HealthPermission.createWritePermission(SexualActivityRecord::class))
+                        if (!readOnly) {
+                            permissions.add(HealthPermission.createWritePermission(SexualActivityRecord::class))
+                        }
                         permissions.add(HealthPermission.createReadPermission(SexualActivityRecord::class))
                     }
                     SleepSession -> {
-                        permissions.add(HealthPermission.createWritePermission(SleepSessionRecord::class))
+                        if (!readOnly) {
+                            permissions.add(HealthPermission.createWritePermission(SleepSessionRecord::class))
+                        }
                         permissions.add(HealthPermission.createReadPermission(SleepSessionRecord::class))
                     }
                     SleepStage -> {
-                        permissions.add(HealthPermission.createWritePermission(SleepStageRecord::class))
+                        if (!readOnly) {
+                            permissions.add(HealthPermission.createWritePermission(SleepStageRecord::class))
+                        }
                         permissions.add(HealthPermission.createReadPermission(SleepStageRecord::class))
                     }
                     Speed -> {
-                        permissions.add(HealthPermission.createWritePermission(SpeedRecord::class))
+                        if (!readOnly) {
+                            permissions.add(HealthPermission.createWritePermission(SpeedRecord::class))
+                        }
                         permissions.add(HealthPermission.createReadPermission(SpeedRecord::class))
                     }
                     StepsCadence -> {
-                        permissions.add(HealthPermission.createWritePermission(StepsCadenceRecord::class))
+                        if (!readOnly) {
+                            permissions.add(HealthPermission.createWritePermission(StepsCadenceRecord::class))
+                        }
                         permissions.add(HealthPermission.createReadPermission(StepsCadenceRecord::class))
                     }
                     Steps -> {
-                        permissions.add(HealthPermission.createWritePermission(StepsRecord::class))
+                        if (!readOnly) {
+                            permissions.add(HealthPermission.createWritePermission(StepsRecord::class))
+                        }
                         permissions.add(HealthPermission.createReadPermission(StepsRecord::class))
                     }
                     SwimmingStrokes -> {
-                        permissions.add(HealthPermission.createWritePermission(SwimmingStrokesRecord::class))
+                        if (!readOnly) {
+                            permissions.add(HealthPermission.createWritePermission(SwimmingStrokesRecord::class))
+                        }
                         permissions.add(HealthPermission.createReadPermission(SwimmingStrokesRecord::class))
                     }
                     TotalCaloriesBurned -> {
-                        permissions.add(
-                            HealthPermission.createWritePermission(
-                                TotalCaloriesBurnedRecord::class
+                        if (!readOnly) {
+                            permissions.add(
+                                HealthPermission.createWritePermission(
+                                    TotalCaloriesBurnedRecord::class
+                                )
                             )
-                        )
+                        }
                         permissions.add(
                             HealthPermission.createReadPermission(
                                 TotalCaloriesBurnedRecord::class
@@ -1118,15 +1220,19 @@ class PermissionsManager(
                         )
                     }
                     Vo2Max -> {
-                        permissions.add(HealthPermission.createWritePermission(Vo2MaxRecord::class))
+                        if (!readOnly) {
+                            permissions.add(HealthPermission.createWritePermission(Vo2MaxRecord::class))
+                        }
                         permissions.add(HealthPermission.createReadPermission(Vo2MaxRecord::class))
                     }
                     WaistCircumference -> {
-                        permissions.add(
-                            HealthPermission.createWritePermission(
-                                WaistCircumferenceRecord::class
+                        if (!readOnly) {
+                            permissions.add(
+                                HealthPermission.createWritePermission(
+                                    WaistCircumferenceRecord::class
+                                )
                             )
-                        )
+                        }
                         permissions.add(
                             HealthPermission.createReadPermission(
                                 WaistCircumferenceRecord::class
@@ -1134,15 +1240,19 @@ class PermissionsManager(
                         )
                     }
                     Weight -> {
-                        permissions.add(HealthPermission.createWritePermission(WeightRecord::class))
+                        if (!readOnly) {
+                            permissions.add(HealthPermission.createWritePermission(WeightRecord::class))
+                        }
                         permissions.add(HealthPermission.createReadPermission(WeightRecord::class))
                     }
                     WheelchairPushes -> {
-                        permissions.add(
-                            HealthPermission.createWritePermission(
-                                WheelchairPushesRecord::class
+                        if (!readOnly) {
+                            permissions.add(
+                                HealthPermission.createWritePermission(
+                                    WheelchairPushesRecord::class
+                                )
                             )
-                        )
+                        }
                         permissions.add(HealthPermission.createReadPermission(WheelchairPushesRecord::class))
                     }
                 }

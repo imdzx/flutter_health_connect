@@ -25,13 +25,13 @@ class PermissionsCallHandler(
         manager.installHealthConnect()
     }
 
-    suspend fun hasAllPermissions(result: MethodChannel.Result, types: List<String>?) = suspend(result) {
-        val hasPermissions = manager.hasAllPermissions(types)
+    suspend fun hasAllPermissions(result: MethodChannel.Result, types: List<String>?, readOnly: Boolean) = suspend(result) {
+        val hasPermissions = manager.hasAllPermissions(types, readOnly)
         result.success(hasPermissions)
     }
 
-    fun requestAllPermissions(result: MethodChannel.Result, types: List<String>?) = execute(result) {
-        val success = manager.requestAllPermissions(types)
+    fun requestAllPermissions(result: MethodChannel.Result, types: List<String>?, readOnly: Boolean) = execute(result) {
+        val success = manager.requestAllPermissions(types, readOnly)
         result.success(success)
     }
 

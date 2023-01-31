@@ -15,36 +15,53 @@ class HealthConnectFactory {
     _channel.invokeMethod('installHealthConnect');
   }
 
-  static Future<bool> hasPermissions(List<HealthConnectDataType> types) async {
+  static Future<bool> hasPermissions(
+    List<HealthConnectDataType> types, {
+    bool readOnly = false,
+  }) async {
     final mTypes = List<HealthConnectDataType>.from(types, growable: true);
     List<String> keys = mTypes.map((e) => _enumToString(e)).toList();
-    return await _channel.invokeMethod('hasPermissions', {'types': keys});
+    return await _channel.invokeMethod('hasPermissions', {
+      'types': keys,
+      'readOnly': readOnly,
+    });
   }
 
   static Future<bool> requestPermissions(
-      List<HealthConnectDataType> types) async {
+    List<HealthConnectDataType> types, {
+    bool readOnly = false,
+  }) async {
     final mTypes = List<HealthConnectDataType>.from(types, growable: true);
     List<String> keys = mTypes.map((e) => _enumToString(e)).toList();
-    return await _channel.invokeMethod('requestPermissions', {'types': keys});
+    return await _channel.invokeMethod('requestPermissions', {
+      'types': keys,
+      'readOnly': readOnly,
+    });
   }
 
-  static Future<dynamic> getRecord({
+  static Future<Map<String, dynamic>> getRecord({
     required DateTime startTime,
     required DateTime endTime,
-    required HealthConnectDataType type,
+    required List<HealthConnectDataType> types,
   }) async {
+    Map<String, dynamic> dataPoints = {};
     if (endTime.isBefore(startTime)) {
-      return null;
+      return dataPoints;
     }
     final start = startTime.toIso8601String().substring(0, 10);
-    final end = endTime.add(const Duration(days: 1)).toIso8601String().substring(0, 10);
-    final args = <String, dynamic>{
-      'type': _enumToString(type),
-      'startTime': start,
-      'endTime': end
-    };
-    var record = await _channel.invokeMethod('getRecord', args);
-    return record;
+    final end =
+        endTime.add(const Duration(days: 1)).toIso8601String().substring(0, 10);
+
+    for (var type in types) {
+      final args = <String, dynamic>{
+        'type': _enumToString(type),
+        'startTime': start,
+        'endTime': end
+      };
+      var record = await _channel.invokeMethod('getRecord', args);
+      dataPoints.addAll({type.name: '$record'});
+    }
+    return dataPoints;
   }
 
   static Future<bool> openHealthConnectSettings() async {

@@ -41,13 +41,15 @@ class FlutterHealthConnectPlugin : ContextAwarePlugin() {
         scope.launch {
           val args = call.arguments as HashMap<*, *>
           val types = (args["types"] as? ArrayList<*>)?.filterIsInstance<String>()
-          permissionsCallHandler.hasAllPermissions(result, types)
+          val readOnly = call.argument<Boolean>("readOnly")!!
+          permissionsCallHandler.hasAllPermissions(result, types, readOnly)
         }
       }
       "requestPermissions" -> {
         val args = call.arguments as HashMap<*, *>
         val types = (args["types"] as? ArrayList<*>)?.filterIsInstance<String>()
-        permissionsCallHandler.requestAllPermissions(result, types)
+        val readOnly = call.argument<Boolean>("readOnly")!!
+        permissionsCallHandler.requestAllPermissions(result, types, readOnly)
       }
       "getRecord" -> {
         scope.launch {

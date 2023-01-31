@@ -13,52 +13,59 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  // List<HealthConnectDataType> types = [
+  //   HealthConnectDataType.ActiveCaloriesBurned,
+  //   HealthConnectDataType.BasalBodyTemperature,
+  //   HealthConnectDataType.BasalMetabolicRate,
+  //   HealthConnectDataType.BloodGlucose,
+  //   HealthConnectDataType.BloodPressure,
+  //   HealthConnectDataType.BodyFat,
+  //   HealthConnectDataType.BodyTemperature,
+  //   HealthConnectDataType.BoneMass,
+  //   HealthConnectDataType.CervicalMucus,
+  //   HealthConnectDataType.CyclingPedalingCadence,
+  //   HealthConnectDataType.Distance,
+  //   HealthConnectDataType.ElevationGained,
+  //   HealthConnectDataType.ExerciseEvent,
+  //   HealthConnectDataType.ExerciseLap,
+  //   HealthConnectDataType.ExerciseRepetitions,
+  //   HealthConnectDataType.ExerciseSession,
+  //   HealthConnectDataType.FloorsClimbed,
+  //   HealthConnectDataType.HeartRate,
+  //   HealthConnectDataType.Height,
+  //   HealthConnectDataType.HipCircumference,
+  //   HealthConnectDataType.Hydration,
+  //   HealthConnectDataType.LeanBodyMass,
+  //   HealthConnectDataType.MenstruationFlow,
+  //   HealthConnectDataType.Nutrition,
+  //   HealthConnectDataType.OvulationTest,
+  //   HealthConnectDataType.OxygenSaturation,
+  //   HealthConnectDataType.Power,
+  //   HealthConnectDataType.RespiratoryRate,
+  //   HealthConnectDataType.RestingHeartRate,
+  //   HealthConnectDataType.SexualActivity,
+  //   HealthConnectDataType.SleepSession,
+  //   HealthConnectDataType.SleepStage,
+  //   HealthConnectDataType.Speed,
+  //   HealthConnectDataType.StepsCadence,
+  //   HealthConnectDataType.Steps,
+  //   HealthConnectDataType.SwimmingStrokes,
+  //   HealthConnectDataType.TotalCaloriesBurned,
+  //   HealthConnectDataType.Vo2Max,
+  //   HealthConnectDataType.WaistCircumference,
+  //   HealthConnectDataType.Weight,
+  //   HealthConnectDataType.WheelchairPushes,
+  // ];
+
   List<HealthConnectDataType> types = [
-    HealthConnectDataType.ActiveCaloriesBurned,
-    HealthConnectDataType.BasalBodyTemperature,
-    HealthConnectDataType.BasalMetabolicRate,
-    HealthConnectDataType.BloodGlucose,
-    HealthConnectDataType.BloodPressure,
-    HealthConnectDataType.BodyFat,
-    HealthConnectDataType.BodyTemperature,
-    HealthConnectDataType.BoneMass,
-    HealthConnectDataType.CervicalMucus,
-    HealthConnectDataType.CyclingPedalingCadence,
-    HealthConnectDataType.Distance,
-    HealthConnectDataType.ElevationGained,
-    HealthConnectDataType.ExerciseEvent,
-    HealthConnectDataType.ExerciseLap,
-    HealthConnectDataType.ExerciseRepetitions,
-    HealthConnectDataType.ExerciseSession,
-    HealthConnectDataType.FloorsClimbed,
-    HealthConnectDataType.HeartRate,
-    HealthConnectDataType.Height,
-    HealthConnectDataType.HipCircumference,
-    HealthConnectDataType.Hydration,
-    HealthConnectDataType.LeanBodyMass,
-    HealthConnectDataType.MenstruationFlow,
-    HealthConnectDataType.Nutrition,
-    HealthConnectDataType.OvulationTest,
-    HealthConnectDataType.OxygenSaturation,
-    HealthConnectDataType.Power,
-    HealthConnectDataType.RespiratoryRate,
-    HealthConnectDataType.RestingHeartRate,
-    HealthConnectDataType.SexualActivity,
-    HealthConnectDataType.SleepSession,
-    HealthConnectDataType.SleepStage,
-    HealthConnectDataType.Speed,
-    HealthConnectDataType.StepsCadence,
     HealthConnectDataType.Steps,
-    HealthConnectDataType.SwimmingStrokes,
-    HealthConnectDataType.TotalCaloriesBurned,
-    HealthConnectDataType.Vo2Max,
-    HealthConnectDataType.WaistCircumference,
-    HealthConnectDataType.Weight,
-    HealthConnectDataType.WheelchairPushes,
+    HealthConnectDataType.HeartRate,
+    HealthConnectDataType.SleepSession,
+    HealthConnectDataType.OxygenSaturation,
+    HealthConnectDataType.RespiratoryRate,
   ];
 
-  HealthConnectDataType getRecord = HealthConnectDataType.Distance;
-
+  bool readOnly = true;
   String resultText = '';
 
   @override
@@ -101,7 +108,10 @@ class _MyAppState extends State<MyApp> {
             ),
             ElevatedButton(
               onPressed: () async {
-                var result = await HealthConnectFactory.hasPermissions(types);
+                var result = await HealthConnectFactory.hasPermissions(
+                  types,
+                  readOnly: readOnly,
+                );
                 resultText = 'hasPermissions: $result';
                 _updateResultText();
               },
@@ -109,8 +119,10 @@ class _MyAppState extends State<MyApp> {
             ),
             ElevatedButton(
               onPressed: () async {
-                var result =
-                    await HealthConnectFactory.requestPermissions(types);
+                var result = await HealthConnectFactory.requestPermissions(
+                  types,
+                  readOnly: readOnly,
+                );
                 resultText = 'requestPermissions: $result';
                 _updateResultText();
               },
@@ -121,9 +133,17 @@ class _MyAppState extends State<MyApp> {
                 var startTime =
                     DateTime.now().subtract(const Duration(days: 4));
                 var endTime = DateTime.now();
-                var result = await HealthConnectFactory.getRecord(
-                    type: getRecord, startTime: startTime, endTime: endTime);
-                resultText = '\ntype: $getRecord\n\n$result';
+                var results = await HealthConnectFactory.getRecord(
+                  types: types,
+                  startTime: startTime,
+                  endTime: endTime,
+                );
+                // results.forEach((key, value) {
+                //   if (key == HealthConnectDataType.Steps.name) {
+                //     print(value);
+                //   }
+                // });
+                resultText = '\ntype: $types\n\n$results';
                 _updateResultText();
               },
               child: const Text('Get Record'),
