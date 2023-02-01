@@ -1,5 +1,7 @@
 package dev.duynp.flutter_health_connect
 
+import android.app.Activity
+import android.content.Intent
 import androidx.health.connect.client.HealthConnectClient
 import androidx.health.connect.client.PermissionController
 
@@ -18,54 +20,85 @@ import java.util.HashMap
 
 /** FlutterHealthConnectPlugin */
 class FlutterHealthConnectPlugin : ContextAwarePlugin() {
-  override val pluginName: String = "flutter_health_connect"
+    override val pluginName: String = "flutter_health_connect"
+    private lateinit var permissionsCallHandler: PermissionsCallHandler
+    private var currentTypes: List<String>? = null
+    private var readOnly: Boolean = false
+    private lateinit var result: Result
 
-  override fun onMethodCall(call: MethodCall, result: Result) {
+    override fun onMethodCall(call: MethodCall, result: Result) {
 //    activity //Do something
 //    applicationContext //Do something
-    val permissionsManager = PermissionsManager(applicationContext!!, activity)
-    val permissionsCallHandler =
-      PermissionsCallHandler(applicationContext!!, permissionsManager)
-    PermissionController.createRequestPermissionResultContract()
-    when (call.method) {
-      "isApiSupported" -> {
-        permissionsCallHandler.isApiSupported(result)
-      }
-      "isAvailable" -> {
-        permissionsCallHandler.checkAvailability(result)
-      }
-      "installHealthConnect" -> {
-        permissionsCallHandler.installHealthConnect(result)
-      }
-      "hasPermissions" -> {
-        scope.launch {
-          val args = call.arguments as HashMap<*, *>
-          val types = (args["types"] as? ArrayList<*>)?.filterIsInstance<String>()
-          val readOnly = call.argument<Boolean>("readOnly")!!
-          permissionsCallHandler.hasAllPermissions(result, types, readOnly)
+        this.result = result
+        val permissionsManager = PermissionsManager(applicationContext!!, act)
+        permissionsCallHandler =
+            PermissionsCallHandler(applicationContext!!, permissionsManager)
+        PermissionController.createRequestPermissionResultContract()
+        when (call.method) {
+            "isApiSupported" -> {
+                permissionsCallHandler.isApiSupported(result)
+            }
+
+            "isAvailable" -> {
+                permissionsCallHandler.checkAvailability(result)
+            }
+
+            "installHealthConnect" -> {
+                permissionsCallHandler.installHealthConnect(result)
+            }
+
+            "hasPermissions" -> {
+                scope.launch {
+                    val args = call.arguments as HashMap<*, *>
+                    currentTypes = (args["types"] as? ArrayList<*>)?.filterIsInstance<String>()
+                    readOnly = call.argument<Boolean>("readOnly")!!
+                    val permissions = FuncHelper.mapToHealthPermissions(currentTypes, readOnly)
+                    val status = permissionsCallHandler.hasAllPermissions(result, permissions)
+                    result.success(status)
+                }
+            }
+
+            "requestPermissions" -> {
+                val args = call.arguments as HashMap<*, *>
+                currentTypes = (args["types"] as? ArrayList<*>)?.filterIsInstance<String>()
+                readOnly = call.argument<Boolean>("readOnly")!!
+                permissionsCallHandler.requestAllPermissions(result, currentTypes, readOnly)
+            }
+
+            "getRecord" -> {
+                scope.launch {
+                    val type = call.argument<String>("type")!!
+                    val startTime = call.argument<String>("startTime")!!
+                    val endTime = call.argument<String>("endTime")!!
+                    permissionsCallHandler.getRecord(result, type, startTime, endTime)
+                }
+            }
+
+            "openHealthConnectSettings" -> {
+                permissionsCallHandler.openHealthConnectSettings(result)
+            }
+
+            else -> {
+                result.notImplemented()
+            }
         }
-      }
-      "requestPermissions" -> {
-        val args = call.arguments as HashMap<*, *>
-        val types = (args["types"] as? ArrayList<*>)?.filterIsInstance<String>()
-        val readOnly = call.argument<Boolean>("readOnly")!!
-        permissionsCallHandler.requestAllPermissions(result, types, readOnly)
-      }
-      "getRecord" -> {
-        scope.launch {
-          val type = call.argument<String>("type")!!
-          val startTime = call.argument<String>("startTime")!!
-          val endTime = call.argument<String>("endTime")!!
-          permissionsCallHandler.getRecord(result, type, startTime, endTime)
-        }
-      }
-      "openHealthConnectSettings" -> {
-        permissionsCallHandler.openHealthConnectSettings(result)
-      }
-      else -> {
-        result.notImplemented()
-      }
     }
-  }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
+        if (requestCode == HEALTH_CONNECT_RESULT_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                if (data != null) {
+                    scope.launch {
+                        //Verify granted permission
+                        val permissions = FuncHelper.mapToHealthPermissions(currentTypes, readOnly)
+                        val status = permissionsCallHandler.hasAllPermissions(result, permissions)
+                        result.success(status)
+                    }
+                    return true
+                }
+            }
+        }
+        return false
+    }
 
 }

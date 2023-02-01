@@ -1,6 +1,7 @@
 package dev.duynp.flutter_health_connect
 
 import android.content.Context
+import androidx.health.connect.client.permission.HealthPermission
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.MethodChannel
 import java.time.LocalDate
@@ -25,14 +26,12 @@ class PermissionsCallHandler(
         manager.installHealthConnect()
     }
 
-    suspend fun hasAllPermissions(result: MethodChannel.Result, types: List<String>?, readOnly: Boolean) = suspend(result) {
-        val hasPermissions = manager.hasAllPermissions(types, readOnly)
-        result.success(hasPermissions)
+    suspend fun hasAllPermissions(result: MethodChannel.Result, permissions: MutableSet<HealthPermission>): Boolean {
+        return manager.hasAllPermissions(permissions)
     }
 
-    fun requestAllPermissions(result: MethodChannel.Result, types: List<String>?, readOnly: Boolean) = execute(result) {
-        val success = manager.requestAllPermissions(types, readOnly)
-        result.success(success)
+    fun requestAllPermissions(result: MethodChannel.Result, types: List<String>?, readOnly: Boolean) {
+        manager.requestAllPermissions(types, readOnly)
     }
 
     fun openHealthConnectSettings(result: MethodChannel.Result) {
@@ -40,12 +39,13 @@ class PermissionsCallHandler(
         result.success(status)
     }
 
-    suspend fun getRecord(result: MethodChannel.Result, type: String, startDate: String, endDate: String) = suspend(result) {
-        val start = LocalDate.parse(startDate).atStartOfDay(ZoneId.systemDefault())
-        val end = LocalDate.parse(endDate).atStartOfDay(ZoneId.systemDefault())
-        val healthData = manager.getRecord(type, start, end)
-        result.success(healthData)
-    }
+    suspend fun getRecord(result: MethodChannel.Result, type: String, startDate: String, endDate: String) =
+        suspend(result) {
+            val start = LocalDate.parse(startDate).atStartOfDay(ZoneId.systemDefault())
+            val end = LocalDate.parse(endDate).atStartOfDay(ZoneId.systemDefault())
+            val healthData = manager.getRecord(type, start, end)
+            result.success(healthData)
+        }
 
     suspend fun suspend(result: MethodChannel.Result, block: suspend () -> Unit) {
         try {

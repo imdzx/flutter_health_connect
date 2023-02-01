@@ -20,49 +20,6 @@ class PermissionsManager(
     private val activity: Activity?,
 ) {
 
-    private var ActiveCaloriesBurned = "ActiveCaloriesBurned"
-    private var BasalBodyTemperature = "BasalBodyTemperature"
-    private var BasalMetabolicRate = "BasalMetabolicRate"
-    private var BloodGlucose = "BloodGlucose"
-    private var BloodPressure = "BloodPressure"
-    private var BodyFat = "BodyFat"
-    private var BodyTemperature = "BodyTemperature"
-    private var BoneMass = "BoneMass"
-    private var CervicalMucus = "CervicalMucus"
-    private var CyclingPedalingCadence = "CyclingPedalingCadence"
-    private var Distance = "Distance"
-    private var ElevationGained = "ElevationGained"
-    private var ExerciseEvent = "ExerciseEvent"
-    private var ExerciseLap = "ExerciseLap"
-    private var ExerciseRepetitions = "ExerciseRepetitions"
-    private var ExerciseSession = "ExerciseSession"
-    private var FloorsClimbed = "FloorsClimbed"
-    private var HeartRate = "HeartRate"
-    private var Height = "Height"
-    private var HipCircumference = "HipCircumference"
-    private var Hydration = "Hydration"
-    private var LeanBodyMass = "LeanBodyMass"
-    private var MenstruationFlow = "MenstruationFlow"
-    private var Nutrition = "Nutrition"
-    private var OvulationTest = "OvulationTest"
-    private var OxygenSaturation = "OxygenSaturation"
-    private var Power = "Power"
-    private var RespiratoryRate = "RespiratoryRate"
-    private var RestingHeartRate = "RestingHeartRate"
-    private var SexualActivity = "SexualActivity"
-    private var SleepSession = "SleepSession"
-    private var SleepStage = "SleepStage"
-    private var Speed = "Speed"
-    private var StepsCadence = "StepsCadence"
-    private var Steps = "Steps"
-    private var SwimmingStrokes = "SwimmingStrokes"
-    private var TotalCaloriesBurned = "TotalCaloriesBurned"
-    private var Vo2Max = "Vo2Max"
-    private var WaistCircumference = "WaistCircumference"
-    private var Weight = "Weight"
-    private var WheelchairPushes = "WheelchairPushes"
-    private val playStoreUri =
-        "https://play.google.com/store/apps/details?id=com.google.android.apps.healthdata"
     private val client by lazy { HealthConnectClient.getOrCreate(context) }
 
     fun isApiSupported(): Boolean {
@@ -83,12 +40,6 @@ class PermissionsManager(
         runCatching { context.startActivity(intent) }
     }
 
-    private fun launchPermissionsIntent(activity: Activity, permissions: Set<HealthPermission>) {
-        val contract = PermissionController.createRequestPermissionResultContract()
-        val intent = contract.createIntent(activity, permissions)
-
-        activity.startActivityForResult(intent, 0)
-    }
 
     fun openHealthConnectSettings(): Boolean {
         if (activity == null) {
@@ -104,18 +55,14 @@ class PermissionsManager(
         return true
     }
 
-    fun requestAllPermissions(types: List<String>?, readOnly: Boolean): Boolean {
-        val allPermissions = emptySet<HealthPermission>().plus(mapToHealthPermissions(types, readOnly))
-        return if (activity == null) {
-            false
-        } else {
-            launchPermissionsIntent(activity, allPermissions)
-            true
-        }
+    fun requestAllPermissions(types: List<String>?, readOnly: Boolean) {
+        val allPermissions = emptySet<HealthPermission>().plus(FuncHelper.mapToHealthPermissions(types, readOnly))
+        val contract = PermissionController.createRequestPermissionResultContract()
+        val intent = contract.createIntent(activity!!, allPermissions)
+        activity.startActivityForResult(intent, HEALTH_CONNECT_RESULT_CODE)
     }
 
-    suspend fun hasAllPermissions(types: List<String>?, readOnly: Boolean): Boolean {
-        val permissions = mapToHealthPermissions(types, readOnly)
+    suspend fun hasAllPermissions(permissions: MutableSet<HealthPermission>): Boolean {
         val granted = client.permissionController.getGrantedPermissions(permissions)
         return granted.containsAll(permissions)
     }
@@ -150,6 +97,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             BasalBodyTemperature -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -166,6 +114,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             BasalMetabolicRate -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -182,6 +131,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             BloodGlucose -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -198,6 +148,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             BloodPressure -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -215,6 +166,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             BodyFat -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -231,6 +183,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             BodyTemperature -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -248,6 +201,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             BoneMass -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -264,6 +218,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             CervicalMucus -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -281,6 +236,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             CyclingPedalingCadence -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -305,6 +261,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             Distance -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -323,6 +280,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             ElevationGained -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -341,6 +299,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             ExerciseEvent -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -359,6 +318,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             ExerciseLap -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -377,6 +337,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             ExerciseRepetitions -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -395,6 +356,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             ExerciseSession -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -415,6 +377,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             FloorsClimbed -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -433,6 +396,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             HeartRate -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -456,6 +420,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             Height -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -472,6 +437,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             HipCircumference -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -488,6 +454,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             Hydration -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -506,6 +473,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             LeanBodyMass -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -522,6 +490,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             MenstruationFlow -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -538,6 +507,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             Nutrition -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -599,6 +569,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             OvulationTest -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -615,6 +586,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             OxygenSaturation -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -631,6 +603,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             Power -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -654,6 +627,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             RespiratoryRate -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -670,6 +644,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             RestingHeartRate -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -686,6 +661,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             SexualActivity -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -702,6 +678,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             SleepSession -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -721,6 +698,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             SleepStage -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -739,6 +717,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             Speed -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -762,6 +741,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             StepsCadence -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -785,6 +765,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             Steps -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -803,6 +784,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             SwimmingStrokes -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -822,6 +804,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             TotalCaloriesBurned -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -840,6 +823,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             Vo2Max -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -857,6 +841,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             WaistCircumference -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -873,6 +858,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             Weight -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -889,6 +875,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
+
             WheelchairPushes -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -925,340 +912,5 @@ class PermissionsManager(
     }
 
 //    private suspend fun insertHealthData(type: String, timeRangeFilter: TimeRangeFilter): Any {}
-
-    private fun mapToHealthPermissions(types: List<String>?, readOnly: Boolean): MutableSet<HealthPermission> {
-        val permissions = mutableSetOf<HealthPermission>()
-        if (types != null) {
-            for (item: String in types) {
-                when (item) {
-                    ActiveCaloriesBurned -> {
-                        if (!readOnly) {
-                            permissions.add(
-                                HealthPermission.createWritePermission(
-                                    ActiveCaloriesBurnedRecord::class
-                                )
-                            )
-                        }
-                        permissions.add(
-                            HealthPermission.createReadPermission(
-                                ActiveCaloriesBurnedRecord::class
-                            )
-                        )
-                    }
-                    BasalBodyTemperature -> {
-                        if (!readOnly) {
-                            permissions.add(
-                                HealthPermission.createWritePermission(
-                                    BasalBodyTemperatureRecord::class
-                                )
-                            )
-                        }
-                        permissions.add(
-                            HealthPermission.createReadPermission(
-                                BasalBodyTemperatureRecord::class
-                            )
-                        )
-                    }
-                    BasalMetabolicRate -> {
-                        if (!readOnly) {
-                            permissions.add(
-                                HealthPermission.createWritePermission(
-                                    BasalMetabolicRateRecord::class
-                                )
-                            )
-                        }
-                        permissions.add(
-                            HealthPermission.createReadPermission(
-                                BasalMetabolicRateRecord::class
-                            )
-                        )
-                    }
-                    BloodGlucose -> {
-                        if (!readOnly) {
-                            permissions.add(HealthPermission.createWritePermission(BloodGlucoseRecord::class))
-                        }
-                        permissions.add(HealthPermission.createReadPermission(BloodGlucoseRecord::class))
-                    }
-                    BloodPressure -> {
-                        if (!readOnly) {
-                            permissions.add(HealthPermission.createWritePermission(BloodPressureRecord::class))
-                        }
-                        permissions.add(HealthPermission.createReadPermission(BloodPressureRecord::class))
-                    }
-                    BodyFat -> {
-                        if (!readOnly) {
-                            permissions.add(HealthPermission.createWritePermission(BodyFatRecord::class))
-                        }
-                        permissions.add(HealthPermission.createReadPermission(BodyFatRecord::class))
-                    }
-                    BodyTemperature -> {
-                        if (!readOnly) {
-                            permissions.add(HealthPermission.createWritePermission(BodyTemperatureRecord::class))
-                        }
-                        permissions.add(HealthPermission.createReadPermission(BodyTemperatureRecord::class))
-                    }
-                    BoneMass -> {
-                        if (!readOnly) {
-                            permissions.add(HealthPermission.createWritePermission(BoneMassRecord::class))
-                        }
-                        permissions.add(HealthPermission.createReadPermission(BoneMassRecord::class))
-                    }
-                    CervicalMucus -> {
-                        if (!readOnly) {
-                            permissions.add(HealthPermission.createWritePermission(CervicalMucusRecord::class))
-                        }
-                        permissions.add(HealthPermission.createReadPermission(CervicalMucusRecord::class))
-                    }
-                    CyclingPedalingCadence -> {
-                        if (!readOnly) {
-                            permissions.add(
-                                HealthPermission.createWritePermission(
-                                    CyclingPedalingCadenceRecord::class
-                                )
-                            )
-                        }
-                        permissions.add(
-                            HealthPermission.createReadPermission(
-                                CyclingPedalingCadenceRecord::class
-                            )
-                        )
-                    }
-                    Distance -> {
-                        if (!readOnly) {
-                            permissions.add(HealthPermission.createWritePermission(DistanceRecord::class))
-                        }
-                        permissions.add(HealthPermission.createReadPermission(DistanceRecord::class))
-                    }
-                    ElevationGained -> {
-                        if (!readOnly) {
-                            permissions.add(HealthPermission.createWritePermission(ElevationGainedRecord::class))
-                        }
-                        permissions.add(HealthPermission.createReadPermission(ElevationGainedRecord::class))
-                    }
-                    ExerciseEvent -> {
-                        if (!readOnly) {
-                            permissions.add(HealthPermission.createWritePermission(ExerciseEventRecord::class))
-                        }
-                        permissions.add(HealthPermission.createReadPermission(ExerciseEventRecord::class))
-                    }
-                    ExerciseLap -> {
-                        if (!readOnly) {
-                            permissions.add(HealthPermission.createWritePermission(ExerciseLapRecord::class))
-                        }
-                        permissions.add(HealthPermission.createReadPermission(ExerciseLapRecord::class))
-                    }
-                    ExerciseRepetitions -> {
-                        if (!readOnly) {
-                            permissions.add(
-                                HealthPermission.createWritePermission(
-                                    ExerciseRepetitionsRecord::class
-                                )
-                            )
-                        }
-                        permissions.add(
-                            HealthPermission.createReadPermission(
-                                ExerciseRepetitionsRecord::class
-                            )
-                        )
-                    }
-                    ExerciseSession -> {
-                        if (!readOnly) {
-                            permissions.add(HealthPermission.createWritePermission(ExerciseSessionRecord::class))
-                        }
-                        permissions.add(HealthPermission.createReadPermission(ExerciseSessionRecord::class))
-                    }
-                    FloorsClimbed -> {
-                        if (!readOnly) {
-                            permissions.add(HealthPermission.createWritePermission(FloorsClimbedRecord::class))
-                        }
-                        permissions.add(HealthPermission.createReadPermission(FloorsClimbedRecord::class))
-                    }
-                    HeartRate -> {
-                        if (!readOnly) {
-                            permissions.add(HealthPermission.createWritePermission(HeartRateRecord::class))
-                        }
-                        permissions.add(HealthPermission.createReadPermission(HeartRateRecord::class))
-                    }
-                    Height -> {
-                        if (!readOnly) {
-                            permissions.add(HealthPermission.createWritePermission(HeightRecord::class))
-                        }
-                        permissions.add(HealthPermission.createReadPermission(HeightRecord::class))
-                    }
-                    HipCircumference -> {
-                        if (!readOnly) {
-                            permissions.add(
-                                HealthPermission.createWritePermission(
-                                    HipCircumferenceRecord::class
-                                )
-                            )
-                        }
-                        permissions.add(HealthPermission.createReadPermission(HipCircumferenceRecord::class))
-                    }
-                    Hydration -> {
-                        if (!readOnly) {
-                            permissions.add(HealthPermission.createWritePermission(HydrationRecord::class))
-                        }
-                        permissions.add(HealthPermission.createReadPermission(HydrationRecord::class))
-                    }
-                    LeanBodyMass -> {
-                        if (!readOnly) {
-                            permissions.add(HealthPermission.createWritePermission(LeanBodyMassRecord::class))
-                        }
-                        permissions.add(HealthPermission.createReadPermission(LeanBodyMassRecord::class))
-                    }
-                    MenstruationFlow -> {
-                        if (!readOnly) {
-                            permissions.add(
-                                HealthPermission.createWritePermission(
-                                    MenstruationFlowRecord::class
-                                )
-                            )
-                        }
-                        permissions.add(HealthPermission.createReadPermission(MenstruationFlowRecord::class))
-                    }
-                    Nutrition -> {
-                        if (!readOnly) {
-
-                        }
-                        permissions.add(HealthPermission.createWritePermission(NutritionRecord::class))
-                        permissions.add(HealthPermission.createReadPermission(NutritionRecord::class))
-                    }
-                    OvulationTest -> {
-                        if (!readOnly) {
-
-                        }
-                        permissions.add(HealthPermission.createWritePermission(OvulationTestRecord::class))
-                        permissions.add(HealthPermission.createReadPermission(OvulationTestRecord::class))
-                    }
-                    OxygenSaturation -> {
-                        if (!readOnly) {
-                            permissions.add(
-                                HealthPermission.createWritePermission(
-                                    OxygenSaturationRecord::class
-                                )
-                            )
-                        }
-                        permissions.add(HealthPermission.createReadPermission(OxygenSaturationRecord::class))
-                    }
-                    Power -> {
-                        if (!readOnly) {
-                            permissions.add(HealthPermission.createWritePermission(PowerRecord::class))
-                        }
-                        permissions.add(HealthPermission.createReadPermission(PowerRecord::class))
-                    }
-                    RespiratoryRate -> {
-                        if (!readOnly) {
-                            permissions.add(HealthPermission.createWritePermission(RespiratoryRateRecord::class))
-                        }
-                        permissions.add(HealthPermission.createReadPermission(RespiratoryRateRecord::class))
-                    }
-                    RestingHeartRate -> {
-                        if (!readOnly) {
-                            permissions.add(
-                                HealthPermission.createWritePermission(
-                                    RestingHeartRateRecord::class
-                                )
-                            )
-                        }
-                        permissions.add(HealthPermission.createReadPermission(RestingHeartRateRecord::class))
-                    }
-                    SexualActivity -> {
-                        if (!readOnly) {
-                            permissions.add(HealthPermission.createWritePermission(SexualActivityRecord::class))
-                        }
-                        permissions.add(HealthPermission.createReadPermission(SexualActivityRecord::class))
-                    }
-                    SleepSession -> {
-                        if (!readOnly) {
-                            permissions.add(HealthPermission.createWritePermission(SleepSessionRecord::class))
-                        }
-                        permissions.add(HealthPermission.createReadPermission(SleepSessionRecord::class))
-                    }
-                    SleepStage -> {
-                        if (!readOnly) {
-                            permissions.add(HealthPermission.createWritePermission(SleepStageRecord::class))
-                        }
-                        permissions.add(HealthPermission.createReadPermission(SleepStageRecord::class))
-                    }
-                    Speed -> {
-                        if (!readOnly) {
-                            permissions.add(HealthPermission.createWritePermission(SpeedRecord::class))
-                        }
-                        permissions.add(HealthPermission.createReadPermission(SpeedRecord::class))
-                    }
-                    StepsCadence -> {
-                        if (!readOnly) {
-                            permissions.add(HealthPermission.createWritePermission(StepsCadenceRecord::class))
-                        }
-                        permissions.add(HealthPermission.createReadPermission(StepsCadenceRecord::class))
-                    }
-                    Steps -> {
-                        if (!readOnly) {
-                            permissions.add(HealthPermission.createWritePermission(StepsRecord::class))
-                        }
-                        permissions.add(HealthPermission.createReadPermission(StepsRecord::class))
-                    }
-                    SwimmingStrokes -> {
-                        if (!readOnly) {
-                            permissions.add(HealthPermission.createWritePermission(SwimmingStrokesRecord::class))
-                        }
-                        permissions.add(HealthPermission.createReadPermission(SwimmingStrokesRecord::class))
-                    }
-                    TotalCaloriesBurned -> {
-                        if (!readOnly) {
-                            permissions.add(
-                                HealthPermission.createWritePermission(
-                                    TotalCaloriesBurnedRecord::class
-                                )
-                            )
-                        }
-                        permissions.add(
-                            HealthPermission.createReadPermission(
-                                TotalCaloriesBurnedRecord::class
-                            )
-                        )
-                    }
-                    Vo2Max -> {
-                        if (!readOnly) {
-                            permissions.add(HealthPermission.createWritePermission(Vo2MaxRecord::class))
-                        }
-                        permissions.add(HealthPermission.createReadPermission(Vo2MaxRecord::class))
-                    }
-                    WaistCircumference -> {
-                        if (!readOnly) {
-                            permissions.add(
-                                HealthPermission.createWritePermission(
-                                    WaistCircumferenceRecord::class
-                                )
-                            )
-                        }
-                        permissions.add(
-                            HealthPermission.createReadPermission(
-                                WaistCircumferenceRecord::class
-                            )
-                        )
-                    }
-                    Weight -> {
-                        if (!readOnly) {
-                            permissions.add(HealthPermission.createWritePermission(WeightRecord::class))
-                        }
-                        permissions.add(HealthPermission.createReadPermission(WeightRecord::class))
-                    }
-                    WheelchairPushes -> {
-                        if (!readOnly) {
-                            permissions.add(
-                                HealthPermission.createWritePermission(
-                                    WheelchairPushesRecord::class
-                                )
-                            )
-                        }
-                        permissions.add(HealthPermission.createReadPermission(WheelchairPushesRecord::class))
-                    }
-                }
-            }
-        }
-        return permissions
-    }
 
 }

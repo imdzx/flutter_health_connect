@@ -11,36 +11,38 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import java.lang.ref.WeakReference
+import io.flutter.plugin.common.PluginRegistry
+import io.flutter.plugin.common.PluginRegistry.Registrar
 
-
-abstract class ContextAwarePlugin : FlutterPlugin, ActivityAware, MethodChannel.MethodCallHandler {
+abstract class ContextAwarePlugin : FlutterPlugin, ActivityAware, MethodChannel.MethodCallHandler, PluginRegistry.ActivityResultListener {
 
     abstract val pluginName: String
 
-    private lateinit var channel : MethodChannel
+    private lateinit var channel: MethodChannel
 
     lateinit var scope: CoroutineScope
-    protected val activity get() = activityReference.get()
-    protected val applicationContext get() =
-        contextReference.get() ?: activity?.applicationContext
-
-    private var activityReference = WeakReference<Activity>(null)
+    protected val applicationContext
+        get() =
+            contextReference.get() ?: act?.applicationContext
+    var act: android.app.Activity? = null
     private var contextReference = WeakReference<Context>(null)
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
-        activityReference = WeakReference(binding.activity)
+        act = binding.activity
+        binding.addActivityResultListener(this)
     }
 
     override fun onDetachedFromActivityForConfigChanges() {
-        activityReference.clear()
+        act = null;
     }
 
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
-        activityReference = WeakReference(binding.activity)
+        act = binding.activity
+        binding.addActivityResultListener(this)
     }
 
     override fun onDetachedFromActivity() {
-        activityReference.clear()
+        act = null;
     }
 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
