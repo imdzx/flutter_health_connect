@@ -59,7 +59,7 @@ class HealthConnectFactory {
         'endTime': end
       };
       var record = await _channel.invokeMethod('getRecord', args);
-      dataPoints.addAll({type.name: '$record'});
+      dataPoints.addAll({type.name: record});
     }
     return dataPoints;
   }
