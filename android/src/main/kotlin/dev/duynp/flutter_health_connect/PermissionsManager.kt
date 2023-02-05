@@ -56,7 +56,8 @@ class PermissionsManager(
     }
 
     fun requestAllPermissions(types: List<String>?, readOnly: Boolean) {
-        val allPermissions = emptySet<HealthPermission>().plus(FuncHelper.mapToHealthPermissions(types, readOnly))
+        val allPermissions =
+            emptySet<HealthPermission>().plus(FuncHelper.mapToHealthPermissions(types, readOnly))
         val contract = PermissionController.createRequestPermissionResultContract()
         val intent = contract.createIntent(activity!!, allPermissions)
         activity.startActivityForResult(intent, HEALTH_CONNECT_RESULT_CODE)
@@ -93,11 +94,19 @@ class PermissionsManager(
                         "startTime" to dataPoint.startTime.toString(),
                         "endTime" to dataPoint.endTime.toString(),
                         "energy" to dataPoint.energy.toString(),
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             BasalBodyTemperature -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -110,11 +119,19 @@ class PermissionsManager(
                         "time" to dataPoint.time.toString(),
                         "zoneOffset" to dataPoint.zoneOffset?.toString(),
                         "temperature" to dataPoint.temperature.toString(),
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             BasalMetabolicRate -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -127,11 +144,19 @@ class PermissionsManager(
                         "time" to dataPoint.time.toString(),
                         "zoneOffset" to dataPoint.zoneOffset?.toString(),
                         "basalMetabolicRate" to dataPoint.basalMetabolicRate.toString(),
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             BloodGlucose -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -144,11 +169,19 @@ class PermissionsManager(
                         "time" to dataPoint.time.toString(),
                         "zoneOffset" to dataPoint.zoneOffset?.toString(),
                         "level" to dataPoint.level.toString(),
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             BloodPressure -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -162,11 +195,19 @@ class PermissionsManager(
                         "zoneOffset" to dataPoint.zoneOffset?.toString(),
                         "systolic" to dataPoint.systolic.toString(),
                         "diastolic" to dataPoint.diastolic.toString(),
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             BodyFat -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -179,11 +220,19 @@ class PermissionsManager(
                         "time" to dataPoint.time.toString(),
                         "zoneOffset" to dataPoint.zoneOffset?.toString(),
                         "percentage" to dataPoint.percentage.toString(),
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             BodyTemperature -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -197,11 +246,19 @@ class PermissionsManager(
                         "zoneOffset" to dataPoint.zoneOffset?.toString(),
                         "temperature" to dataPoint.temperature.toString(),
                         "measurementLocation" to dataPoint.measurementLocation.toString(),
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             BoneMass -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -214,11 +271,19 @@ class PermissionsManager(
                         "time" to dataPoint.time.toString(),
                         "zoneOffset" to dataPoint.zoneOffset?.toString(),
                         "mass" to dataPoint.mass.toString(),
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             CervicalMucus -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -232,11 +297,19 @@ class PermissionsManager(
                         "zoneOffset" to dataPoint.zoneOffset?.toString(),
                         "appearance" to dataPoint.appearance.toString(),
                         "sensation" to dataPoint.sensation.toString(),
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             CyclingPedalingCadence -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -256,12 +329,19 @@ class PermissionsManager(
                                 "revolutionsPerMinute" to sample.revolutionsPerMinute.toString(),
                             )
                         },
-
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
                         )
+                    )
                 }
                 return healthData
             }
-
             Distance -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -276,11 +356,19 @@ class PermissionsManager(
                         "startTime" to dataPoint.startTime.toString(),
                         "endTime" to dataPoint.endTime.toString(),
                         "distance" to dataPoint.distance.toString(),
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             ElevationGained -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -295,11 +383,19 @@ class PermissionsManager(
                         "startTime" to dataPoint.startTime.toString(),
                         "endTime" to dataPoint.endTime.toString(),
                         "elevation" to dataPoint.elevation.toString(),
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             ExerciseEvent -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -314,11 +410,19 @@ class PermissionsManager(
                         "startTime" to dataPoint.startTime.toString(),
                         "endTime" to dataPoint.endTime.toString(),
                         "eventType" to dataPoint.eventType.toString(),
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             ExerciseLap -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -333,11 +437,19 @@ class PermissionsManager(
                         "startTime" to dataPoint.startTime.toString(),
                         "endTime" to dataPoint.endTime.toString(),
                         "length" to dataPoint.length.toString(),
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             ExerciseRepetitions -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -352,11 +464,19 @@ class PermissionsManager(
                         "startTime" to dataPoint.startTime.toString(),
                         "endTime" to dataPoint.endTime.toString(),
                         "count" to dataPoint.count.toString(),
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             ExerciseSession -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -373,11 +493,19 @@ class PermissionsManager(
                         "exerciseType" to dataPoint.exerciseType.toString(),
                         "title" to dataPoint.title.toString(),
                         "notes" to dataPoint.notes.toString(),
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             FloorsClimbed -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -392,11 +520,19 @@ class PermissionsManager(
                         "startTime" to dataPoint.startTime.toString(),
                         "endTime" to dataPoint.endTime.toString(),
                         "floors" to dataPoint.floors.toString(),
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             HeartRate -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -416,11 +552,19 @@ class PermissionsManager(
                                 "beatsPerMinute" to sample.beatsPerMinute.toString(),
                             )
                         },
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             Height -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -433,11 +577,19 @@ class PermissionsManager(
                         "time" to dataPoint.time.toString(),
                         "zoneOffset" to dataPoint.zoneOffset?.toString(),
                         "height" to dataPoint.height.toString(),
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             HipCircumference -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -450,11 +602,19 @@ class PermissionsManager(
                         "time" to dataPoint.time.toString(),
                         "zoneOffset" to dataPoint.zoneOffset?.toString(),
                         "circumference" to dataPoint.circumference.toString(),
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             Hydration -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -469,11 +629,19 @@ class PermissionsManager(
                         "startTime" to dataPoint.startTime.toString(),
                         "endTime" to dataPoint.endTime.toString(),
                         "volume" to dataPoint.volume.toString(),
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             LeanBodyMass -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -486,11 +654,19 @@ class PermissionsManager(
                         "time" to dataPoint.time.toString(),
                         "zoneOffset" to dataPoint.zoneOffset?.toString(),
                         "mass" to dataPoint.mass.toString(),
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             MenstruationFlow -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -503,11 +679,19 @@ class PermissionsManager(
                         "time" to dataPoint.time.toString(),
                         "zoneOffset" to dataPoint.zoneOffset?.toString(),
                         "flow" to dataPoint.flow.toString(),
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             Nutrition -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -565,11 +749,19 @@ class PermissionsManager(
                         "zinc" to dataPoint.zinc.toString(),
                         "name" to dataPoint.name.toString(),
                         "mealType" to dataPoint.mealType.toString(),
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             OvulationTest -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -582,11 +774,19 @@ class PermissionsManager(
                         "time" to dataPoint.time.toString(),
                         "zoneOffset" to dataPoint.zoneOffset?.toString(),
                         "result" to dataPoint.result.toString(),
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             OxygenSaturation -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -599,11 +799,19 @@ class PermissionsManager(
                         "time" to dataPoint.time.toString(),
                         "zoneOffset" to dataPoint.zoneOffset?.toString(),
                         "percentage" to dataPoint.percentage.toString(),
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             Power -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -623,11 +831,19 @@ class PermissionsManager(
                                 "power" to sample.power.toString(),
                             )
                         },
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             RespiratoryRate -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -640,11 +856,19 @@ class PermissionsManager(
                         "time" to dataPoint.time.toString(),
                         "zoneOffset" to dataPoint.zoneOffset?.toString(),
                         "rate" to dataPoint.rate.toString(),
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             RestingHeartRate -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -657,11 +881,19 @@ class PermissionsManager(
                         "time" to dataPoint.time.toString(),
                         "zoneOffset" to dataPoint.zoneOffset?.toString(),
                         "beatsPerMinute" to dataPoint.beatsPerMinute.toString(),
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             SexualActivity -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -674,11 +906,19 @@ class PermissionsManager(
                         "time" to dataPoint.time.toString(),
                         "zoneOffset" to dataPoint.zoneOffset?.toString(),
                         "protectionUsed" to dataPoint.protectionUsed.toString(),
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             SleepSession -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -694,11 +934,28 @@ class PermissionsManager(
                         "endTime" to dataPoint.endTime.toString(),
                         "title" to dataPoint.title.toString(),
                         "notes" to dataPoint.notes.toString(),
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        ),
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             SleepStage -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -713,11 +970,19 @@ class PermissionsManager(
                         "startTime" to dataPoint.startTime.toString(),
                         "endTime" to dataPoint.endTime.toString(),
                         "stage" to dataPoint.stage.toString(),
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             Speed -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -737,11 +1002,19 @@ class PermissionsManager(
                                 "speed" to sample.speed.toString(),
                             )
                         },
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             StepsCadence -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -761,11 +1034,19 @@ class PermissionsManager(
                                 "rate" to sample.rate.toString(),
                             )
                         },
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             Steps -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -780,11 +1061,19 @@ class PermissionsManager(
                         "startTime" to dataPoint.startTime.toString(),
                         "endTime" to dataPoint.endTime.toString(),
                         "count" to dataPoint.count.toString(),
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             SwimmingStrokes -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -800,11 +1089,19 @@ class PermissionsManager(
                         "endTime" to dataPoint.endTime.toString(),
                         "type" to dataPoint.type.toString(),
                         "count" to dataPoint.count.toString(),
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             TotalCaloriesBurned -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -819,11 +1116,19 @@ class PermissionsManager(
                         "startTime" to dataPoint.startTime.toString(),
                         "endTime" to dataPoint.endTime.toString(),
                         "energy" to dataPoint.energy.toString(),
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             Vo2Max -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -837,11 +1142,19 @@ class PermissionsManager(
                         "zoneOffset" to dataPoint.zoneOffset?.toString(),
                         "vo2MillilitersPerMinuteKilogram" to dataPoint.vo2MillilitersPerMinuteKilogram.toString(),
                         "measurementMethod" to dataPoint.measurementMethod.toString(),
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             WaistCircumference -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -854,11 +1167,19 @@ class PermissionsManager(
                         "time" to dataPoint.time.toString(),
                         "zoneOffset" to dataPoint.zoneOffset?.toString(),
                         "circumference" to dataPoint.circumference.toString(),
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             Weight -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -871,11 +1192,19 @@ class PermissionsManager(
                         "time" to dataPoint.time.toString(),
                         "zoneOffset" to dataPoint.zoneOffset?.toString(),
                         "weight" to dataPoint.weight.toString(),
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
             }
-
             WheelchairPushes -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -890,6 +1219,15 @@ class PermissionsManager(
                         "startTime" to dataPoint.startTime.toString(),
                         "endTime" to dataPoint.endTime.toString(),
                         "count" to dataPoint.count.toString(),
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                        )
                     )
                 }
                 return healthData
