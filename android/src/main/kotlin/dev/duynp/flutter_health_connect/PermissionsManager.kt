@@ -84,7 +84,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = ActiveCaloriesBurnedRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -102,6 +103,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -111,7 +113,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = BasalBodyTemperatureRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -127,6 +130,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -136,7 +140,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = BasalMetabolicRateRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -152,6 +157,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -161,7 +167,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = BloodGlucoseRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -177,6 +184,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -186,7 +194,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = BloodPressureRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -203,6 +212,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -212,7 +222,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = BodyFatRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -228,6 +239,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -237,7 +249,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = BodyTemperatureRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -254,6 +267,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -263,7 +277,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = BoneMassRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -279,6 +294,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -288,7 +304,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = CervicalMucusRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -305,6 +322,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -314,7 +332,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = CyclingPedalingCadenceRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -337,6 +356,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -346,7 +366,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = DistanceRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -364,6 +385,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -373,7 +395,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = ElevationGainedRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -391,6 +414,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -400,7 +424,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = ExerciseEventRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -418,6 +443,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -427,7 +453,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = ExerciseLapRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -445,6 +472,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -454,7 +482,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = ExerciseRepetitionsRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -472,6 +501,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -481,7 +511,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = ExerciseSessionRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -501,6 +532,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -510,7 +542,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = FloorsClimbedRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -528,6 +561,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -537,7 +571,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = HeartRateRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -560,6 +595,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -569,7 +605,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = HeightRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -585,6 +622,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -594,7 +632,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = HipCircumferenceRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -610,6 +649,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -619,7 +659,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = HydrationRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -637,6 +678,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -646,7 +688,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = LeanBodyMassRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -662,6 +705,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -671,7 +715,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = MenstruationFlowRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -687,6 +732,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -696,7 +742,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = NutritionRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -757,6 +804,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -766,7 +814,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = OvulationTestRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -782,6 +831,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -791,7 +841,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = OxygenSaturationRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -807,6 +858,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -816,7 +868,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = PowerRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -839,6 +892,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -848,7 +902,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = RespiratoryRateRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -864,6 +919,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -873,7 +929,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = RestingHeartRateRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -889,6 +946,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -898,7 +956,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = SexualActivityRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -914,6 +973,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -923,7 +983,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = SleepSessionRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -942,6 +1003,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         ),
                         "metaData" to hashMapOf(
                             "id" to dataPoint.metadata.id,
@@ -951,6 +1013,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -960,7 +1023,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = SleepStageRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -978,6 +1042,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -987,7 +1052,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = SpeedRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -1010,6 +1076,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -1019,7 +1086,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = StepsCadenceRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -1042,6 +1110,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -1051,7 +1120,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = StepsRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -1069,6 +1139,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -1078,7 +1149,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = SwimmingStrokesRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -1097,6 +1169,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -1106,7 +1179,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = TotalCaloriesBurnedRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -1124,6 +1198,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -1133,7 +1208,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = Vo2MaxRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -1150,6 +1226,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -1159,7 +1236,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = WaistCircumferenceRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -1175,6 +1253,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -1184,7 +1263,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = WeightRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -1200,6 +1280,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -1209,7 +1290,8 @@ class PermissionsManager(
                 val records = client.readRecords(
                     ReadRecordsRequest(
                         recordType = WheelchairPushesRecord::class,
-                        timeRangeFilter = timeRangeFilter
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
                     )
                 ).records
                 val healthData = records.mapIndexed { _, dataPoint ->
@@ -1227,6 +1309,7 @@ class PermissionsManager(
                             "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
                             "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
                             "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
                         )
                     )
                 }
@@ -1238,7 +1321,8 @@ class PermissionsManager(
         val records = client.readRecords(
             ReadRecordsRequest(
                 recordType = StepsRecord::class,
-                timeRangeFilter = timeRangeFilter
+                timeRangeFilter = timeRangeFilter,
+                pageSize = MAX_LENGTH,
             )
         ).records
         val healthData = records.mapIndexed { _, dataPoint ->

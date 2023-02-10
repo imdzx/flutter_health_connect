@@ -47,6 +47,7 @@ const val WheelchairPushes = "WheelchairPushes"
 const val playStoreUri =
     "https://play.google.com/store/apps/details?id=com.google.android.apps.healthdata"
 const val HEALTH_CONNECT_RESULT_CODE = 16969
+const val MAX_LENGTH = 9999999
 
 object FuncHelper {
     fun mapToHealthPermissions(
