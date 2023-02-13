@@ -97,6 +97,9 @@ class FlutterHealthConnectPlugin : ContextAwarePlugin() {
                     return true
                 }
             }
+            scope.launch {
+                result.success(false)
+            }
         }
         return false
     }
