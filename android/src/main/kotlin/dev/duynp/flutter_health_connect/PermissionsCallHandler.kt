@@ -26,7 +26,7 @@ class PermissionsCallHandler(
         manager.installHealthConnect()
     }
 
-    suspend fun hasAllPermissions(permissions: MutableSet<HealthPermission>): Boolean {
+    suspend fun hasAllPermissions(permissions: MutableSet<String>): Boolean {
         return manager.hasAllPermissions(permissions)
     }
 
