@@ -57,14 +57,14 @@ class PermissionsManager(
 
     fun requestAllPermissions(types: List<String>?, readOnly: Boolean) {
         val allPermissions =
-            emptySet<HealthPermission>().plus(FuncHelper.mapToHealthPermissions(types, readOnly))
+            emptySet<String>().plus(FuncHelper.mapToHealthPermissions(types, readOnly))
         val contract = PermissionController.createRequestPermissionResultContract()
         val intent = contract.createIntent(activity!!, allPermissions)
         activity.startActivityForResult(intent, HEALTH_CONNECT_RESULT_CODE)
     }
 
-    suspend fun hasAllPermissions(permissions: MutableSet<HealthPermission>): Boolean {
-        val granted = client.permissionController.getGrantedPermissions(permissions)
+    suspend fun hasAllPermissions(permissions: MutableSet<String>): Boolean {
+        val granted = client.permissionController.getGrantedPermissions()
         return granted.containsAll(permissions)
     }
 
@@ -420,93 +420,6 @@ class PermissionsManager(
                 }
                 return healthData
             }
-            ExerciseEvent -> {
-                val records = client.readRecords(
-                    ReadRecordsRequest(
-                        recordType = ExerciseEventRecord::class,
-                        timeRangeFilter = timeRangeFilter,
-                        pageSize = MAX_LENGTH,
-                    )
-                ).records
-                val healthData = records.mapIndexed { _, dataPoint ->
-                    return@mapIndexed hashMapOf(
-                        "startZoneOffset" to dataPoint.startZoneOffset?.toString(),
-                        "endZoneOffset" to dataPoint.endZoneOffset?.toString(),
-                        "startTime" to dataPoint.startTime.toString(),
-                        "endTime" to dataPoint.endTime.toString(),
-                        "eventType" to dataPoint.eventType.toString(),
-                        "metaData" to hashMapOf(
-                            "id" to dataPoint.metadata.id,
-                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
-                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
-                            "clientRecordId" to dataPoint.metadata.clientRecordId,
-                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
-                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
-                            "deviceModel" to dataPoint.metadata.device?.model,
-                            "deviceType" to dataPoint.metadata.device?.type,
-                        )
-                    )
-                }
-                return healthData
-            }
-            ExerciseLap -> {
-                val records = client.readRecords(
-                    ReadRecordsRequest(
-                        recordType = ExerciseLapRecord::class,
-                        timeRangeFilter = timeRangeFilter,
-                        pageSize = MAX_LENGTH,
-                    )
-                ).records
-                val healthData = records.mapIndexed { _, dataPoint ->
-                    return@mapIndexed hashMapOf(
-                        "startZoneOffset" to dataPoint.startZoneOffset?.toString(),
-                        "endZoneOffset" to dataPoint.endZoneOffset?.toString(),
-                        "startTime" to dataPoint.startTime.toString(),
-                        "endTime" to dataPoint.endTime.toString(),
-                        "length" to dataPoint.length.toString(),
-                        "metaData" to hashMapOf(
-                            "id" to dataPoint.metadata.id,
-                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
-                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
-                            "clientRecordId" to dataPoint.metadata.clientRecordId,
-                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
-                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
-                            "deviceModel" to dataPoint.metadata.device?.model,
-                            "deviceType" to dataPoint.metadata.device?.type,
-                        )
-                    )
-                }
-                return healthData
-            }
-            ExerciseRepetitions -> {
-                val records = client.readRecords(
-                    ReadRecordsRequest(
-                        recordType = ExerciseRepetitionsRecord::class,
-                        timeRangeFilter = timeRangeFilter,
-                        pageSize = MAX_LENGTH,
-                    )
-                ).records
-                val healthData = records.mapIndexed { _, dataPoint ->
-                    return@mapIndexed hashMapOf(
-                        "startZoneOffset" to dataPoint.startZoneOffset?.toString(),
-                        "endZoneOffset" to dataPoint.endZoneOffset?.toString(),
-                        "startTime" to dataPoint.startTime.toString(),
-                        "endTime" to dataPoint.endTime.toString(),
-                        "count" to dataPoint.count.toString(),
-                        "metaData" to hashMapOf(
-                            "id" to dataPoint.metadata.id,
-                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
-                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
-                            "clientRecordId" to dataPoint.metadata.clientRecordId,
-                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
-                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
-                            "deviceModel" to dataPoint.metadata.device?.model,
-                            "deviceType" to dataPoint.metadata.device?.type,
-                        )
-                    )
-                }
-                return healthData
-            }
             ExerciseSession -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -628,33 +541,7 @@ class PermissionsManager(
                 }
                 return healthData
             }
-            HipCircumference -> {
-                val records = client.readRecords(
-                    ReadRecordsRequest(
-                        recordType = HipCircumferenceRecord::class,
-                        timeRangeFilter = timeRangeFilter,
-                        pageSize = MAX_LENGTH,
-                    )
-                ).records
-                val healthData = records.mapIndexed { _, dataPoint ->
-                    return@mapIndexed hashMapOf(
-                        "time" to dataPoint.time.toString(),
-                        "zoneOffset" to dataPoint.zoneOffset?.toString(),
-                        "circumference" to dataPoint.circumference.toString(),
-                        "metaData" to hashMapOf(
-                            "id" to dataPoint.metadata.id,
-                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
-                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
-                            "clientRecordId" to dataPoint.metadata.clientRecordId,
-                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
-                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
-                            "deviceModel" to dataPoint.metadata.device?.model,
-                            "deviceType" to dataPoint.metadata.device?.type,
-                        )
-                    )
-                }
-                return healthData
-            }
+
             Hydration -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -738,6 +625,35 @@ class PermissionsManager(
                 }
                 return healthData
             }
+            MenstruationPeriod -> {
+                val records = client.readRecords(
+                    ReadRecordsRequest(
+                        recordType = MenstruationPeriodRecord::class,
+                        timeRangeFilter = timeRangeFilter,
+                        pageSize = MAX_LENGTH,
+                    )
+                ).records
+                val healthData = records.mapIndexed { _, dataPoint ->
+                    return@mapIndexed hashMapOf(
+                        "startZoneOffset" to dataPoint.startZoneOffset?.toString(),
+                        "endZoneOffset" to dataPoint.endZoneOffset?.toString(),
+                        "startTime" to dataPoint.startTime.toString(),
+                        "endTime" to dataPoint.endTime.toString(),
+                        "metaData" to hashMapOf(
+                            "id" to dataPoint.metadata.id,
+                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
+                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
+                            "clientRecordId" to dataPoint.metadata.clientRecordId,
+                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
+                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
+                            "deviceModel" to dataPoint.metadata.device?.model,
+                            "deviceType" to dataPoint.metadata.device?.type,
+                        )
+                    )
+                }
+                return healthData
+            }
+
             Nutrition -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -1145,36 +1061,6 @@ class PermissionsManager(
                 }
                 return healthData
             }
-            SwimmingStrokes -> {
-                val records = client.readRecords(
-                    ReadRecordsRequest(
-                        recordType = SwimmingStrokesRecord::class,
-                        timeRangeFilter = timeRangeFilter,
-                        pageSize = MAX_LENGTH,
-                    )
-                ).records
-                val healthData = records.mapIndexed { _, dataPoint ->
-                    return@mapIndexed hashMapOf(
-                        "startZoneOffset" to dataPoint.startZoneOffset?.toString(),
-                        "endZoneOffset" to dataPoint.endZoneOffset?.toString(),
-                        "startTime" to dataPoint.startTime.toString(),
-                        "endTime" to dataPoint.endTime.toString(),
-                        "type" to dataPoint.type.toString(),
-                        "count" to dataPoint.count.toString(),
-                        "metaData" to hashMapOf(
-                            "id" to dataPoint.metadata.id,
-                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
-                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
-                            "clientRecordId" to dataPoint.metadata.clientRecordId,
-                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
-                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
-                            "deviceModel" to dataPoint.metadata.device?.model,
-                            "deviceType" to dataPoint.metadata.device?.type,
-                        )
-                    )
-                }
-                return healthData
-            }
             TotalCaloriesBurned -> {
                 val records = client.readRecords(
                     ReadRecordsRequest(
@@ -1218,33 +1104,6 @@ class PermissionsManager(
                         "zoneOffset" to dataPoint.zoneOffset?.toString(),
                         "vo2MillilitersPerMinuteKilogram" to dataPoint.vo2MillilitersPerMinuteKilogram.toString(),
                         "measurementMethod" to dataPoint.measurementMethod.toString(),
-                        "metaData" to hashMapOf(
-                            "id" to dataPoint.metadata.id,
-                            "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,
-                            "lastModifiedTime" to dataPoint.metadata.lastModifiedTime.toString(),
-                            "clientRecordId" to dataPoint.metadata.clientRecordId,
-                            "clientRecordVersion" to dataPoint.metadata.clientRecordVersion.toString(),
-                            "deviceManufacturer" to dataPoint.metadata.device?.manufacturer,
-                            "deviceModel" to dataPoint.metadata.device?.model,
-                            "deviceType" to dataPoint.metadata.device?.type,
-                        )
-                    )
-                }
-                return healthData
-            }
-            WaistCircumference -> {
-                val records = client.readRecords(
-                    ReadRecordsRequest(
-                        recordType = WaistCircumferenceRecord::class,
-                        timeRangeFilter = timeRangeFilter,
-                        pageSize = MAX_LENGTH,
-                    )
-                ).records
-                val healthData = records.mapIndexed { _, dataPoint ->
-                    return@mapIndexed hashMapOf(
-                        "time" to dataPoint.time.toString(),
-                        "zoneOffset" to dataPoint.zoneOffset?.toString(),
-                        "circumference" to dataPoint.circumference.toString(),
                         "metaData" to hashMapOf(
                             "id" to dataPoint.metadata.id,
                             "dataOrigin" to dataPoint.metadata.dataOrigin.packageName,

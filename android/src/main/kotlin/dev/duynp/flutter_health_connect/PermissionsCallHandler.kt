@@ -26,11 +26,11 @@ class PermissionsCallHandler(
         manager.installHealthConnect()
     }
 
-    suspend fun hasAllPermissions(result: MethodChannel.Result, permissions: MutableSet<HealthPermission>): Boolean {
+    suspend fun hasAllPermissions(permissions: MutableSet<String>): Boolean {
         return manager.hasAllPermissions(permissions)
     }
 
-    fun requestAllPermissions(result: MethodChannel.Result, types: List<String>?, readOnly: Boolean) {
+    fun requestAllPermissions(types: List<String>?, readOnly: Boolean) {
         manager.requestAllPermissions(types, readOnly)
     }
 
@@ -39,28 +39,14 @@ class PermissionsCallHandler(
         result.success(status)
     }
 
-    suspend fun getRecord(result: MethodChannel.Result, type: String, startDate: String, endDate: String) =
-        suspend(result) {
-            val start = LocalDate.parse(startDate).atStartOfDay(ZoneId.systemDefault())
-            val end = LocalDate.parse(endDate).atStartOfDay(ZoneId.systemDefault())
-            val healthData = manager.getRecord(type, start, end)
-            result.success(healthData)
-        }
+    suspend fun getRecord( type: String, startDate: String, endDate: String): Any {
+        val start = LocalDate.parse(startDate).atStartOfDay(ZoneId.systemDefault())
+        val end = LocalDate.parse(endDate).atStartOfDay(ZoneId.systemDefault())
+        return manager.getRecord(type, start, end)
 
-    suspend fun suspend(result: MethodChannel.Result, block: suspend () -> Unit) {
-        try {
-            block()
-        } catch (e: Exception) {
-            println("$e")
-        }
     }
 
-    fun execute(result: MethodChannel.Result, block: () -> Unit) {
-        try {
-            block()
-        } catch (e: Exception) {
-            println("$e")
-        }
-    }
+
+
 
 }

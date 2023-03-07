@@ -24,15 +24,14 @@ class FlutterHealthConnectPlugin : ContextAwarePlugin() {
     private lateinit var permissionsCallHandler: PermissionsCallHandler
     private var currentTypes: List<String>? = null
     private var readOnly: Boolean = false
-    private lateinit var result: Result
+    private var permissionResult: Result? = null
 
     override fun onMethodCall(call: MethodCall, result: Result) {
 //    activity //Do something
 //    applicationContext //Do something
-        this.result = result
         val permissionsManager = PermissionsManager(applicationContext!!, act)
         permissionsCallHandler =
-            PermissionsCallHandler(applicationContext!!, permissionsManager)
+                PermissionsCallHandler(applicationContext!!, permissionsManager)
         PermissionController.createRequestPermissionResultContract()
         when (call.method) {
             "isApiSupported" -> {
@@ -51,18 +50,19 @@ class FlutterHealthConnectPlugin : ContextAwarePlugin() {
                 scope.launch {
                     val args = call.arguments as HashMap<*, *>
                     currentTypes = (args["types"] as? ArrayList<*>)?.filterIsInstance<String>()
-                    readOnly = call.argument<Boolean>("readOnly")!!
+                    readOnly = call.argument<Boolean>("readOnly") ?: false
                     val permissions = FuncHelper.mapToHealthPermissions(currentTypes, readOnly)
-                    val status = permissionsCallHandler.hasAllPermissions(result, permissions)
+                    val status = permissionsCallHandler.hasAllPermissions(permissions)
                     result.success(status)
                 }
             }
 
             "requestPermissions" -> {
+                permissionResult = result
                 val args = call.arguments as HashMap<*, *>
                 currentTypes = (args["types"] as? ArrayList<*>)?.filterIsInstance<String>()
-                readOnly = call.argument<Boolean>("readOnly")!!
-                permissionsCallHandler.requestAllPermissions(result, currentTypes, readOnly)
+                readOnly = call.argument<Boolean>("readOnly") ?: false
+                permissionsCallHandler.requestAllPermissions(currentTypes, readOnly)
             }
 
             "getRecord" -> {
@@ -70,7 +70,7 @@ class FlutterHealthConnectPlugin : ContextAwarePlugin() {
                     val type = call.argument<String>("type")!!
                     val startTime = call.argument<String>("startTime")!!
                     val endTime = call.argument<String>("endTime")!!
-                    permissionsCallHandler.getRecord(result, type, startTime, endTime)
+                    result.success(permissionsCallHandler.getRecord(type, startTime, endTime))
                 }
             }
 
@@ -86,19 +86,21 @@ class FlutterHealthConnectPlugin : ContextAwarePlugin() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
         if (requestCode == HEALTH_CONNECT_RESULT_CODE) {
+            val result = permissionResult
+            permissionResult = null
             if (resultCode == Activity.RESULT_OK) {
-                if (data != null) {
+                if (data != null && result != null) {
                     scope.launch {
                         //Verify granted permission
                         val permissions = FuncHelper.mapToHealthPermissions(currentTypes, readOnly)
-                        val status = permissionsCallHandler.hasAllPermissions(result, permissions)
+                        val status = permissionsCallHandler.hasAllPermissions(permissions)
                         result.success(status)
                     }
                     return true
                 }
             }
             scope.launch {
-                result.success(false)
+                result?.success(false)
             }
         }
         return false
