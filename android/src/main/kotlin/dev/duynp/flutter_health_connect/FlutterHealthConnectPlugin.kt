@@ -73,7 +73,7 @@ class FlutterHealthConnectPlugin : FlutterPlugin, MethodCallHandler, ActivityAwa
             result.error("NO_ACTIVITY", "No activity available", null)
             return
         }
-        val args = call.arguments as HashMap<*, *>
+        val args = call.arguments?.let { it as HashMap<*, *>}?: hashMapOf<String,Any>()
         val requestedTypes = (args["types"] as? ArrayList<*>)?.filterIsInstance<String>()
         when (call.method) {
 

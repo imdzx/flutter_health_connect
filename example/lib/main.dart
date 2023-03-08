@@ -116,8 +116,12 @@ class _MyAppState extends State<MyApp> {
             ),
             ElevatedButton(
               onPressed: () async {
-                token = await HealthConnectFactory.getChangesToken(types);
-                resultText = 'token: $token';
+                try {
+                  token = await HealthConnectFactory.getChangesToken(types);
+                  resultText = 'token: $token';
+                } catch (e) {
+                  resultText = e.toString();
+                }
                 _updateResultText();
               },
               child: const Text('Get Changes Token'),
@@ -143,7 +147,7 @@ class _MyAppState extends State<MyApp> {
                   );
                   resultText = 'requestPermissions: $result';
                 } catch (e) {
-                resultText = e.toString();
+                  resultText = e.toString();
                 }
                 _updateResultText();
               },
