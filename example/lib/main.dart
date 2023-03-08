@@ -93,13 +93,25 @@ class _MyAppState extends State<MyApp> {
             ),
             ElevatedButton(
               onPressed: () async {
-                await HealthConnectFactory.installHealthConnect();
+                try {
+                  await HealthConnectFactory.installHealthConnect();
+                  resultText = 'Install activity started';
+                } catch (e) {
+                  resultText = e.toString();
+                }
+                _updateResultText();
               },
               child: const Text('Install Health Connect'),
             ),
             ElevatedButton(
               onPressed: () async {
-                await HealthConnectFactory.openHealthConnectSettings();
+                try {
+                  await HealthConnectFactory.openHealthConnectSettings();
+                  resultText = 'Settings activity started';
+                } catch (e) {
+                  resultText = e.toString();
+                }
+                _updateResultText();
               },
               child: const Text('Open Health Connect Settings'),
             ),

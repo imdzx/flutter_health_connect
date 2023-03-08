@@ -86,12 +86,17 @@ class FlutterHealthConnectPlugin : FlutterPlugin, MethodCallHandler, ActivityAwa
             }
 
             "installHealthConnect" -> {
-                val intent = Intent(Intent.ACTION_VIEW).apply {
-                    data = Uri.parse(playStoreUri)
-                    setPackage("com.android.vending")
+                try {
+                    val intent = Intent(Intent.ACTION_VIEW).apply {
+                        data = Uri.parse(playStoreUri)
+                        setPackage("com.android.vending")
+                    }
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    activityContext.startActivity(intent)
+                    result.success(true)
+                } catch (e: Throwable) {
+                    result.error("UNABLE_TO_START_ACTIVITY", e.message, e)
                 }
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                runCatching { activityContext.startActivity(intent) }
             }
 
             "hasPermissions" -> {
@@ -105,16 +110,19 @@ class FlutterHealthConnectPlugin : FlutterPlugin, MethodCallHandler, ActivityAwa
             }
 
             "requestPermissions" -> {
-                permissionResult = result
-                val isReadOnly = call.argument<Boolean>("readOnly") ?: false
-                val allPermissions = mapTypesToPermissions(
-                    requestedTypes,
-                    isReadOnly
-                )
-
-                val contract = PermissionController.createRequestPermissionResultContract()
-                val intent = contract.createIntent(activityContext, allPermissions)
-                activityContext.startActivityForResult(intent, HEALTH_CONNECT_RESULT_CODE)
+                try {
+                    permissionResult = result
+                    val isReadOnly = call.argument<Boolean>("readOnly") ?: false
+                    val allPermissions = mapTypesToPermissions(
+                        requestedTypes,
+                        isReadOnly
+                    )
+                    val contract = PermissionController.createRequestPermissionResultContract()
+                    val intent = contract.createIntent(activityContext, allPermissions)
+                    activityContext.startActivityForResult(intent, HEALTH_CONNECT_RESULT_CODE)
+                } catch (e: Throwable) {
+                    result.error("UNABLE_TO_START_ACTIVITY", e.message, e)
+                }
             }
             "getChanges" -> {
                 val token = call.argument<String>("token") ?: ""
@@ -181,7 +189,7 @@ class FlutterHealthConnectPlugin : FlutterPlugin, MethodCallHandler, ActivityAwa
                     val endTime = call.argument<String>("endTime")
                     val pageSize = call.argument<Int>("pageSize") ?: MAX_LENGTH
                     val pageToken = call.argument<String?>("pageToken")
-                    val ascendingOrder = call.argument<Boolean?>("ascendingOrder")?:true
+                    val ascendingOrder = call.argument<Boolean?>("ascendingOrder") ?: true
                     try {
                         val start =
                             startTime?.let { LocalDateTime.parse(it) } ?: LocalDateTime.now()
@@ -210,9 +218,14 @@ class FlutterHealthConnectPlugin : FlutterPlugin, MethodCallHandler, ActivityAwa
                 }
             }
             "openHealthConnectSettings" -> {
-                val intent = Intent()
-                intent.action = "androidx.health.ACTION_HEALTH_CONNECT_SETTINGS"
-                activityContext.startActivity(intent)
+                try {
+                    val intent = Intent()
+                    intent.action = "androidx.health.ACTION_HEALTH_CONNECT_SETTINGS"
+                    activityContext.startActivity(intent)
+                    result.success(true)
+                } catch (e: Throwable) {
+                    result.error("UNABLE_TO_START_ACTIVITY", e.message, e)
+                }
             }
             else -> {
                 result.notImplemented()
