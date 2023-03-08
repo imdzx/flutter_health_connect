@@ -73,7 +73,7 @@ class FlutterHealthConnectPlugin : FlutterPlugin, MethodCallHandler, ActivityAwa
             result.error("NO_ACTIVITY", "No activity available", null)
             return
         }
-        val args = call.arguments?.let { it as HashMap<*, *>}?: hashMapOf<String,Any>()
+        val args = call.arguments?.let { it as? HashMap<*, *> } ?: hashMapOf<String, Any>()
         val requestedTypes = (args["types"] as? ArrayList<*>)?.filterIsInstance<String>()
         when (call.method) {
 
@@ -179,26 +179,30 @@ class FlutterHealthConnectPlugin : FlutterPlugin, MethodCallHandler, ActivityAwa
                     val type = call.argument<String>("type") ?: ""
                     val startTime = call.argument<String>("startTime")
                     val endTime = call.argument<String>("endTime")
+                    val pageSize = call.argument<Int>("pageSize") ?: MAX_LENGTH
+                    val pageToken = call.argument<String?>("pageToken")
+                    val ascendingOrder = call.argument<Boolean?>("ascendingOrder")?:true
                     try {
                         val start =
                             startTime?.let { LocalDateTime.parse(it) } ?: LocalDateTime.now()
                                 .minus(1, ChronoUnit.DAYS)
                         val end = endTime?.let { LocalDateTime.parse(it) } ?: LocalDateTime.now()
                         HealthConnectRecordTypeMap[type]?.let { classType ->
-                            // TODO handle pagination token ???
                             val reply = client.readRecords(
                                 ReadRecordsRequest(
                                     recordType = classType,
                                     timeRangeFilter = TimeRangeFilter.between(start, end),
-                                    pageSize = MAX_LENGTH,
+                                    pageSize = pageSize,
+                                    pageToken = pageToken,
+                                    ascendingOrder = ascendingOrder,
                                 )
                             )
-                            result.success(reply.records.mapIndexed { index, record ->
+                            result.success(
                                 replyMapper.convertValue(
-                                    record,
+                                    reply,
                                     hashMapOf<String, Any>()::class.java
                                 )
-                            })
+                            )
                         } ?: throw Throwable("Unsupported type $type")
                     } catch (e: Throwable) {
                         result.error("GET_RECORD_FAIL", e.localizedMessage, e)

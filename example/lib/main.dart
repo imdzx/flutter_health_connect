@@ -159,17 +159,17 @@ class _MyAppState extends State<MyApp> {
                     DateTime.now().subtract(const Duration(days: 4));
                 var endTime = DateTime.now();
                 try {
-                  var results = await HealthConnectFactory.getRecord(
-                    types: types,
-                    startTime: startTime,
-                    endTime: endTime,
-                  );
-                  // results.forEach((key, value) {
-                  //   if (key == HealthConnectDataType.Steps.name) {
-                  //     print(value);
-                  //   }
-                  // });
-                  resultText = '\ntype: $types\n\n$results';
+                  final requests = <Future>[];
+                  Map<String, dynamic> typePoints = {};
+                  for (var type in types) {
+                    requests.add(HealthConnectFactory.getRecord(
+                      type: type,
+                      startTime: startTime,
+                      endTime: endTime,
+                    ).then((value) => typePoints.addAll({type.name: value})));
+                  }
+                  await Future.wait(requests);
+                  resultText = '$typePoints';
                 } catch (e) {
                   resultText = e.toString();
                 }

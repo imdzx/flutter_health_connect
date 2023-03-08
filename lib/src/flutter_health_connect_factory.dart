@@ -51,27 +51,24 @@ class HealthConnectFactory {
   static Future<Map<String, dynamic>> getRecord({
     required DateTime startTime,
     required DateTime endTime,
-    required List<HealthConnectDataType> types,
+    required HealthConnectDataType type,
+    int? pageSize,
+    String? pageToken,
+    bool ascendingOrder = true,
   }) async {
-    Map<String, dynamic> dataPoints = {};
-    if (endTime.isBefore(startTime)) {
-      return dataPoints;
-    }
     final start = startTime.toLocal().toIso8601String();
     final end = endTime.toLocal().toIso8601String();
-    final futures = <Future>[];
-    for (var type in types) {
-      final args = <String, dynamic>{
-        'type': type.name,
-        'startTime': start,
-        'endTime': end
-      };
-      futures.add(_channel
-          .invokeMethod('getRecord', args)
-          .then((value) => dataPoints.addAll({type.name: value})));
-    }
-    await Future.wait(futures);
-    return dataPoints;
+    final args = <String, dynamic>{
+      'type': type.name,
+      'startTime': start,
+      'endTime': end,
+      'pageSize': pageSize,
+      'pageToken': pageToken,
+      'ascendingOrder': ascendingOrder,
+    };
+    return await _channel
+        .invokeMethod('getRecord', args)
+        .then((value) => Map<String, Object>.from(value));
   }
 
   static Future<bool> openHealthConnectSettings() async {
