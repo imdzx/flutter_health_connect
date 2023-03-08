@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.health.connect.client.HealthConnectClient
 import androidx.health.connect.client.PermissionController
+import androidx.health.connect.client.changes.DeletionChange
 import androidx.health.connect.client.changes.UpsertionChange
 import androidx.health.connect.client.request.ChangesTokenRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
@@ -134,19 +135,18 @@ class FlutterHealthConnectPlugin : FlutterPlugin, MethodCallHandler, ActivityAwa
                             hashMapOf<String, Any>()::class.java
                         )
                         val typedChanges = changes.changes.mapIndexed { _, change ->
-                            if (change is UpsertionChange) {
-                                hashMapOf(
+                            when (change) {
+                                is UpsertionChange -> hashMapOf(
                                     change::class.simpleName to
                                             hashMapOf(
                                                 change.record::class.simpleName to
                                                         replyMapper.convertValue(
-                                                            change,
+                                                            change.record,
                                                             hashMapOf<String, Any>()::class.java
                                                         )
                                             )
                                 )
-                            } else {
-                                hashMapOf(
+                                else -> hashMapOf(
                                     change::class.simpleName to
                                             replyMapper.convertValue(
                                                 change,

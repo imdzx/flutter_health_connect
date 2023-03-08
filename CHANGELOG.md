@@ -1,3 +1,5 @@
+## [1.2.2]
+* getChanges flatten record field on UpsertionChange
 ## [1.2.1]
 * breaking changes for getRecord 
 * getRecord pagination support
