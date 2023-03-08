@@ -19,10 +19,8 @@ class HealthConnectFactory {
     List<HealthConnectDataType> types, {
     bool readOnly = false,
   }) async {
-    final mTypes = List<HealthConnectDataType>.from(types, growable: true);
-    List<String> keys = mTypes.map((e) => _enumToString(e)).toList();
     return await _channel.invokeMethod('hasPermissions', {
-      'types': keys,
+      'types': types.map((e) => e.name).toList(),
       'readOnly': readOnly,
     });
   }
@@ -31,42 +29,49 @@ class HealthConnectFactory {
     List<HealthConnectDataType> types, {
     bool readOnly = false,
   }) async {
-    final mTypes = List<HealthConnectDataType>.from(types, growable: true);
-    List<String> keys = mTypes.map((e) => _enumToString(e)).toList();
     return await _channel.invokeMethod('requestPermissions', {
-      'types': keys,
+      'types': types.map((e) => e.name).toList(),
       'readOnly': readOnly,
+    });
+  }
+
+  static Future<Map<String, dynamic>> getChanges(String token) async {
+    return await _channel.invokeMethod('getChanges', {
+      'token': token,
+    }).then((value) => Map<String, Object>.from(value));
+  }
+
+  static Future<String> getChangesToken(
+      List<HealthConnectDataType> types) async {
+    return await _channel.invokeMethod('getChangesToken', {
+      'types': types.map((e) => e.name).toList(),
     });
   }
 
   static Future<Map<String, dynamic>> getRecord({
     required DateTime startTime,
     required DateTime endTime,
-    required List<HealthConnectDataType> types,
+    required HealthConnectDataType type,
+    int? pageSize,
+    String? pageToken,
+    bool ascendingOrder = true,
   }) async {
-    Map<String, dynamic> dataPoints = {};
-    if (endTime.isBefore(startTime)) {
-      return dataPoints;
-    }
-    final start = startTime.toIso8601String().substring(0, 10);
-    final end =
-        endTime.add(const Duration(days: 1)).toIso8601String().substring(0, 10);
-
-    for (var type in types) {
-      final args = <String, dynamic>{
-        'type': _enumToString(type),
-        'startTime': start,
-        'endTime': end
-      };
-      var record = await _channel.invokeMethod('getRecord', args);
-      dataPoints.addAll({type.name: record});
-    }
-    return dataPoints;
+    final start = startTime.toLocal().toIso8601String();
+    final end = endTime.toLocal().toIso8601String();
+    final args = <String, dynamic>{
+      'type': type.name,
+      'startTime': start,
+      'endTime': end,
+      'pageSize': pageSize,
+      'pageToken': pageToken,
+      'ascendingOrder': ascendingOrder,
+    };
+    return await _channel
+        .invokeMethod('getRecord', args)
+        .then((value) => Map<String, Object>.from(value));
   }
 
   static Future<bool> openHealthConnectSettings() async {
     return await _channel.invokeMethod('openHealthConnectSettings');
   }
-
-  static String _enumToString(enumItem) => enumItem.toString().split('.').last;
 }
