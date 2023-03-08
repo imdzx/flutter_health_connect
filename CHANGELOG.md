@@ -1,3 +1,5 @@
+## [1.2.3]
+* Upgrade to `alpha11`
 ## [1.2.2]
 * getChanges flatten record field on UpsertionChange
 ## [1.2.1]

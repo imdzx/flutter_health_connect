@@ -79,21 +79,23 @@ class FlutterHealthConnectPlugin : FlutterPlugin, MethodCallHandler, ActivityAwa
         when (call.method) {
 
             "isApiSupported" -> {
-                result.success(HealthConnectClient.isApiSupported())
+                result.success(HealthConnectClient.sdkStatus(activityContext) != HealthConnectClient.SDK_UNAVAILABLE)
             }
 
             "isAvailable" -> {
-                result.success(HealthConnectClient.isProviderAvailable(activityContext))
+                result.success(HealthConnectClient.sdkStatus(activityContext) == HealthConnectClient.SDK_AVAILABLE)
             }
 
             "installHealthConnect" -> {
                 try {
-                    val intent = Intent(Intent.ACTION_VIEW).apply {
-                        data = Uri.parse(playStoreUri)
-                        setPackage("com.android.vending")
-                    }
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    activityContext.startActivity(intent)
+                    activityContext.startActivity(
+                        Intent(Intent.ACTION_VIEW).apply {
+                            setPackage("com.android.vending")
+                            data =
+                                Uri.parse("market://details?id=com.google.android.apps.healthdata&url=healthconnect%3A%2F%2Fonboarding")
+                            putExtra("overlay", true)
+                            putExtra("callerId", activityContext.packageName)
+                        })
                     result.success(true)
                 } catch (e: Throwable) {
                     result.error("UNABLE_TO_START_ACTIVITY", e.message, e)
@@ -220,7 +222,7 @@ class FlutterHealthConnectPlugin : FlutterPlugin, MethodCallHandler, ActivityAwa
             "openHealthConnectSettings" -> {
                 try {
                     val intent = Intent()
-                    intent.action = "androidx.health.ACTION_HEALTH_CONNECT_SETTINGS"
+                    intent.action = HealthConnectClient.ACTION_HEALTH_CONNECT_SETTINGS
                     activityContext.startActivity(intent)
                     result.success(true)
                 } catch (e: Throwable) {
