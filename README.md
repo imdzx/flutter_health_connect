@@ -25,7 +25,7 @@ To interact with Health Connect within the app, declare the Health Connect packa
 
 Every data type your app reads or writes needs to be declared using a permission in your manifest. For the full list of permissions and their corresponding data types, see [List of data types](https://developer.android.com/guide/health-and-fitness/health-connect/data-and-data-types/data-types).
 
-To create the declaration, add to  regular permissions any of.
+To create the declaration, add to regular permissions any of.
 ```
 <uses-permission android:name="android.permission.health.READ_ACTIVE_CALORIES_BURNED"/>
 <uses-permission android:name="android.permission.health.WRITE_ACTIVE_CALORIES_BURNED"/>
@@ -41,6 +41,8 @@ To create the declaration, add to  regular permissions any of.
 <uses-permission android:name="android.permission.health.WRITE_BODY_FAT"/>
 <uses-permission android:name="android.permission.health.READ_BODY_TEMPERATURE"/>
 <uses-permission android:name="android.permission.health.WRITE_BODY_TEMPERATURE"/>
+<uses-permission android:name="android.permission.health.READ_BODY_WATER_MASS"/>
+<uses-permission android:name="android.permission.health.WRITE_BODY_WATER_MASS"/>
 <uses-permission android:name="android.permission.health.READ_BONE_MASS"/>
 <uses-permission android:name="android.permission.health.WRITE_BONE_MASS"/>
 <uses-permission android:name="android.permission.health.READ_CERVICAL_MUCUS"/>
@@ -51,20 +53,20 @@ To create the declaration, add to  regular permissions any of.
 <uses-permission android:name="android.permission.health.WRITE_DISTANCE"/>
 <uses-permission android:name="android.permission.health.READ_ELEVATION_GAINED"/>
 <uses-permission android:name="android.permission.health.WRITE_ELEVATION_GAINED"/>
-<uses-permission android:name="android.permission.health.READ_EXERCISE"/>
-<uses-permission android:name="android.permission.health.WRITE_EXERCISE"/>
 <uses-permission android:name="android.permission.health.READ_FLOORS_CLIMBED"/>
 <uses-permission android:name="android.permission.health.WRITE_FLOORS_CLIMBED"/>
 <uses-permission android:name="android.permission.health.READ_HEART_RATE"/>
 <uses-permission android:name="android.permission.health.WRITE_HEART_RATE"/>
+<uses-permission android:name="android.permission.health.READ_HEART_RATE_VARIABILITY"/>
+<uses-permission android:name="android.permission.health.WRITE_HEART_RATE_VARIABILITY"/>
 <uses-permission android:name="android.permission.health.READ_HEIGHT"/>
 <uses-permission android:name="android.permission.health.WRITE_HEIGHT"/>
 <uses-permission android:name="android.permission.health.READ_HYDRATION"/>
 <uses-permission android:name="android.permission.health.WRITE_HYDRATION"/>
+<uses-permission android:name="android.permission.health.READ_INTERMENSTRUAL_BLEEDING"/>
+<uses-permission android:name="android.permission.health.WRITE_INTERMENSTRUAL_BLEEDING"/>
 <uses-permission android:name="android.permission.health.READ_LEAN_BODY_MASS"/>
 <uses-permission android:name="android.permission.health.WRITE_LEAN_BODY_MASS"/>
-<uses-permission android:name="android.permission.health.READ_MENSTRUATION"/>
-<uses-permission android:name="android.permission.health.WRITE_MENSTRUATION"/>
 <uses-permission android:name="android.permission.health.READ_MENSTRUATION"/>
 <uses-permission android:name="android.permission.health.WRITE_MENSTRUATION"/>
 <uses-permission android:name="android.permission.health.READ_NUTRITION"/>
@@ -83,12 +85,8 @@ To create the declaration, add to  regular permissions any of.
 <uses-permission android:name="android.permission.health.WRITE_SEXUAL_ACTIVITY"/>
 <uses-permission android:name="android.permission.health.READ_SLEEP"/>
 <uses-permission android:name="android.permission.health.WRITE_SLEEP"/>
-<uses-permission android:name="android.permission.health.READ_SLEEP"/>
-<uses-permission android:name="android.permission.health.WRITE_SLEEP"/>
 <uses-permission android:name="android.permission.health.READ_SPEED"/>
 <uses-permission android:name="android.permission.health.WRITE_SPEED"/>
-<uses-permission android:name="android.permission.health.READ_STEPS"/>
-<uses-permission android:name="android.permission.health.WRITE_STEPS"/>
 <uses-permission android:name="android.permission.health.READ_STEPS"/>
 <uses-permission android:name="android.permission.health.WRITE_STEPS"/>
 <uses-permission android:name="android.permission.health.READ_TOTAL_CALORIES_BURNED"/>
@@ -144,20 +142,19 @@ class _MyAppState extends State<MyApp> {
   //   HealthConnectDataType.BloodPressure,
   //   HealthConnectDataType.BodyFat,
   //   HealthConnectDataType.BodyTemperature,
+  //   HealthConnectDataType.BodyWaterMass,
   //   HealthConnectDataType.BoneMass,
   //   HealthConnectDataType.CervicalMucus,
   //   HealthConnectDataType.CyclingPedalingCadence,
   //   HealthConnectDataType.Distance,
   //   HealthConnectDataType.ElevationGained,
-  //   HealthConnectDataType.ExerciseEvent,
-  //   HealthConnectDataType.ExerciseLap,
-  //   HealthConnectDataType.ExerciseRepetitions,
   //   HealthConnectDataType.ExerciseSession,
   //   HealthConnectDataType.FloorsClimbed,
   //   HealthConnectDataType.HeartRate,
+  //   HealthConnectDataType.HeartRateVariabilityRmssd,
   //   HealthConnectDataType.Height,
-  //   HealthConnectDataType.HipCircumference,
   //   HealthConnectDataType.Hydration,
+  //   HealthConnectDataType.IntermenstrualBleeding,
   //   HealthConnectDataType.LeanBodyMass,
   //   HealthConnectDataType.MenstruationFlow,
   //   HealthConnectDataType.Nutrition,
@@ -172,10 +169,8 @@ class _MyAppState extends State<MyApp> {
   //   HealthConnectDataType.Speed,
   //   HealthConnectDataType.StepsCadence,
   //   HealthConnectDataType.Steps,
-  //   HealthConnectDataType.SwimmingStrokes,
   //   HealthConnectDataType.TotalCaloriesBurned,
   //   HealthConnectDataType.Vo2Max,
-  //   HealthConnectDataType.WaistCircumference,
   //   HealthConnectDataType.Weight,
   //   HealthConnectDataType.WheelchairPushes,
   // ];
