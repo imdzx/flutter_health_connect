@@ -1,0 +1,83 @@
+import 'package:flutter_health_connect/src/records/instantaneous_record.dart';
+
+import 'metadata/metadata.dart';
+
+class CervicalMucusRecord extends InstantaneousRecord {
+  @override
+  DateTime time;
+  @override
+  Duration? zoneOffset;
+  @override
+  Metadata metadata;
+  Sensation sensation;
+  Appearance appearance;
+
+  CervicalMucusRecord({
+    required this.time,
+    this.zoneOffset,
+    this.sensation = Sensation.unknown,
+    this.appearance = Appearance.unknown,
+    metadata,
+  }) : metadata = metadata ?? Metadata.empty();
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CervicalMucusRecord &&
+          time == other.time &&
+          zoneOffset == other.zoneOffset;
+
+  @override
+  int get hashCode => time.hashCode ^ zoneOffset.hashCode;
+}
+
+enum Appearance {
+  unknown,
+  dry,
+  sticky,
+  creamy,
+  watery,
+  eggWhite,
+  unusual;
+
+  @override
+  String toString() {
+    switch (this) {
+      case Appearance.unknown:
+        return 'unknown';
+      case Appearance.dry:
+        return 'dry';
+      case Appearance.sticky:
+        return 'sticky';
+      case Appearance.creamy:
+        return 'creamy';
+      case Appearance.watery:
+        return 'watery';
+      case Appearance.eggWhite:
+        return 'egg_white';
+      case Appearance.unusual:
+        return 'unusual';
+    }
+  }
+}
+
+enum Sensation {
+  unknown,
+  light,
+  medium,
+  heavy;
+
+  @override
+  String toString() {
+    switch (this) {
+      case Sensation.unknown:
+        return 'unknown';
+      case Sensation.light:
+        return 'light';
+      case Sensation.medium:
+        return 'medium';
+      case Sensation.heavy:
+        return 'heavy';
+    }
+  }
+}
