@@ -46,6 +46,41 @@ class StepsCadenceRecord extends SeriesRecord<StepsCadenceSample> {
       startZoneOffset.hashCode ^
       samples.hashCode ^
       metadata.hashCode;
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'endTime': endTime.millisecondsSinceEpoch,
+      'endZoneOffset': endZoneOffset?.inHours,
+      'startTime': startTime.millisecondsSinceEpoch,
+      'startZoneOffset': startZoneOffset?.inHours,
+      'samples': samples.map((e) => e.toMap()).toList(),
+      'metadata': metadata.toMap(),
+    };
+  }
+
+  @override
+  factory StepsCadenceRecord.fromMap(Map<String, dynamic> map) {
+    return StepsCadenceRecord(
+      endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime'] as int),
+      endZoneOffset: map['endZoneOffset'] == null
+          ? null
+          : Duration(hours: map['endZoneOffset'] as int),
+      metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>),
+      startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime'] as int),
+      startZoneOffset: map['startZoneOffset'] == null
+          ? null
+          : Duration(hours: map['startZoneOffset'] as int),
+      samples: (map['samples'] as List)
+          .map((e) => StepsCadenceSample.fromMap(e as Map<String, dynamic>))
+          .toList(),
+    );
+  }
+
+  @override
+  String toString() {
+    return 'StepsCadenceRecord(endTime: $endTime, endZoneOffset: $endZoneOffset, startTime: $startTime, startZoneOffset: $startZoneOffset, samples: $samples, metadata: $metadata)';
+  }
 }
 
 class StepsCadenceSample {
@@ -67,4 +102,21 @@ class StepsCadenceSample {
 
   static const _minStepsPerMinute = 0.0;
   static const _maxStepsPerMinute = 10000.0;
+
+  Map<String, dynamic> toMap() {
+    return {
+      'rate': rate,
+      'time': time.millisecondsSinceEpoch,
+    };
+  }
+
+  static StepsCadenceSample fromMap(Map<String, dynamic> map) {
+    return StepsCadenceSample(
+      rate: map['rate'] as double,
+      time: DateTime.fromMillisecondsSinceEpoch(map['time'] as int),
+    );
+  }
+
+  @override
+  String toString() => 'StepsCadenceSample(rate: $rate, time: $time)';
 }

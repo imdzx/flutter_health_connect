@@ -40,6 +40,35 @@ class Vo2MaxRecord extends InstantaneousRecord {
       vo2MillilitersPerMinuteKilogram.hashCode ^
       measurementMethod.hashCode ^
       metadata.hashCode;
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'time': time.millisecondsSinceEpoch,
+      'zoneOffset': zoneOffset?.inHours,
+      'metadata': metadata.toMap(),
+      'vo2MillilitersPerMinuteKilogram': vo2MillilitersPerMinuteKilogram,
+      'measurementMethod': measurementMethod.index,
+    };
+  }
+
+  @override
+  factory Vo2MaxRecord.fromMap(Map<String, dynamic> map) {
+    return Vo2MaxRecord(
+      time: DateTime.fromMillisecondsSinceEpoch(map['time'] as int),
+      zoneOffset: map['zoneOffset'] != null
+          ? Duration(hours: map['zoneOffset'] as int)
+          : null,
+      metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>),
+      vo2MillilitersPerMinuteKilogram:
+          map['vo2MillilitersPerMinuteKilogram'] as double,
+      measurementMethod: (map['measurementMethod'] != null &&
+              map['measurementMethod'] as int <
+                  Vo2MaxMeasurementMethod.values.length)
+          ? Vo2MaxMeasurementMethod.values[map['measurementMethod'] as int]
+          : Vo2MaxMeasurementMethod.other,
+    );
+  }
 }
 
 enum Vo2MaxMeasurementMethod {

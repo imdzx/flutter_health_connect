@@ -31,4 +31,31 @@ class RespiratoryRateRecord extends InstantaneousRecord {
   @override
   int get hashCode =>
       time.hashCode ^ zoneOffset.hashCode ^ rate.hashCode ^ metadata.hashCode;
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'time': time.millisecondsSinceEpoch,
+      'zoneOffset': zoneOffset?.inHours,
+      'metadata': metadata.toMap(),
+      'rate': rate,
+    };
+  }
+
+  @override
+  factory RespiratoryRateRecord.fromMap(Map<String, dynamic> map) {
+    return RespiratoryRateRecord(
+      time: DateTime.fromMillisecondsSinceEpoch(map['time'] as int),
+      zoneOffset: map['zoneOffset'] != null
+          ? Duration(hours: map['zoneOffset'] as int)
+          : null,
+      metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>),
+      rate: map['rate'] as double,
+    );
+  }
+
+  @override
+  String toString() {
+    return 'RespiratoryRateRecord(time: $time, zoneOffset: $zoneOffset, metadata: $metadata, rate: $rate)';
+  }
 }

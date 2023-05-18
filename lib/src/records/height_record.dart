@@ -33,4 +33,31 @@ class HeightRecord extends InstantaneousRecord {
 
   static const Length _minHeight = Length.meters(0);
   static const Length _maxHeight = Length.meters(3);
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'time': time.millisecondsSinceEpoch,
+      'zoneOffset': zoneOffset?.inHours,
+      'metadata': metadata.toMap(),
+      'height': height.inMeters,
+    };
+  }
+
+  @override
+  factory HeightRecord.fromMap(Map<String, dynamic> map) {
+    return HeightRecord(
+      time: DateTime.fromMillisecondsSinceEpoch(map['time'] as int),
+      zoneOffset: map['zoneOffset'] != null
+          ? Duration(hours: map['zoneOffset'] as int)
+          : null,
+      metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>),
+      height: Length.meters(map['height'] as double),
+    );
+  }
+
+  @override
+  String toString() {
+    return 'HeightRecord{metadata: $metadata, time: $time, zoneOffset: $zoneOffset, height: $height}';
+  }
 }

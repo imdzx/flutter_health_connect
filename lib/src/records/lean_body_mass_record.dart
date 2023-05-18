@@ -32,4 +32,31 @@ class LeanBodyMassRecord extends InstantaneousRecord {
 
   static const Mass _minMass = Mass.kilograms(0);
   static const Mass _maxMass = Mass.kilograms(1000);
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'metadata': metadata.toMap(),
+      'time': time.millisecondsSinceEpoch,
+      'zoneOffset': zoneOffset?.inHours,
+      'mass': mass.inKilograms,
+    };
+  }
+
+  @override
+  factory LeanBodyMassRecord.fromMap(Map<String, dynamic> map) {
+    return LeanBodyMassRecord(
+      metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>),
+      time: DateTime.fromMillisecondsSinceEpoch(map['time'] as int),
+      zoneOffset: map['zoneOffset'] != null
+          ? Duration(hours: map['zoneOffset'] as int)
+          : null,
+      mass: Mass.kilograms(map['mass'] as double),
+    );
+  }
+
+  @override
+  String toString() {
+    return 'LeanBodyMassRecord{metadata: $metadata, time: $time, zoneOffset: $zoneOffset, mass: $mass}';
+  }
 }

@@ -50,5 +50,37 @@ class ActiveCaloriesBurnedRecord extends IntervalRecord {
       startTime.hashCode ^
       startZoneOffset.hashCode;
 
-  static Energy maxEnergy = Energy.kilocalories(1000000);
+  static Energy maxEnergy = const Energy.kilocalories(1000000);
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'startTime': startTime.millisecondsSinceEpoch,
+      'startZoneOffset': startZoneOffset?.inHours,
+      'endTime': endTime.millisecondsSinceEpoch,
+      'endZoneOffset': endZoneOffset?.inHours,
+      'energy': energy.inKilocalories,
+      'metadata': metadata.toMap(),
+    };
+  }
+
+  @override
+  factory ActiveCaloriesBurnedRecord.fromMap(Map<String, dynamic> map) {
+    return ActiveCaloriesBurnedRecord(
+        startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime'] as int),
+        startZoneOffset: map['startZoneOffset'] != null
+            ? Duration(hours: map['startZoneOffset'] as int)
+            : null,
+        endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime'] as int),
+        endZoneOffset: map['endZoneOffset'] != null
+            ? Duration(hours: map['endZoneOffset'] as int)
+            : null,
+        energy: Energy.kilocalories(map['energy'] as double),
+        metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>));
+  }
+
+  @override
+  String toString() {
+    return 'ActiveCaloriesBurnedRecord{energy: $energy, endTime: $endTime, endZoneOffset: $endZoneOffset, metadata: $metadata, startTime: $startTime, startZoneOffset: $startZoneOffset}';
+  }
 }

@@ -45,4 +45,38 @@ class SleepStageRecord extends IntervalRecord {
       startTime.hashCode ^
       startZoneOffset.hashCode ^
       stage.hashCode;
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'startTime': startTime.millisecondsSinceEpoch,
+      'startZoneOffset': startZoneOffset?.inHours,
+      'endTime': endTime.millisecondsSinceEpoch,
+      'endZoneOffset': endZoneOffset?.inHours,
+      'stage': stage.index,
+    };
+  }
+
+  @override
+  factory SleepStageRecord.fromMap(Map<String, dynamic> map) {
+    return SleepStageRecord(
+        endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime']),
+        endZoneOffset: map['endZoneOffset'] != null
+            ? Duration(hours: map['endZoneOffset'])
+            : null,
+        metadata: Metadata.fromMap(map['metadata']),
+        startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime']),
+        startZoneOffset: map['startZoneOffset'] != null
+            ? Duration(hours: map['startZoneOffset'])
+            : null,
+        stage: (map['stage'] != null &&
+                map['stage'] as int < SleepStageType.values.length)
+            ? SleepStageType.values[map['stage']]
+            : SleepStageType.unknown);
+  }
+
+  @override
+  String toString() {
+    return 'SleepStageRecord{endTime: $endTime, endZoneOffset: $endZoneOffset, metadata: $metadata, startTime: $startTime, startZoneOffset: $startZoneOffset, stage: $stage}';
+  }
 }

@@ -93,6 +93,52 @@ class ExerciseSessionRecord extends IntervalRecord {
       endZoneOffset.hashCode ^
       startTime.hashCode ^
       startZoneOffset.hashCode;
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'endTime': endTime.millisecondsSinceEpoch,
+      'endZoneOffset': endZoneOffset?.inHours,
+      'startTime': startTime.millisecondsSinceEpoch,
+      'startZoneOffset': startZoneOffset?.inHours,
+      'metadata': metadata.toMap(),
+      'exerciseType': exerciseType.value,
+      'title': title,
+      'notes': notes,
+      'segments': segments.map((e) => e.toMap()).toList(),
+      'laps': laps.map((e) => e.toMap()).toList(),
+      'route': route?.toMap(),
+      'hasRoute': hasRoute,
+    };
+  }
+
+  @override
+  factory ExerciseSessionRecord.fromMap(Map<String, dynamic> map) {
+    return ExerciseSessionRecord(
+      startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime'] as int),
+      startZoneOffset: map['startZoneOffset'] != null
+          ? Duration(hours: map['startZoneOffset'] as int)
+          : null,
+      endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime'] as int),
+      endZoneOffset: map['endZoneOffset'] != null
+          ? Duration(hours: map['endZoneOffset'] as int)
+          : null,
+      metadata: Metadata.fromMap(map['metadata']),
+      exerciseType: ExerciseType.values[map['exerciseType']],
+      title: map['title'],
+      notes: map['notes'],
+      segments: List<ExerciseSegment>.from(
+          map['segments']?.map((x) => ExerciseSegment.fromMap(x))),
+      laps: List<ExerciseLap>.from(
+          map['laps']?.map((x) => ExerciseLap.fromMap(x))),
+      route: map['route'] != null ? ExerciseRoute.fromMap(map['route']) : null,
+    );
+  }
+
+  @override
+  String toString() {
+    return 'ExerciseSessionRecord{endTime: $endTime, endZoneOffset: $endZoneOffset, startTime: $startTime, startZoneOffset: $startZoneOffset, metadata: $metadata, exerciseType: $exerciseType, title: $title, notes: $notes, segments: $segments, laps: $laps, route: $route, hasRoute: $hasRoute}';
+  }
 }
 
 enum ExerciseType {

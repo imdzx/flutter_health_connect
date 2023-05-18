@@ -29,6 +29,41 @@ class CervicalMucusRecord extends InstantaneousRecord {
 
   @override
   int get hashCode => time.hashCode ^ zoneOffset.hashCode;
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'time': time.millisecondsSinceEpoch,
+      'zoneOffset': zoneOffset?.inHours,
+      'metadata': metadata.toMap(),
+      'sensation': sensation.index,
+      'appearance': appearance.index,
+    };
+  }
+
+  @override
+  factory CervicalMucusRecord.fromMap(Map<String, dynamic> map) {
+    return CervicalMucusRecord(
+      time: DateTime.fromMillisecondsSinceEpoch(map['time'] as int),
+      zoneOffset: map['zoneOffset'] != null
+          ? Duration(hours: map['zoneOffset'] as int)
+          : null,
+      metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>),
+      sensation: (map['sensation'] != null &&
+              map['sensation'] as int < Sensation.values.length)
+          ? Sensation.values[map['sensation'] as int]
+          : Sensation.unknown,
+      appearance: (map['appearance'] != null &&
+              map['appearance'] as int < Appearance.values.length)
+          ? Appearance.values[map['appearance'] as int]
+          : Appearance.unknown,
+    );
+  }
+
+  @override
+  String toString() {
+    return 'CervicalMucusRecord{time: $time, zoneOffset: $zoneOffset, metadata: $metadata, sensation: $sensation, appearance: $appearance}';
+  }
 }
 
 enum Appearance {

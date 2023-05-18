@@ -34,4 +34,31 @@ class BodyFatRecord extends InstantaneousRecord {
 
   static const double _minBodyFatPercentage = 0;
   static const double _maxBodyFatPercentage = 100;
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'time': time.millisecondsSinceEpoch,
+      'zoneOffset': zoneOffset?.inHours,
+      'metadata': metadata.toMap(),
+      'percentage': percentage.value,
+    };
+  }
+
+  @override
+  factory BodyFatRecord.fromMap(Map<String, dynamic> map) {
+    return BodyFatRecord(
+      time: DateTime.fromMillisecondsSinceEpoch(map['time'] as int),
+      zoneOffset: map['zoneOffset'] != null
+          ? Duration(hours: map['zoneOffset'] as int)
+          : null,
+      metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>),
+      percentage: Percentage(map['percentage'] as double),
+    );
+  }
+
+  @override
+  String toString() {
+    return 'BodyFatRecord{time: $time, zoneOffset: $zoneOffset, metadata: $metadata, percentage: $percentage}';
+  }
 }

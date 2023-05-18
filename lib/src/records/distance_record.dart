@@ -50,4 +50,36 @@ class DistanceRecord extends IntervalRecord {
 
   static const Length _minDistance = Length.meters(0);
   static const Length _maxDistance = Length.meters(1000000);
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'startTime': startTime.millisecondsSinceEpoch,
+      'startZoneOffset': startZoneOffset?.inHours,
+      'endTime': endTime.millisecondsSinceEpoch,
+      'endZoneOffset': endZoneOffset?.inHours,
+      'metadata': metadata.toMap(),
+      'distance': distance.inMeters,
+    };
+  }
+
+  @override
+  factory DistanceRecord.fromMap(Map<String, dynamic> map) {
+    return DistanceRecord(
+        startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime'] as int),
+        startZoneOffset: map['startZoneOffset'] != null
+            ? Duration(hours: map['startZoneOffset'] as int)
+            : null,
+        endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime'] as int),
+        endZoneOffset: map['endZoneOffset'] != null
+            ? Duration(hours: map['endZoneOffset'] as int)
+            : null,
+        distance: Length.meters(map['distance'] as double),
+        metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>));
+  }
+
+  @override
+  String toString() {
+    return 'DistanceRecord{endTime: $endTime, endZoneOffset: $endZoneOffset, metadata: $metadata, startTime: $startTime, startZoneOffset: $startZoneOffset, distance: $distance}';
+  }
 }

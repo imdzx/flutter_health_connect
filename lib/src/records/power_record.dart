@@ -45,6 +45,40 @@ class PowerRecord extends SeriesRecord<PowerSample> {
       samples.hashCode ^
       startTime.hashCode ^
       startZoneOffset.hashCode;
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'endTime': endTime.millisecondsSinceEpoch,
+      'endZoneOffset': endZoneOffset?.inHours,
+      'samples': samples.map((e) => e.toMap()).toList(),
+      'startTime': startTime.millisecondsSinceEpoch,
+      'startZoneOffset': startZoneOffset?.inHours,
+      'metadata': metadata.toMap(),
+    };
+  }
+
+  @override
+  factory PowerRecord.fromMap(Map<String, dynamic> map) {
+    return PowerRecord(
+      endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime'] as int),
+      endZoneOffset: map['endZoneOffset'] == null
+          ? null
+          : Duration(hours: map['endZoneOffset'] as int),
+      metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>),
+      startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime'] as int),
+      startZoneOffset: map['startZoneOffset'] == null
+          ? null
+          : Duration(hours: map['startZoneOffset'] as int),
+      samples: List<PowerSample>.from(
+          map['samples']?.map((x) => PowerSample.fromMap(x))),
+    );
+  }
+
+  @override
+  String toString() {
+    return 'PowerRecord(endTime: $endTime, endZoneOffset: $endZoneOffset, samples: $samples, startTime: $startTime, startZoneOffset: $startZoneOffset, metadata: $metadata)';
+  }
 }
 
 class PowerSample {
@@ -67,4 +101,18 @@ class PowerSample {
 
   static const Power _minPower = Power.watts(0);
   static const Power _maxPower = Power.watts(100000);
+
+  Map<String, dynamic> toMap() {
+    return {
+      'power': power.inWatts,
+      'time': time.millisecondsSinceEpoch,
+    };
+  }
+
+  static PowerSample fromMap(Map<String, dynamic> map) {
+    return PowerSample(
+      power: Power.watts(map['power']),
+      time: DateTime.fromMillisecondsSinceEpoch(map['time']),
+    );
+  }
 }

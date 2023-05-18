@@ -49,4 +49,36 @@ class StepsRecord extends IntervalRecord {
 
   static const int _minSteps = 1;
   static const int _maxSteps = 1000000;
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'startTime': startTime.millisecondsSinceEpoch,
+      'startZoneOffset': startZoneOffset?.inHours,
+      'endTime': endTime.millisecondsSinceEpoch,
+      'endZoneOffset': endZoneOffset?.inHours,
+      'steps': steps,
+    };
+  }
+
+  @override
+  factory StepsRecord.fromMap(Map<String, dynamic> map) {
+    return StepsRecord(
+      startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime'] as int),
+      startZoneOffset: map['startZoneOffset'] != null
+          ? Duration(hours: map['startZoneOffset'] as int)
+          : null,
+      endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime'] as int),
+      endZoneOffset: map['endZoneOffset'] != null
+          ? Duration(hours: map['endZoneOffset'] as int)
+          : null,
+      metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>),
+      steps: map['steps'] as int,
+    );
+  }
+
+  @override
+  String toString() {
+    return 'StepsRecord{endTime: $endTime, endZoneOffset: $endZoneOffset, startTime: $startTime, startZoneOffset: $startZoneOffset, metadata: $metadata, steps: $steps}';
+  }
 }

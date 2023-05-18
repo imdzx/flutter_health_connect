@@ -28,6 +28,31 @@ class SexualActivityRecord extends InstantaneousRecord {
   @override
   int get hashCode =>
       time.hashCode ^ zoneOffset.hashCode ^ protectionUsed.hashCode;
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'time': time.millisecondsSinceEpoch,
+      'zoneOffset': zoneOffset?.inHours,
+      'metadata': metadata.toMap(),
+      'protectionUsed': protectionUsed.index,
+    };
+  }
+
+  @override
+  factory SexualActivityRecord.fromMap(Map<String, dynamic> map) {
+    return SexualActivityRecord(
+      time: DateTime.fromMillisecondsSinceEpoch(map['time'] as int),
+      zoneOffset: map['zoneOffset'] != null
+          ? Duration(hours: map['zoneOffset'] as int)
+          : null,
+      metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>),
+      protectionUsed: (map['protectionUsed'] != null &&
+              map['protectionUsed'] < Protection.values.length)
+          ? Protection.values[map['protectionUsed'] as int]
+          : Protection.unknown,
+    );
+  }
 }
 
 enum Protection {

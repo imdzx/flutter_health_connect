@@ -426,4 +426,185 @@ class NutritionRecord extends IntervalRecord {
       startZoneOffset.hashCode ^
       endTime.hashCode ^
       endZoneOffset.hashCode;
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'startTime': startTime.millisecondsSinceEpoch,
+      'startZoneOffset': startZoneOffset?.inHours,
+      'endTime': endTime.millisecondsSinceEpoch,
+      'endZoneOffset': endZoneOffset?.inHours,
+      'name': name,
+      'mealType': mealType.index,
+      'biotin': biotin?.inGrams,
+      'caffeine': caffeine?.inGrams,
+      'calcium': calcium?.inGrams,
+      'energy': energy?.inCalories,
+      'energyFromFat': energyFromFat?.inCalories,
+      'chloride': chloride?.inGrams,
+      'cholesterol': cholesterol?.inGrams,
+      'chromium': chromium?.inGrams,
+      'copper': copper?.inGrams,
+      'dietaryFiber': dietaryFiber?.inGrams,
+      'folate': folate?.inGrams,
+      'iodine': iodine?.inGrams,
+      'iron': iron?.inGrams,
+      'magnesium': magnesium?.inGrams,
+      'manganese': manganese?.inGrams,
+      'molybdenum': molybdenum?.inGrams,
+      'monounsaturatedFat': monounsaturatedFat?.inGrams,
+      'niacin': niacin?.inGrams,
+      'pantothenicAcid': pantothenicAcid?.inGrams,
+      'phosphorus': phosphorus?.inGrams,
+      'polyunsaturatedFat': polyunsaturatedFat?.inGrams,
+      'potassium': potassium?.inGrams,
+      'protein': protein?.inGrams,
+      'riboflavin': riboflavin?.inGrams,
+      'saturatedFat': saturatedFat?.inGrams,
+      'selenium': selenium?.inGrams,
+      'sodium': sodium?.inGrams,
+      'sugar': sugar?.inGrams,
+      'thiamin': thiamin?.inGrams,
+      'totalCarbohydrates': totalCarbohydrates?.inGrams,
+      'totalFat': totalFat?.inGrams,
+      'transFat': transFat?.inGrams,
+      'unsaturatedFat': unsaturatedFat?.inGrams,
+      'vitaminA': vitaminA?.inGrams,
+      'vitaminB12': vitaminB12?.inGrams,
+      'vitaminB6': vitaminB6?.inGrams,
+      'vitaminC': vitaminC?.inGrams,
+      'vitaminD': vitaminD?.inGrams,
+      'vitaminE': vitaminE?.inGrams,
+      'vitaminK': vitaminK?.inGrams,
+      'zinc': zinc?.inGrams,
+    };
+  }
+
+  @override
+  factory NutritionRecord.fromMap(Map<String, dynamic> map) {
+    return NutritionRecord(
+      endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime'] as int),
+      endZoneOffset: map['endZoneOffset'] == null
+          ? null
+          : Duration(hours: map['endZoneOffset'] as int),
+      metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>),
+      startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime'] as int),
+      startZoneOffset: map['startZoneOffset'] == null
+          ? null
+          : Duration(hours: map['startZoneOffset'] as int),
+      name: map['name'] as String,
+      mealType: (map['mealType'] != null &&
+              map['mealType'] as int < MealType.values.length)
+          ? MealType.values[map['mealType'] as int]
+          : MealType.unknown,
+      biotin:
+          map['biotin'] == null ? null : Mass.grams(map['biotin'] as double),
+      caffeine: map['caffeine'] == null
+          ? null
+          : Mass.grams(map['caffeine'] as double),
+      calcium:
+          map['calcium'] == null ? null : Mass.grams(map['calcium'] as double),
+      energy: map['energy'] == null
+          ? null
+          : Energy.calories(map['energy'] as double),
+      energyFromFat: map['energyFromFat'] == null
+          ? null
+          : Energy.calories(map['energyFromFat'] as double),
+      chloride: map['chloride'] == null
+          ? null
+          : Mass.grams(map['chloride'] as double),
+      cholesterol: map['cholesterol'] == null
+          ? null
+          : Mass.grams(map['cholesterol'] as double),
+      chromium: map['chromium'] == null
+          ? null
+          : Mass.grams(map['chromium'] as double),
+      copper:
+          map['copper'] == null ? null : Mass.grams(map['copper'] as double),
+      dietaryFiber: map['dietaryFiber'] == null
+          ? null
+          : Mass.grams(map['dietaryFiber'] as double),
+      folate:
+          map['folate'] == null ? null : Mass.grams(map['folate'] as double),
+      iodine:
+          map['iodine'] == null ? null : Mass.grams(map['iodine'] as double),
+      iron: map['iron'] == null ? null : Mass.grams(map['iron'] as double),
+      magnesium: map['magnesium'] == null
+          ? null
+          : Mass.grams(map['magnesium'] as double),
+      manganese: map['manganese'] == null
+          ? null
+          : Mass.grams(map['manganese'] as double),
+      molybdenum: map['molybdenum'] == null
+          ? null
+          : Mass.grams(map['molybdenum'] as double),
+      monounsaturatedFat: map['monounsaturatedFat'] == null
+          ? null
+          : Mass.grams(map['monounsaturatedFat'] as double),
+      niacin:
+          map['niacin'] == null ? null : Mass.grams(map['niacin'] as double),
+      pantothenicAcid: map['pantothenicAcid'] == null
+          ? null
+          : Mass.grams(map['pantothenicAcid'] as double),
+      phosphorus: map['phosphorus'] == null
+          ? null
+          : Mass.grams(map['phosphorus'] as double),
+      polyunsaturatedFat: map['polyunsaturatedFat'] == null
+          ? null
+          : Mass.grams(map['polyunsaturatedFat'] as double),
+      potassium: map['potassium'] == null
+          ? null
+          : Mass.grams(map['potassium'] as double),
+      protein:
+          map['protein'] == null ? null : Mass.grams(map['protein'] as double),
+      riboflavin: map['riboflavin'] == null
+          ? null
+          : Mass.grams(map['riboflavin'] as double),
+      saturatedFat: map['saturatedFat'] == null
+          ? null
+          : Mass.grams(map['saturatedFat'] as double),
+      selenium: map['selenium'] == null
+          ? null
+          : Mass.grams(map['selenium'] as double),
+      sodium:
+          map['sodium'] == null ? null : Mass.grams(map['sodium'] as double),
+      sugar: map['sugar'] == null ? null : Mass.grams(map['sugar'] as double),
+      thiamin:
+          map['thiamin'] == null ? null : Mass.grams(map['thiamin'] as double),
+      totalCarbohydrates: map['totalCarbohydrates'] == null
+          ? null
+          : Mass.grams(map['totalCarbohydrates'] as double),
+      totalFat: map['totalFat'] == null
+          ? null
+          : Mass.grams(map['totalFat'] as double),
+      transFat: map['transFat'] == null
+          ? null
+          : Mass.grams(map['transFat'] as double),
+      unsaturatedFat: map['unsaturatedFat'] == null
+          ? null
+          : Mass.grams(map['unsaturatedFat'] as double),
+      vitaminA: map['vitaminA'] == null
+          ? null
+          : Mass.grams(map['vitaminA'] as double),
+      vitaminB12: map['vitaminB12'] == null
+          ? null
+          : Mass.grams(map['vitaminB12'] as double),
+      vitaminB6: map['vitaminB6'] == null
+          ? null
+          : Mass.grams(map['vitaminB6'] as double),
+      vitaminC: map['vitaminC'] == null
+          ? null
+          : Mass.grams(map['vitaminC'] as double),
+      vitaminD: map['vitaminD'] == null
+          ? null
+          : Mass.grams(map['vitaminD'] as double),
+      vitaminE: map['vitaminE'] == null
+          ? null
+          : Mass.grams(map['vitaminE'] as double),
+      vitaminK: map['vitaminK'] == null
+          ? null
+          : Mass.grams(map['vitaminK'] as double),
+      zinc: map['zinc'] == null ? null : Mass.grams(map['zinc'] as double),
+    );
+  }
 }

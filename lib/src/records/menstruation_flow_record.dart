@@ -25,6 +25,29 @@ class MenstruationFlowRecord extends InstantaneousRecord {
   @override
   int get hashCode =>
       metadata.hashCode ^ time.hashCode ^ zoneOffset.hashCode ^ flow.hashCode;
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'metadata': metadata.toMap(),
+      'time': time.millisecondsSinceEpoch,
+      'zoneOffset': zoneOffset?.inHours,
+      'flow': flow.index
+    };
+  }
+
+  @override
+  factory MenstruationFlowRecord.fromMap(Map<String, dynamic> map) {
+    return MenstruationFlowRecord(
+        metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>),
+        time: DateTime.fromMillisecondsSinceEpoch(map['time'] as int),
+        zoneOffset: map['zoneOffset'] != null
+            ? Duration(hours: map['zoneOffset'] as int)
+            : null,
+        flow: (map['flow'] != null && map['flow'] as int < Flow.values.length)
+            ? Flow.values[map['flow'] as int]
+            : Flow.unknown);
+  }
 }
 
 enum Flow {

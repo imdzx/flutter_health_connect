@@ -34,4 +34,31 @@ class BoneMassRecord extends InstantaneousRecord {
 
   static const Mass _minBoneMass = Mass.kilograms(0);
   static const Mass _maxBoneMass = Mass.kilograms(100);
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'time': time.millisecondsSinceEpoch,
+      'zoneOffset': zoneOffset?.inHours,
+      'metadata': metadata.toMap(),
+      'mass': mass.inKilograms,
+    };
+  }
+
+  @override
+  factory BoneMassRecord.fromMap(Map<String, dynamic> map) {
+    return BoneMassRecord(
+      time: DateTime.fromMillisecondsSinceEpoch(map['time'] as int),
+      zoneOffset: map['zoneOffset'] != null
+          ? Duration(hours: map['zoneOffset'] as int)
+          : null,
+      metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>),
+      mass: Mass.kilograms(map['mass'] as double),
+    );
+  }
+
+  @override
+  String toString() {
+    return 'BoneMassRecord{time: $time, zoneOffset: $zoneOffset, metadata: $metadata, mass: $mass}';
+  }
 }

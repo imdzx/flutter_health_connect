@@ -50,4 +50,36 @@ class HydrationRecord extends IntervalRecord {
 
   static const Volume _minVolume = Volume.liters(0);
   static const Volume _maxVolume = Volume.liters(100);
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'startTime': startTime.millisecondsSinceEpoch,
+      'startZoneOffset': startZoneOffset?.inHours,
+      'endTime': endTime.millisecondsSinceEpoch,
+      'endZoneOffset': endZoneOffset?.inHours,
+      'volume': volume.inLiters,
+    };
+  }
+
+  @override
+  factory HydrationRecord.fromMap(Map<String, dynamic> map) {
+    return HydrationRecord(
+      endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime'] as int),
+      endZoneOffset: map['endZoneOffset'] != null
+          ? Duration(hours: map['endZoneOffset'] as int)
+          : null,
+      metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>),
+      startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime'] as int),
+      startZoneOffset: map['startZoneOffset'] != null
+          ? Duration(hours: map['startZoneOffset'] as int)
+          : null,
+      volume: Volume.liters(map['volume'] as double),
+    );
+  }
+
+  @override
+  String toString() {
+    return 'HydrationRecord{endTime: $endTime, endZoneOffset: $endZoneOffset, metadata: $metadata, startTime: $startTime, startZoneOffset: $startZoneOffset, volume: $volume}';
+  }
 }

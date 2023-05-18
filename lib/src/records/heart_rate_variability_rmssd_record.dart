@@ -33,4 +33,31 @@ class HeartRateVariabilityRmssdRecord extends InstantaneousRecord {
 
   static const double _minHeartRateVariabilityMillis = 1.0;
   static const double _maxHeartRateVariabilityMillis = 200.0;
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'time': time.millisecondsSinceEpoch,
+      'zoneOffset': zoneOffset?.inHours,
+      'metadata': metadata.toMap(),
+      'heartRateVariabilityMillis': heartRateVariabilityMillis,
+    };
+  }
+
+  @override
+  factory HeartRateVariabilityRmssdRecord.fromMap(Map<String, dynamic> map) {
+    return HeartRateVariabilityRmssdRecord(
+      time: DateTime.fromMillisecondsSinceEpoch(map['time'] as int),
+      zoneOffset: map['zoneOffset'] != null
+          ? Duration(hours: map['zoneOffset'] as int)
+          : null,
+      metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>),
+      heartRateVariabilityMillis: map['heartRateVariabilityMillis'] as double,
+    );
+  }
+
+  @override
+  String toString() {
+    return 'HeartRateVariabilityRmssdRecord{metadata: $metadata, time: $time, zoneOffset: $zoneOffset, heartRateVariabilityMillis: $heartRateVariabilityMillis}';
+  }
 }

@@ -48,4 +48,36 @@ class WheelchairPushesRecord extends IntervalRecord {
 
   static const int _minCount = 1;
   static const int _maxCount = 1000000;
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'startTime': startTime.millisecondsSinceEpoch,
+      'startZoneOffset': startZoneOffset?.inHours,
+      'endTime': endTime.millisecondsSinceEpoch,
+      'endZoneOffset': endZoneOffset?.inHours,
+      'count': count,
+    };
+  }
+
+  @override
+  factory WheelchairPushesRecord.fromMap(Map<String, dynamic> map) {
+    return WheelchairPushesRecord(
+      startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime'] as int),
+      startZoneOffset: map['startZoneOffset'] != null
+          ? Duration(hours: map['startZoneOffset'] as int)
+          : null,
+      endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime'] as int),
+      endZoneOffset: map['endZoneOffset'] != null
+          ? Duration(hours: map['endZoneOffset'] as int)
+          : null,
+      count: map['count'] as int,
+      metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>),
+    );
+  }
+
+  @override
+  String toString() {
+    return 'WheelchairPushesRecord{endTime: $endTime, endZoneOffset: $endZoneOffset, metadata: $metadata, startTime: $startTime, startZoneOffset: $startZoneOffset, count: $count}';
+  }
 }

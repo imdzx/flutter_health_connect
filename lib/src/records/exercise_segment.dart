@@ -19,7 +19,7 @@ class ExerciseSegment {
   bool isCompatibleWith(ExerciseType sessionType) {
     if (_universalSessionTypes.contains(sessionType)) {
       return true;
-    } else if (_universalSessionTypes.contains(segmentType)) {
+    } else if (_universalSegments.contains(segmentType)) {
       return true;
     }
     return _sessionToSessionMapping[sessionType]!.contains(segmentType);
@@ -151,6 +151,32 @@ class ExerciseSegment {
     ExerciseType.weightlifting: _exerciseSegments,
     ExerciseType.yoga: {ExerciseSegmentType.yoga},
   };
+
+  Map<String, dynamic> toMap() {
+    return {
+      'startTime': startTime.millisecondsSinceEpoch,
+      'endTime': endTime.millisecondsSinceEpoch,
+      'segmentType': segmentType.index,
+      'repetitions': repetitions,
+    };
+  }
+
+  factory ExerciseSegment.fromMap(Map<String, dynamic> map) {
+    return ExerciseSegment(
+      startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime'] as int),
+      endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime'] as int),
+      segmentType: (map['segmentType'] != null &&
+              map['segmentType'] as int < ExerciseSegmentType.values.length)
+          ? ExerciseSegmentType.values[map['segmentType'] as int]
+          : ExerciseSegmentType.unknown,
+      repetitions: map['repetitions'],
+    );
+  }
+
+  @override
+  String toString() {
+    return 'ExerciseSegment{startTime: $startTime, endTime: $endTime, segmentType: $segmentType, repetitions: $repetitions}';
+  }
 }
 
 enum ExerciseSegmentType {

@@ -50,6 +50,48 @@ class BloodGlucoseRecord extends InstantaneousRecord {
       mealType.hashCode ^
       time.hashCode ^
       zoneOffset.hashCode;
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'time': time.millisecondsSinceEpoch,
+      'zoneOffset': zoneOffset?.inHours,
+      'metadata': metadata.toMap(),
+      'level': level.inMilligramsPerDeciliter,
+      'specimenSource': specimenSource.index,
+      'relationToMeal': relationToMeal.index,
+      'mealType': mealType.index,
+    };
+  }
+
+  @override
+  factory BloodGlucoseRecord.fromMap(Map<String, dynamic> map) {
+    return BloodGlucoseRecord(
+      time: DateTime.fromMillisecondsSinceEpoch(map['time'] as int),
+      zoneOffset: map['zoneOffset'] != null
+          ? Duration(hours: map['zoneOffset'] as int)
+          : null,
+      metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>),
+      level: BloodGlucose.milligramsPerDeciliter(map['level'] as double),
+      specimenSource: (map['specimenSource'] != null &&
+              map['specimenSource'] as int < SpecimenSource.values.length)
+          ? SpecimenSource.values[map['specimenSource'] as int]
+          : SpecimenSource.unknown,
+      relationToMeal: (map['relationToMeal'] != null &&
+              map['relationToMeal'] as int < RelationToMeal.values.length)
+          ? RelationToMeal.values[map['relationToMeal'] as int]
+          : RelationToMeal.unknown,
+      mealType: (map['mealType'] != null &&
+              map['mealType'] as int < MealType.values.length)
+          ? MealType.values[map['mealType'] as int]
+          : MealType.unknown,
+    );
+  }
+
+  @override
+  String toString() {
+    return 'BloodGlucoseRecord{time: $time, zoneOffset: $zoneOffset, metadata: $metadata, level: $level, specimenSource: $specimenSource, relationToMeal: $relationToMeal, mealType: $mealType}';
+  }
 }
 
 enum SpecimenSource {

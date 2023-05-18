@@ -62,6 +62,42 @@ class SleepSessionRecord extends IntervalRecord {
       title.hashCode ^
       notes.hashCode ^
       stages.hashCode;
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'startTime': startTime.millisecondsSinceEpoch,
+      'startZoneOffset': startZoneOffset?.inHours,
+      'endTime': endTime.millisecondsSinceEpoch,
+      'endZoneOffset': endZoneOffset?.inHours,
+      'title': title,
+      'notes': notes,
+      'stages': stages.map((e) => e.toMap()).toList(),
+    };
+  }
+
+  @override
+  factory SleepSessionRecord.fromMap(Map<String, dynamic> map) {
+    return SleepSessionRecord(
+      startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime'] as int),
+      startZoneOffset: map['startZoneOffset'] != null
+          ? Duration(hours: map['startZoneOffset'] as int)
+          : null,
+      endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime'] as int),
+      endZoneOffset: map['endZoneOffset'] != null
+          ? Duration(hours: map['endZoneOffset'] as int)
+          : null,
+      title: map['title'] as String?,
+      notes: map['notes'] as String?,
+      stages:
+          (map['stages'] as List).map((e) => SleepStage.fromMap(e)).toList(),
+    );
+  }
+
+  @override
+  String toString() {
+    return 'SleepSessionRecord{startTime: $startTime, endTime: $endTime, endZoneOffset: $endZoneOffset, startZoneOffset: $startZoneOffset, metadata: $metadata, title: $title, notes: $notes, stages: $stages}';
+  }
 }
 
 class SleepStage {
@@ -85,6 +121,30 @@ class SleepStage {
 
   @override
   int get hashCode => startTime.hashCode ^ endTime.hashCode ^ type.hashCode;
+
+  Map<String, dynamic> toMap() {
+    return {
+      'startTime': startTime.millisecondsSinceEpoch,
+      'endTime': endTime.millisecondsSinceEpoch,
+      'type': type.index,
+    };
+  }
+
+  static SleepStage fromMap(Map<String, dynamic> map) {
+    return SleepStage(
+      startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime']),
+      endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime']),
+      type: (map['type'] != null &&
+              map['type'] as int < SleepStageType.values.length)
+          ? SleepStageType.values[map['type'] as int]
+          : SleepStageType.unknown,
+    );
+  }
+
+  @override
+  String toString() {
+    return 'SleepStage{startTime: $startTime, endTime: $endTime, type: $type}';
+  }
 }
 
 enum SleepStageType {

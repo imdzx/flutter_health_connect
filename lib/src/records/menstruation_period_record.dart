@@ -44,4 +44,30 @@ class MenstruationPeriodRecord extends IntervalRecord {
       startZoneOffset.hashCode;
 
   static const maxDuration = Duration(days: 31);
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'startTime': startTime.millisecondsSinceEpoch,
+      'startZoneOffset': startZoneOffset?.inHours,
+      'endTime': endTime.millisecondsSinceEpoch,
+      'endZoneOffset': endZoneOffset?.inHours,
+      'metadata': metadata.toMap(),
+    };
+  }
+
+  @override
+  factory MenstruationPeriodRecord.fromMap(Map<String, dynamic> map) {
+    return MenstruationPeriodRecord(
+      endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime']),
+      endZoneOffset: map['endZoneOffset'] != null
+          ? Duration(hours: map['endZoneOffset'] as int)
+          : null,
+      metadata: Metadata.fromMap(map['metadata']),
+      startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime']),
+      startZoneOffset: map['startZoneOffset'] != null
+          ? Duration(hours: map['startZoneOffset'] as int)
+          : null,
+    );
+  }
 }

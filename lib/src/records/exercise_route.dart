@@ -28,6 +28,21 @@ class ExerciseRoute {
 
   @override
   int get hashCode => route.hashCode;
+
+  Map<String, dynamic> toMap() {
+    return {
+      'route': route.map((x) => x.toMap()).toList(),
+    };
+  }
+
+  factory ExerciseRoute.fromMap(Map<String, dynamic> map) {
+    return ExerciseRoute(
+      route: List<Location>.from(map['route']?.map((x) => Location.fromMap(x))),
+    );
+  }
+
+  @override
+  String toString() => 'ExerciseRoute(route: $route)';
 }
 
 class Location {
@@ -78,4 +93,37 @@ class Location {
   static const double _maxLongitude = 180.0;
   static const Length _minHorizontalAccuracy = Length.meters(0);
   static const Length _minVerticalAccuracy = Length.meters(0);
+
+  Map<String, dynamic> toMap() {
+    return {
+      'time': time.millisecondsSinceEpoch,
+      'latitude': latitude,
+      'longitude': longitude,
+      'altitude': altitude?.inMeters,
+      'horizontalAccuracy': horizontalAccuracy?.inMeters,
+      'verticalAccuracy': verticalAccuracy?.inMeters,
+    };
+  }
+
+  factory Location.fromMap(Map<String, dynamic> map) {
+    return Location(
+      time: DateTime.fromMillisecondsSinceEpoch(map['time'] as int),
+      latitude: map['latitude'] as double,
+      longitude: map['longitude'] as double,
+      altitude: map['altitude'] != null
+          ? Length.meters(map['altitude'] as double)
+          : null,
+      horizontalAccuracy: map['horizontalAccuracy'] != null
+          ? Length.meters(map['horizontalAccuracy'] as double)
+          : null,
+      verticalAccuracy: map['verticalAccuracy'] != null
+          ? Length.meters(map['verticalAccuracy'] as double)
+          : null,
+    );
+  }
+
+  @override
+  String toString() {
+    return 'Location(time: $time, latitude: $latitude, longitude: $longitude, altitude: $altitude, horizontalAccuracy: $horizontalAccuracy, verticalAccuracy: $verticalAccuracy)';
+  }
 }

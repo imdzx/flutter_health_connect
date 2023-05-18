@@ -45,6 +45,39 @@ class CyclingPedalingCadenceRecord extends SeriesRecord<Sample> {
       startTime.hashCode ^
       startZoneOffset.hashCode ^
       samples.hashCode;
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'endTime': endTime.millisecondsSinceEpoch,
+      'endZoneOffset': endZoneOffset?.inHours,
+      'metadata': metadata.toMap(),
+      'startTime': startTime.millisecondsSinceEpoch,
+      'startZoneOffset': startZoneOffset?.inHours,
+      'samples': samples.map((e) => e.toMap()).toList(),
+    };
+  }
+
+  @override
+  factory CyclingPedalingCadenceRecord.fromMap(Map<String, dynamic> map) {
+    return CyclingPedalingCadenceRecord(
+        startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime'] as int),
+        startZoneOffset: map['startZoneOffset'] != null
+            ? Duration(hours: map['startZoneOffset'] as int)
+            : null,
+        endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime'] as int),
+        endZoneOffset: map['endZoneOffset'] != null
+            ? Duration(hours: map['endZoneOffset'] as int)
+            : null,
+        samples:
+            List<Sample>.from(map['samples']?.map((e) => Sample.fromMap(e))),
+        metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>));
+  }
+
+  @override
+  String toString() {
+    return 'CyclingPedalingCadenceRecord{endTime: $endTime, endZoneOffset: $endZoneOffset, metadata: $metadata, startTime: $startTime, startZoneOffset: $startZoneOffset, samples: $samples}';
+  }
 }
 
 class Sample {
@@ -65,4 +98,21 @@ class Sample {
 
   static const double _minRevolutionsPerMinute = 0;
   static const double _maxRevolutionsPerMinute = 10000.0;
+
+  Map<String, dynamic> toMap() {
+    return {
+      'revolutionsPerMinute': revolutionsPerMinute,
+    };
+  }
+
+  static Sample fromMap(Map<String, dynamic> map) {
+    return Sample(
+      revolutionsPerMinute: map['revolutionsPerMinute'] as double,
+    );
+  }
+
+  @override
+  String toString() {
+    return 'Sample{revolutionsPerMinute: $revolutionsPerMinute}';
+  }
 }

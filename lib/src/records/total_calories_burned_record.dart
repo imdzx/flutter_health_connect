@@ -53,4 +53,37 @@ class TotalCaloriesBurnedRecord extends IntervalRecord {
 
   static const Energy _minTotalCaloriesBurned = Energy.calories(0);
   static const Energy _maxTotalCaloriesBurned = Energy.calories(1000000);
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'startTime': startTime.millisecondsSinceEpoch,
+      'startZoneOffset': startZoneOffset?.inHours,
+      'endTime': endTime.millisecondsSinceEpoch,
+      'endZoneOffset': endZoneOffset?.inHours,
+      'totalCaloriesBurned': totalCaloriesBurned.inCalories,
+    };
+  }
+
+  @override
+  factory TotalCaloriesBurnedRecord.fromMap(Map<String, dynamic> map) {
+    return TotalCaloriesBurnedRecord(
+      endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime'] as int),
+      endZoneOffset: map['endZoneOffset'] == null
+          ? null
+          : Duration(hours: map['endZoneOffset'] as int),
+      metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>),
+      startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime'] as int),
+      startZoneOffset: map['startZoneOffset'] == null
+          ? null
+          : Duration(hours: map['startZoneOffset'] as int),
+      totalCaloriesBurned:
+          Energy.calories(map['totalCaloriesBurned'] as double),
+    );
+  } // f
+
+  @override
+  String toString() {
+    return 'TotalCaloriesBurnedRecord{endTime: $endTime, endZoneOffset: $endZoneOffset, startTime: $startTime, startZoneOffset: $startZoneOffset, metadata: $metadata, totalCaloriesBurned: $totalCaloriesBurned}';
+  }
 }

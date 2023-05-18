@@ -45,6 +45,41 @@ class HeartRateRecord extends SeriesRecord<HeartRateSample> {
       samples.hashCode ^
       startTime.hashCode ^
       startZoneOffset.hashCode;
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'endTime': endTime.millisecondsSinceEpoch,
+      'endZoneOffset': endZoneOffset?.inHours,
+      'metadata': metadata.toMap(),
+      'samples': samples.map((e) => e.toMap()).toList(),
+      'startTime': startTime.millisecondsSinceEpoch,
+      'startZoneOffset': startZoneOffset?.inHours,
+    };
+  }
+
+  @override
+  factory HeartRateRecord.fromMap(Map<String, dynamic> map) {
+    return HeartRateRecord(
+      endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime'] as int),
+      endZoneOffset: map['endZoneOffset'] == null
+          ? null
+          : Duration(hours: map['endZoneOffset'] as int),
+      metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>),
+      samples: (map['samples'] as List<dynamic>)
+          .map((e) => HeartRateSample.fromMap(e as Map<String, dynamic>))
+          .toList(),
+      startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime'] as int),
+      startZoneOffset: map['startZoneOffset'] == null
+          ? null
+          : Duration(hours: map['startZoneOffset'] as int),
+    );
+  }
+
+  @override
+  String toString() {
+    return 'HeartRateRecord{endTime: $endTime, endZoneOffset: $endZoneOffset, metadata: $metadata, samples: $samples, startTime: $startTime, startZoneOffset: $startZoneOffset}';
+  }
 }
 
 class HeartRateSample {
@@ -69,4 +104,18 @@ class HeartRateSample {
 
   static const int _minBeatsPerMinute = 1;
   static const int _maxBeatsPerMinute = 300;
+
+  Map<String, dynamic> toMap() {
+    return {
+      'beatsPerMinute': beatsPerMinute,
+      'time': time.millisecondsSinceEpoch,
+    };
+  }
+
+  factory HeartRateSample.fromMap(Map<String, dynamic> map) {
+    return HeartRateSample(
+      beatsPerMinute: map['beatsPerMinute'] as int,
+      time: DateTime.fromMillisecondsSinceEpoch(map['time'] as int),
+    );
+  }
 }

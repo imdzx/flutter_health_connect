@@ -48,4 +48,36 @@ class FloorsClimbedRecord extends IntervalRecord {
 
   static const double _minFloors = 0;
   static const double _maxFloors = 1000000.0;
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'startTime': startTime.millisecondsSinceEpoch,
+      'startZoneOffset': startZoneOffset?.inHours,
+      'endTime': endTime.millisecondsSinceEpoch,
+      'endZoneOffset': endZoneOffset?.inHours,
+      'floors': floors,
+    };
+  }
+
+  @override
+  factory FloorsClimbedRecord.fromMap(Map<String, dynamic> map) {
+    return FloorsClimbedRecord(
+      endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime'] as int),
+      endZoneOffset: map['endZoneOffset'] == null
+          ? null
+          : Duration(hours: map['endZoneOffset'] as int),
+      metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>),
+      startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime'] as int),
+      startZoneOffset: map['startZoneOffset'] == null
+          ? null
+          : Duration(hours: map['startZoneOffset'] as int),
+      floors: map['floors'] as double,
+    );
+  }
+
+  @override
+  String toString() {
+    return 'FloorsClimbedRecord{endTime: $endTime, endZoneOffset: $endZoneOffset, metadata: $metadata, startTime: $startTime, startZoneOffset: $startZoneOffset, floors: $floors}';
+  }
 }

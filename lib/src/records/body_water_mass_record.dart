@@ -34,4 +34,31 @@ class BodyWaterMassRecord extends InstantaneousRecord {
 
   static const Mass _minBodyWaterMass = Mass.kilograms(0);
   static const Mass _maxBodyWaterMass = Mass.kilograms(1000);
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'time': time.millisecondsSinceEpoch,
+      'zoneOffset': zoneOffset?.inHours,
+      'metadata': metadata.toMap(),
+      'mass': mass.inKilograms,
+    };
+  }
+
+  @override
+  factory BodyWaterMassRecord.fromMap(Map<String, dynamic> map) {
+    return BodyWaterMassRecord(
+      time: DateTime.fromMillisecondsSinceEpoch(map['time'] as int),
+      zoneOffset: map['zoneOffset'] != null
+          ? Duration(hours: map['zoneOffset'] as int)
+          : null,
+      metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>),
+      mass: Mass.kilograms(map['mass'] as double),
+    );
+  }
+
+  @override
+  String toString() {
+    return 'BodyWaterMassRecord{time: $time, zoneOffset: $zoneOffset, metadata: $metadata, mass: $mass}';
+  }
 }

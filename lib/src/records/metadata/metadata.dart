@@ -1,5 +1,6 @@
 import 'data_origin.dart';
 import 'device.dart';
+import 'device_types.dart';
 
 class Metadata {
   final String id;
@@ -52,6 +53,40 @@ class Metadata {
       recordingMethod.hashCode;
 
   static const String emptyId = '';
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'dataOrigin': {'packageName': dataOrigin.packageName},
+      'lastModifiedTime': lastModifiedTime.millisecondsSinceEpoch,
+      'clientRecordId': clientRecordId,
+      'clientRecordVersion': clientRecordVersion,
+      'device': device == null
+          ? null
+          : {
+              'manufacturer': device!.manufacturer,
+              'model': device!.model,
+              'type': device!.type?.index,
+            },
+      'recordingMethod': recordingMethod.index,
+    };
+  }
+
+  factory Metadata.fromMap(Map<String, dynamic> map) {
+    Map<String, dynamic> dataOriginMap = map['dataOrigin'];
+    Map<String, dynamic> deviceMap = map['device'];
+    return Metadata(
+      id: map['id'] as String,
+      dataOrigin: DataOrigin(dataOriginMap['packageName'] as String),
+      clientRecordId: map['clientRecordId'] as String?,
+      clientRecordVersion: map['clientRecordVersion'] as int,
+      device: Device(
+          manufacturer: deviceMap['manufacturer'] as String?,
+          model: deviceMap['model'] as String?,
+          type: DeviceTypes.values[deviceMap['type'] as int]),
+      recordingMethod: RecordingMethod.values[map['recordingMethod'] as int],
+    );
+  }
 }
 
 enum RecordingMethod {

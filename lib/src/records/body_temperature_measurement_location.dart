@@ -14,4 +14,9 @@ enum BodyTemperatureMeasurementLocation {
   final String measurementLocation;
 
   const BodyTemperatureMeasurementLocation(this.measurementLocation);
+
+  @override
+  String toString() {
+    return measurementLocation;
+  }
 }

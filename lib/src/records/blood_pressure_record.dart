@@ -59,6 +59,48 @@ class BloodPressureRecord extends InstantaneousRecord {
   static const Pressure _maxSystolic = Pressure.millimetersOfMercury(200);
   static const Pressure _minDiastolic = Pressure.millimetersOfMercury(10);
   static const Pressure _maxDiastolic = Pressure.millimetersOfMercury(180);
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'metadata': metadata.toMap(),
+      'time': time.millisecondsSinceEpoch,
+      'zoneOffset': zoneOffset?.inHours,
+      'systolic': systolic.inMillimetersOfMercury,
+      'diastolic': diastolic.inMillimetersOfMercury,
+      'measurementLocation': measurementLocation.index,
+      'bodyPosition': bodyPosition.index,
+    };
+  }
+
+  @override
+  factory BloodPressureRecord.fromMap(Map<String, dynamic> map) {
+    return BloodPressureRecord(
+      metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>),
+      time: DateTime.fromMillisecondsSinceEpoch(map['time'] as int),
+      zoneOffset: map['zoneOffset'] != null
+          ? Duration(hours: map['zoneOffset'] as int)
+          : null,
+      systolic: Pressure.millimetersOfMercury(map['systolic'] as double),
+      diastolic: Pressure.millimetersOfMercury(map['diastolic'] as double),
+      measurementLocation: (map['measurementLocation'] != null &&
+              map['measurementLocation'] as int <
+                  BloodPressureMeasurementLocation.values.length)
+          ? BloodPressureMeasurementLocation
+              .values[map['measurementLocation'] as int]
+          : BloodPressureMeasurementLocation.unknown,
+      bodyPosition: (map['bodyPosition'] != null &&
+              map['bodyPosition'] as int <
+                  BloodPressureBodyPosition.values.length)
+          ? BloodPressureBodyPosition.values[map['bodyPosition'] as int]
+          : BloodPressureBodyPosition.unknown,
+    );
+  }
+
+  @override
+  String toString() {
+    return 'BloodPressureRecord{metadata: $metadata, time: $time, zoneOffset: $zoneOffset, systolic: $systolic, diastolic: $diastolic, measurementLocation: $measurementLocation, bodyPosition: $bodyPosition}';
+  }
 }
 
 enum BloodPressureMeasurementLocation {

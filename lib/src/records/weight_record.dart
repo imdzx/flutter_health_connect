@@ -36,4 +36,31 @@ class WeightRecord extends InstantaneousRecord {
 
   static const Mass _minWeight = Mass.kilograms(0);
   static const Mass _maxWeight = Mass.kilograms(1000);
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'time': time.millisecondsSinceEpoch,
+      'zoneOffset': zoneOffset?.inHours,
+      'metadata': metadata.toMap(),
+      'weight': weight.inKilograms,
+    };
+  }
+
+  @override
+  factory WeightRecord.fromMap(Map<String, dynamic> map) {
+    return WeightRecord(
+      time: DateTime.fromMillisecondsSinceEpoch(map['time'] as int),
+      zoneOffset: map['zoneOffset'] != null
+          ? Duration(hours: map['zoneOffset'] as int)
+          : null,
+      metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>),
+      weight: Mass.kilograms(map['weight'] as double),
+    );
+  }
+
+  @override
+  String toString() {
+    return 'WeightRecord{time: $time, zoneOffset: $zoneOffset, weight: $weight, metadata: $metadata}';
+  }
 }
