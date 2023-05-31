@@ -177,7 +177,7 @@ class _MyAppState extends State<MyApp> {
                   final requests = <Future>[];
                   Map<String, dynamic> typePoints = {};
                   for (var type in types) {
-                    requests.add(HealthConnectFactory.getRecord(
+                    requests.add(HealthConnectFactory.getRecords(
                       type: type,
                       startTime: startTime,
                       endTime: endTime,
