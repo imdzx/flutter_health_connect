@@ -196,6 +196,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                     val pageSize = call.argument<Int>("pageSize") ?: MAX_LENGTH
                     val pageToken = call.argument<String?>("pageToken")
                     val ascendingOrder = call.argument<Boolean?>("ascendingOrder") ?: true
+                    val records = mutableListOf<Map<String, Any?>>()
                     try {
                         val start =
                             startTime?.let { LocalDateTime.parse(it) } ?: LocalDateTime.now()
@@ -211,12 +212,15 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                                     ascendingOrder = ascendingOrder,
                                 )
                             )
-                            result.success(
-                                replyMapper.convertValue(
-                                    reply,
-                                    hashMapOf<String, Any>()::class.java
+                            reply.records.forEach {
+                                records.add(
+                                    replyMapper.convertValue(
+                                        it,
+                                        hashMapOf<String, Any?>()::class.java
+                                    )
                                 )
-                            )
+                            }
+                            result.success(records)
                         } ?: throw Throwable("Unsupported type $type")
                     } catch (e: Throwable) {
                         result.error("GET_RECORD_FAIL", e.localizedMessage, e)

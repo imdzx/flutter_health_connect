@@ -48,7 +48,7 @@ class HealthConnectFactory {
     });
   }
 
-  static Future<Record> getRecord({
+  static Future<List<Record>> getRecords({
     required DateTime startTime,
     required DateTime endTime,
     required HealthConnectDataType type,
@@ -66,9 +66,11 @@ class HealthConnectFactory {
       'pageToken': pageToken,
       'ascendingOrder': ascendingOrder,
     };
-    return await _channel
-        .invokeMethod('getRecord', args)
-        .then((value) => mapToRecord(type, Map<String, Object>.from(value)));
+    List<Record> records = (await _channel.invokeMethod('getRecord', args)
+            as List<Map<String, dynamic>>)
+        .map((e) => mapToRecord(type, e))
+        .toList();
+    return records;
   }
 
   static Record mapToRecord(
