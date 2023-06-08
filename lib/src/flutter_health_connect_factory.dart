@@ -66,9 +66,8 @@ class HealthConnectFactory {
       'pageToken': pageToken,
       'ascendingOrder': ascendingOrder,
     };
-    List<Record> records = (await _channel.invokeMethod('getRecord', args)
-            as List<Map<String, dynamic>>)
-        .map((e) => mapToRecord(type, e))
+    List<Record> records = (await _channel.invokeMethod('getRecord', args))
+        .map((e) => mapToRecord(type, jsonDecode(e)))
         .toList();
     return records;
   }
