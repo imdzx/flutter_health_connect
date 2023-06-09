@@ -68,7 +68,7 @@ class HealthConnectFactory {
     };
     List<Record> records = (await _channel.invokeMethod('getRecord', args))
         .map((e) => mapToRecord(type, jsonDecode(e)))
-        .toList();
+        .toList() as List<Record>;
     return records;
   }
 
