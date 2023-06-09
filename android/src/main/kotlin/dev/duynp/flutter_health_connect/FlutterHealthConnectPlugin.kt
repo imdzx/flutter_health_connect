@@ -17,6 +17,7 @@ import androidx.health.connect.client.records.metadata.Metadata
 import androidx.health.connect.client.time.TimeRangeFilter
 import androidx.health.connect.client.units.Energy
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -35,6 +36,7 @@ import java.util.HashMap
 class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : FlutterPlugin, MethodCallHandler, ActivityAware,
     PluginRegistry.ActivityResultListener {
     private var replyMapper: ObjectMapper = ObjectMapper()
+    replyMapper.registerModule(new JavaTimeModule());
     private var permissionResult: Result? = null
     private lateinit var client: HealthConnectClient
     private var activity: Activity? = null
