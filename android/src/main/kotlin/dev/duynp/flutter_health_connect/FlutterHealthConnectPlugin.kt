@@ -298,7 +298,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             startTime = Instant.ofEpochMilli(recordMap["startTime"] as Long),
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
                             endTime = Instant.ofEpochMilli(recordMap["endTime"] as Long),
-                            endZoneOffset = if (recordMap["endTime"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
+                            endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             energy = Energy.kilocalories(recordMap["energy"] as Double),
                             metadata = metadata,
                         )
@@ -356,7 +356,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             startTime = Instant.ofEpochMilli(recordMap["startTime"] as Long),
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
                             endTime = Instant.ofEpochMilli(recordMap["endTime"] as Long),
-                            endZoneOffset = if (recordMap["endTime"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
+                            endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             samples = (recordMap["samples"] as List<*>).filterIsInstance<CyclingPedalingCadenceRecord.Sample>(),
                             metadata = metadata,
                         )
@@ -364,7 +364,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             startTime = Instant.ofEpochMilli(recordMap["startTime"] as Long),
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
                             endTime = Instant.ofEpochMilli(recordMap["endTime"] as Long),
-                            endZoneOffset = if (recordMap["endTime"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
+                            endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             distance = Length.meters(recordMap["distance"] as Double),
                             metadata = metadata,
                         )
@@ -372,7 +372,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             startTime = Instant.ofEpochMilli(recordMap["startTime"] as Long),
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
                             endTime = Instant.ofEpochMilli(recordMap["endTime"] as Long),
-                            endZoneOffset = if (recordMap["endTime"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
+                            endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             elevation = Length.meters(recordMap["elevation"] as Double),
                             metadata = metadata,
                         )
@@ -380,7 +380,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             startTime = Instant.ofEpochMilli(recordMap["startTime"] as Long),
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
                             endTime = Instant.ofEpochMilli(recordMap["endTime"] as Long),
-                            endZoneOffset = if (recordMap["endTime"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
+                            endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             exerciseType = recordMap["exerciseType"] as Int,
                             title = recordMap["title"] as String?,
                             notes = recordMap["notes"] as String?,
@@ -390,7 +390,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             startTime = Instant.ofEpochMilli(recordMap["startTime"] as Long),
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
                             endTime = Instant.ofEpochMilli(recordMap["endTime"] as Long),
-                            endZoneOffset = if (recordMap["endTime"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
+                            endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             floors = recordMap["floors"] as Double,
                             metadata = metadata,
                         )
@@ -398,7 +398,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             startTime = Instant.ofEpochMilli(recordMap["startTime"] as Long),
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
                             endTime = Instant.ofEpochMilli(recordMap["endTime"] as Long),
-                            endZoneOffset = if (recordMap["endTime"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
+                            endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             samples = (recordMap["samples"] as List<*>).filterIsInstance<HeartRateRecord.Sample>(),
                             metadata = metadata,
                         )
@@ -412,7 +412,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             startTime = Instant.ofEpochMilli(recordMap["startTime"] as Long),
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
                             endTime = Instant.ofEpochMilli(recordMap["endTime"] as Long),
-                            endZoneOffset = if (recordMap["endTime"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
+                            endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             volume = Volume.liters(recordMap["volume"] as Double),
                             metadata = metadata,
                         )
@@ -432,14 +432,14 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             startTime = Instant.ofEpochMilli(recordMap["startTime"] as Long),
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
                             endTime = Instant.ofEpochMilli(recordMap["endTime"] as Long),
-                            endZoneOffset = if (recordMap["endTime"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
+                            endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             metadata = metadata,
                         )
                         NUTRITION -> NutritionRecord(
                             startTime = Instant.ofEpochMilli(recordMap["startTime"] as Long),
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
                             endTime = Instant.ofEpochMilli(recordMap["endTime"] as Long),
-                            endZoneOffset = if (recordMap["endTime"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
+                            endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             biotin = if (recordMap["biotin"] != null) Mass.grams(recordMap["biotin"] as Double) else null,
                             caffeine = if (recordMap["caffeine"] != null) Mass.grams(recordMap["caffeine"] as Double) else null,
                             calcium = if (recordMap["calcium"] != null) Mass.grams(recordMap["calcium"] as Double) else null,
@@ -502,7 +502,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             startTime = Instant.ofEpochMilli(recordMap["startTime"] as Long),
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
                             endTime = Instant.ofEpochMilli(recordMap["endTime"] as Long),
-                            endZoneOffset = if (recordMap["endTime"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
+                            endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             samples = (recordMap["samples"] as List<*>).filterIsInstance<PowerRecord.Sample>(),
                             metadata = metadata,
                         )
@@ -528,7 +528,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             startTime = Instant.ofEpochMilli(recordMap["startTime"] as Long),
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
                             endTime = Instant.ofEpochMilli(recordMap["endTime"] as Long),
-                            endZoneOffset = if (recordMap["endTime"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
+                            endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             title = recordMap["title"] as String?,
                             notes = recordMap["notes"] as String?,
                             metadata = metadata,
@@ -537,7 +537,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             startTime = Instant.ofEpochMilli(recordMap["startTime"] as Long),
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
                             endTime = Instant.ofEpochMilli(recordMap["endTime"] as Long),
-                            endZoneOffset = if (recordMap["endTime"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
+                            endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             stage = recordMap["stage"] as Int,
                             metadata = metadata,
                         )
@@ -545,7 +545,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             startTime = Instant.ofEpochMilli(recordMap["startTime"] as Long),
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
                             endTime = Instant.ofEpochMilli(recordMap["endTime"] as Long),
-                            endZoneOffset = if (recordMap["endTime"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
+                            endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             samples = (recordMap["samples"] as List<*>).filterIsInstance<SpeedRecord.Sample>(),
                             metadata = metadata,
                         )
@@ -553,7 +553,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             startTime = Instant.ofEpochMilli(recordMap["startTime"] as Long),
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
                             endTime = Instant.ofEpochMilli(recordMap["endTime"] as Long),
-                            endZoneOffset = if (recordMap["endTime"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
+                            endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             samples = (recordMap["samples"] as List<*>).filterIsInstance<StepsCadenceRecord.Sample>(),
                             metadata = metadata,
                         )
@@ -561,7 +561,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             startTime = Instant.ofEpochMilli(recordMap["startTime"] as Long),
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
                             endTime = Instant.ofEpochMilli(recordMap["endTime"] as Long),
-                            endZoneOffset = if (recordMap["endTime"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
+                            endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             count = recordMap["count"] as Long,
                             metadata = metadata,
                         )
@@ -569,7 +569,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             startTime = Instant.ofEpochMilli(recordMap["startTime"] as Long),
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
                             endTime = Instant.ofEpochMilli(recordMap["endTime"] as Long),
-                            endZoneOffset = if (recordMap["endTime"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
+                            endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             energy = Energy.kilocalories(recordMap["energy"] as Double),
                             metadata = metadata,
                         )
@@ -590,7 +590,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             startTime = Instant.ofEpochMilli(recordMap["startTime"] as Long),
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
                             endTime = Instant.ofEpochMilli(recordMap["endTime"] as Long),
-                            endZoneOffset = if (recordMap["endTime"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
+                            endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             count = recordMap["count"] as Long,
                             metadata = metadata,
                         )
