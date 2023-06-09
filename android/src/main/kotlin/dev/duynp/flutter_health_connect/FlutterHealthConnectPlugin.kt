@@ -36,7 +36,6 @@ import java.util.HashMap
 class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : FlutterPlugin, MethodCallHandler, ActivityAware,
     PluginRegistry.ActivityResultListener {
     private var replyMapper: ObjectMapper = ObjectMapper()
-    replyMapper.registerModule(JavaTimeModule())
     private var permissionResult: Result? = null
     private lateinit var client: HealthConnectClient
     private var activity: Activity? = null
@@ -49,6 +48,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
         channel?.setMethodCallHandler(this)
         context = flutterPluginBinding.applicationContext
         client = HealthConnectClient.getOrCreate(context!!)
+        replyMapper.registerModule(JavaTimeModule())
     }
 
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
