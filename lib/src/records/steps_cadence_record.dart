@@ -50,9 +50,9 @@ class StepsCadenceRecord extends SeriesRecord<StepsCadenceSample> {
   @override
   Map<String, dynamic> toMap() {
     return {
-      'endTime': endTime.millisecondsSinceEpoch,
+      'endTime': endTime.toIso8601String(),
       'endZoneOffset': endZoneOffset?.inHours,
-      'startTime': startTime.millisecondsSinceEpoch,
+      'startTime': startTime.toIso8601String(),
       'startZoneOffset': startZoneOffset?.inHours,
       'samples': samples.map((e) => e.toMap()).toList(),
       'metadata': metadata.toMap(),
@@ -62,12 +62,12 @@ class StepsCadenceRecord extends SeriesRecord<StepsCadenceSample> {
   @override
   factory StepsCadenceRecord.fromMap(Map<String, dynamic> map) {
     return StepsCadenceRecord(
-      endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime'] as int),
+      endTime: DateTime.parse(map['endTime']),
       endZoneOffset: map['endZoneOffset'] == null
           ? null
           : Duration(hours: map['endZoneOffset'] as int),
       metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>),
-      startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime'] as int),
+      startTime: DateTime.parse(map['startTime']),
       startZoneOffset: map['startZoneOffset'] == null
           ? null
           : Duration(hours: map['startZoneOffset'] as int),
@@ -106,14 +106,14 @@ class StepsCadenceSample {
   Map<String, dynamic> toMap() {
     return {
       'rate': rate,
-      'time': time.millisecondsSinceEpoch,
+      'time': time.toIso8601String(),
     };
   }
 
   static StepsCadenceSample fromMap(Map<String, dynamic> map) {
     return StepsCadenceSample(
       rate: map['rate'] as double,
-      time: DateTime.fromMillisecondsSinceEpoch(map['time'] as int),
+      time: DateTime.parse(map['time']),
     );
   }
 

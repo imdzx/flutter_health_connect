@@ -49,10 +49,10 @@ class PowerRecord extends SeriesRecord<PowerSample> {
   @override
   Map<String, dynamic> toMap() {
     return {
-      'endTime': endTime.millisecondsSinceEpoch,
+      'endTime': endTime.toIso8601String(),
       'endZoneOffset': endZoneOffset?.inHours,
       'samples': samples.map((e) => e.toMap()).toList(),
-      'startTime': startTime.millisecondsSinceEpoch,
+      'startTime': startTime.toIso8601String(),
       'startZoneOffset': startZoneOffset?.inHours,
       'metadata': metadata.toMap(),
     };
@@ -61,12 +61,12 @@ class PowerRecord extends SeriesRecord<PowerSample> {
   @override
   factory PowerRecord.fromMap(Map<String, dynamic> map) {
     return PowerRecord(
-      endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime'] as int),
+      endTime: DateTime.parse(map['endTime']),
       endZoneOffset: map['endZoneOffset'] == null
           ? null
           : Duration(hours: map['endZoneOffset'] as int),
       metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>),
-      startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime'] as int),
+      startTime: DateTime.parse(map['startTime']),
       startZoneOffset: map['startZoneOffset'] == null
           ? null
           : Duration(hours: map['startZoneOffset'] as int),
@@ -105,7 +105,7 @@ class PowerSample {
   Map<String, dynamic> toMap() {
     return {
       'power': power.inWatts,
-      'time': time.millisecondsSinceEpoch,
+      'time': time.toIso8601String(),
     };
   }
 

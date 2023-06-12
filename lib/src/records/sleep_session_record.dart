@@ -66,9 +66,9 @@ class SleepSessionRecord extends IntervalRecord {
   @override
   Map<String, dynamic> toMap() {
     return {
-      'startTime': startTime.millisecondsSinceEpoch,
+      'startTime': startTime.toIso8601String(),
       'startZoneOffset': startZoneOffset?.inHours,
-      'endTime': endTime.millisecondsSinceEpoch,
+      'endTime': endTime.toIso8601String(),
       'endZoneOffset': endZoneOffset?.inHours,
       'title': title,
       'notes': notes,
@@ -79,11 +79,11 @@ class SleepSessionRecord extends IntervalRecord {
   @override
   factory SleepSessionRecord.fromMap(Map<String, dynamic> map) {
     return SleepSessionRecord(
-      startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime'] as int),
+      startTime: DateTime.parse(map['startTime']),
       startZoneOffset: map['startZoneOffset'] != null
           ? Duration(hours: map['startZoneOffset'] as int)
           : null,
-      endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime'] as int),
+      endTime: DateTime.parse(map['endTime']),
       endZoneOffset: map['endZoneOffset'] != null
           ? Duration(hours: map['endZoneOffset'] as int)
           : null,
@@ -124,8 +124,8 @@ class SleepStage {
 
   Map<String, dynamic> toMap() {
     return {
-      'startTime': startTime.millisecondsSinceEpoch,
-      'endTime': endTime.millisecondsSinceEpoch,
+      'startTime': startTime.toIso8601String(),
+      'endTime': endTime.toIso8601String(),
       'type': type.index,
     };
   }

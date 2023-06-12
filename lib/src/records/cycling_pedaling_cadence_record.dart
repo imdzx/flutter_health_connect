@@ -49,10 +49,10 @@ class CyclingPedalingCadenceRecord extends SeriesRecord<Sample> {
   @override
   Map<String, dynamic> toMap() {
     return {
-      'endTime': endTime.millisecondsSinceEpoch,
+      'endTime': endTime.toIso8601String(),
       'endZoneOffset': endZoneOffset?.inHours,
       'metadata': metadata.toMap(),
-      'startTime': startTime.millisecondsSinceEpoch,
+      'startTime': startTime.toIso8601String(),
       'startZoneOffset': startZoneOffset?.inHours,
       'samples': samples.map((e) => e.toMap()).toList(),
     };
@@ -61,11 +61,11 @@ class CyclingPedalingCadenceRecord extends SeriesRecord<Sample> {
   @override
   factory CyclingPedalingCadenceRecord.fromMap(Map<String, dynamic> map) {
     return CyclingPedalingCadenceRecord(
-        startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime'] as int),
+        startTime: DateTime.parse(map['startTime']),
         startZoneOffset: map['startZoneOffset'] != null
             ? Duration(hours: map['startZoneOffset'] as int)
             : null,
-        endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime'] as int),
+        endTime: DateTime.parse(map['endTime']),
         endZoneOffset: map['endZoneOffset'] != null
             ? Duration(hours: map['endZoneOffset'] as int)
             : null,

@@ -49,9 +49,9 @@ class SleepStageRecord extends IntervalRecord {
   @override
   Map<String, dynamic> toMap() {
     return {
-      'startTime': startTime.millisecondsSinceEpoch,
+      'startTime': startTime.toIso8601String(),
       'startZoneOffset': startZoneOffset?.inHours,
-      'endTime': endTime.millisecondsSinceEpoch,
+      'endTime': endTime.toIso8601String(),
       'endZoneOffset': endZoneOffset?.inHours,
       'stage': stage.index,
     };

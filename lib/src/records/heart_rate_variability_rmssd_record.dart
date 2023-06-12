@@ -37,7 +37,7 @@ class HeartRateVariabilityRmssdRecord extends InstantaneousRecord {
   @override
   Map<String, dynamic> toMap() {
     return {
-      'time': time.millisecondsSinceEpoch,
+      'time': time.toIso8601String(),
       'zoneOffset': zoneOffset?.inHours,
       'metadata': metadata.toMap(),
       'heartRateVariabilityMillis': heartRateVariabilityMillis,
@@ -47,7 +47,7 @@ class HeartRateVariabilityRmssdRecord extends InstantaneousRecord {
   @override
   factory HeartRateVariabilityRmssdRecord.fromMap(Map<String, dynamic> map) {
     return HeartRateVariabilityRmssdRecord(
-      time: DateTime.fromMillisecondsSinceEpoch(map['time'] as int),
+      time: DateTime.parse(map['time']),
       zoneOffset: map['zoneOffset'] != null
           ? Duration(hours: map['zoneOffset'] as int)
           : null,

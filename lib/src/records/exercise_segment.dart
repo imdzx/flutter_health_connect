@@ -154,8 +154,8 @@ class ExerciseSegment {
 
   Map<String, dynamic> toMap() {
     return {
-      'startTime': startTime.millisecondsSinceEpoch,
-      'endTime': endTime.millisecondsSinceEpoch,
+      'startTime': startTime.toIso8601String(),
+      'endTime': endTime.toIso8601String(),
       'segmentType': segmentType.index,
       'repetitions': repetitions,
     };
@@ -163,8 +163,8 @@ class ExerciseSegment {
 
   factory ExerciseSegment.fromMap(Map<String, dynamic> map) {
     return ExerciseSegment(
-      startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime'] as int),
-      endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime'] as int),
+      startTime: DateTime.parse(map['startTime']),
+      endTime: DateTime.parse(map['endTime']),
       segmentType: (map['segmentType'] != null &&
               map['segmentType'] as int < ExerciseSegmentType.values.length)
           ? ExerciseSegmentType.values[map['segmentType'] as int]

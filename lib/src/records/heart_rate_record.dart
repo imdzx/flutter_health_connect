@@ -49,11 +49,11 @@ class HeartRateRecord extends SeriesRecord<HeartRateSample> {
   @override
   Map<String, dynamic> toMap() {
     return {
-      'endTime': endTime.millisecondsSinceEpoch,
+      'endTime': endTime.toIso8601String(),
       'endZoneOffset': endZoneOffset?.inHours,
       'metadata': metadata.toMap(),
       'samples': samples.map((e) => e.toMap()).toList(),
-      'startTime': startTime.millisecondsSinceEpoch,
+      'startTime': startTime.toIso8601String(),
       'startZoneOffset': startZoneOffset?.inHours,
     };
   }
@@ -61,7 +61,7 @@ class HeartRateRecord extends SeriesRecord<HeartRateSample> {
   @override
   factory HeartRateRecord.fromMap(Map<String, dynamic> map) {
     return HeartRateRecord(
-      endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime'] as int),
+      endTime: DateTime.parse(map['endTime']),
       endZoneOffset: map['endZoneOffset'] == null
           ? null
           : Duration(hours: map['endZoneOffset'] as int),
@@ -69,7 +69,7 @@ class HeartRateRecord extends SeriesRecord<HeartRateSample> {
       samples: (map['samples'] as List<dynamic>)
           .map((e) => HeartRateSample.fromMap(e as Map<String, dynamic>))
           .toList(),
-      startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime'] as int),
+      startTime: DateTime.parse(map['startTime']),
       startZoneOffset: map['startZoneOffset'] == null
           ? null
           : Duration(hours: map['startZoneOffset'] as int),
@@ -108,14 +108,14 @@ class HeartRateSample {
   Map<String, dynamic> toMap() {
     return {
       'beatsPerMinute': beatsPerMinute,
-      'time': time.millisecondsSinceEpoch,
+      'time': time.toIso8601String(),
     };
   }
 
   factory HeartRateSample.fromMap(Map<String, dynamic> map) {
     return HeartRateSample(
       beatsPerMinute: map['beatsPerMinute'] as int,
-      time: DateTime.fromMillisecondsSinceEpoch(map['time'] as int),
+      time: DateTime.parse(map['time']),
     );
   }
 }

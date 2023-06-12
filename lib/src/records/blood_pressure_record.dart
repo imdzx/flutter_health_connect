@@ -64,7 +64,7 @@ class BloodPressureRecord extends InstantaneousRecord {
   Map<String, dynamic> toMap() {
     return {
       'metadata': metadata.toMap(),
-      'time': time.millisecondsSinceEpoch,
+      'time': time.toIso8601String(),
       'zoneOffset': zoneOffset?.inHours,
       'systolic': systolic.inMillimetersOfMercury,
       'diastolic': diastolic.inMillimetersOfMercury,
@@ -77,7 +77,7 @@ class BloodPressureRecord extends InstantaneousRecord {
   factory BloodPressureRecord.fromMap(Map<String, dynamic> map) {
     return BloodPressureRecord(
       metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>),
-      time: DateTime.fromMillisecondsSinceEpoch(map['time'] as int),
+      time: DateTime.parse(map['time']),
       zoneOffset: map['zoneOffset'] != null
           ? Duration(hours: map['zoneOffset'] as int)
           : null,

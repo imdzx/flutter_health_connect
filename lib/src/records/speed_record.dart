@@ -49,9 +49,9 @@ class SpeedRecord extends SeriesRecord<SpeedSample> {
   @override
   Map<String, dynamic> toMap() {
     return {
-      'endTime': endTime.millisecondsSinceEpoch,
+      'endTime': endTime.toIso8601String(),
       'endZoneOffset': endZoneOffset?.inHours,
-      'startTime': startTime.millisecondsSinceEpoch,
+      'startTime': startTime.toIso8601String(),
       'startZoneOffset': startZoneOffset?.inHours,
       'samples': samples.map((e) => e.toMap()).toList(),
       'metadata': metadata.toMap(),
@@ -61,11 +61,11 @@ class SpeedRecord extends SeriesRecord<SpeedSample> {
   @override
   factory SpeedRecord.fromMap(Map<String, dynamic> map) {
     return SpeedRecord(
-      endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime'] as int),
+      endTime: DateTime.parse(map['endTime']),
       endZoneOffset: map['endZoneOffset'] == null
           ? null
           : Duration(hours: map['endZoneOffset'] as int),
-      startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime'] as int),
+      startTime: DateTime.parse(map['startTime']),
       startZoneOffset: map['startZoneOffset'] == null
           ? null
           : Duration(hours: map['startZoneOffset'] as int),
@@ -106,14 +106,14 @@ class SpeedSample {
   Map<String, dynamic> toMap() {
     return {
       'speed': speed.inMetersPerSecond,
-      'time': time.millisecondsSinceEpoch,
+      'time': time.toIso8601String(),
     };
   }
 
   static SpeedSample fromMap(Map<String, dynamic> map) {
     return SpeedSample(
       speed: Velocity.metersPerSecond(map['speed'] as double),
-      time: DateTime.fromMillisecondsSinceEpoch(map['time'] as int),
+      time: DateTime.parse(map['time']),
     );
   }
 

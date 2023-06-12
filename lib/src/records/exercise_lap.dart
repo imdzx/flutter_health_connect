@@ -33,16 +33,16 @@ class ExerciseLap {
 
   Map<String, dynamic> toMap() {
     return {
-      'startTime': startTime.millisecondsSinceEpoch,
-      'endTime': endTime.millisecondsSinceEpoch,
+      'startTime': startTime.toIso8601String(),
+      'endTime': endTime.toIso8601String(),
       'length': length?.inMeters,
     };
   }
 
   factory ExerciseLap.fromMap(Map<String, dynamic> map) {
     return ExerciseLap(
-      startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime'] as int),
-      endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime'] as int),
+      startTime: DateTime.parse(map['startTime']),
+      endTime: DateTime.parse(map['endTime']),
       length: map['length'] != null ? Length.meters(map['length']) : null,
     );
   }

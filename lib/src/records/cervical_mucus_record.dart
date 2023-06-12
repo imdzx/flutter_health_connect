@@ -33,7 +33,7 @@ class CervicalMucusRecord extends InstantaneousRecord {
   @override
   Map<String, dynamic> toMap() {
     return {
-      'time': time.millisecondsSinceEpoch,
+      'time': time.toIso8601String(),
       'zoneOffset': zoneOffset?.inHours,
       'metadata': metadata.toMap(),
       'sensation': sensation.index,
@@ -44,7 +44,7 @@ class CervicalMucusRecord extends InstantaneousRecord {
   @override
   factory CervicalMucusRecord.fromMap(Map<String, dynamic> map) {
     return CervicalMucusRecord(
-      time: DateTime.fromMillisecondsSinceEpoch(map['time'] as int),
+      time: DateTime.parse(map['time']),
       zoneOffset: map['zoneOffset'] != null
           ? Duration(hours: map['zoneOffset'] as int)
           : null,

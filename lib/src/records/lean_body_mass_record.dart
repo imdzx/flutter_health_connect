@@ -37,7 +37,7 @@ class LeanBodyMassRecord extends InstantaneousRecord {
   Map<String, dynamic> toMap() {
     return {
       'metadata': metadata.toMap(),
-      'time': time.millisecondsSinceEpoch,
+      'time': time.toIso8601String(),
       'zoneOffset': zoneOffset?.inHours,
       'mass': mass.inKilograms,
     };
@@ -47,7 +47,7 @@ class LeanBodyMassRecord extends InstantaneousRecord {
   factory LeanBodyMassRecord.fromMap(Map<String, dynamic> map) {
     return LeanBodyMassRecord(
       metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>),
-      time: DateTime.fromMillisecondsSinceEpoch(map['time'] as int),
+      time: DateTime.parse(map['time']),
       zoneOffset: map['zoneOffset'] != null
           ? Duration(hours: map['zoneOffset'] as int)
           : null,

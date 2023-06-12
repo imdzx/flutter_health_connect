@@ -96,7 +96,7 @@ class Location {
 
   Map<String, dynamic> toMap() {
     return {
-      'time': time.millisecondsSinceEpoch,
+      'time': time.toIso8601String(),
       'latitude': latitude,
       'longitude': longitude,
       'altitude': altitude?.inMeters,
@@ -107,7 +107,7 @@ class Location {
 
   factory Location.fromMap(Map<String, dynamic> map) {
     return Location(
-      time: DateTime.fromMillisecondsSinceEpoch(map['time'] as int),
+      time: DateTime.parse(map['time']),
       latitude: map['latitude'] as double,
       longitude: map['longitude'] as double,
       altitude: map['altitude'] != null

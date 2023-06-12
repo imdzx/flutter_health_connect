@@ -54,9 +54,9 @@ class DistanceRecord extends IntervalRecord {
   @override
   Map<String, dynamic> toMap() {
     return {
-      'startTime': startTime.millisecondsSinceEpoch,
+      'startTime': startTime.toIso8601String(),
       'startZoneOffset': startZoneOffset?.inHours,
-      'endTime': endTime.millisecondsSinceEpoch,
+      'endTime': endTime.toIso8601String(),
       'endZoneOffset': endZoneOffset?.inHours,
       'metadata': metadata.toMap(),
       'distance': distance.inMeters,
@@ -66,11 +66,11 @@ class DistanceRecord extends IntervalRecord {
   @override
   factory DistanceRecord.fromMap(Map<String, dynamic> map) {
     return DistanceRecord(
-        startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime'] as int),
+        startTime: DateTime.parse(map['startTime']),
         startZoneOffset: map['startZoneOffset'] != null
             ? Duration(hours: map['startZoneOffset'] as int)
             : null,
-        endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime'] as int),
+        endTime: DateTime.parse(map['endTime']),
         endZoneOffset: map['endZoneOffset'] != null
             ? Duration(hours: map['endZoneOffset'] as int)
             : null,

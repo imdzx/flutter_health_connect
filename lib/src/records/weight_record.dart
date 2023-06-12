@@ -40,7 +40,7 @@ class WeightRecord extends InstantaneousRecord {
   @override
   Map<String, dynamic> toMap() {
     return {
-      'time': time.millisecondsSinceEpoch,
+      'time': time.toIso8601String(),
       'zoneOffset': zoneOffset?.inHours,
       'metadata': metadata.toMap(),
       'weight': weight.inKilograms,
@@ -50,7 +50,7 @@ class WeightRecord extends InstantaneousRecord {
   @override
   factory WeightRecord.fromMap(Map<String, dynamic> map) {
     return WeightRecord(
-      time: DateTime.fromMillisecondsSinceEpoch(map['time'] as int),
+      time: DateTime.parse(map['time']),
       zoneOffset: map['zoneOffset'] != null
           ? Duration(hours: map['zoneOffset'] as int)
           : null,

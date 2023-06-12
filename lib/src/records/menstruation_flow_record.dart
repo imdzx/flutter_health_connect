@@ -30,7 +30,7 @@ class MenstruationFlowRecord extends InstantaneousRecord {
   Map<String, dynamic> toMap() {
     return {
       'metadata': metadata.toMap(),
-      'time': time.millisecondsSinceEpoch,
+      'time': time.toIso8601String(),
       'zoneOffset': zoneOffset?.inHours,
       'flow': flow.index
     };
@@ -40,7 +40,7 @@ class MenstruationFlowRecord extends InstantaneousRecord {
   factory MenstruationFlowRecord.fromMap(Map<String, dynamic> map) {
     return MenstruationFlowRecord(
         metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>),
-        time: DateTime.fromMillisecondsSinceEpoch(map['time'] as int),
+        time: DateTime.parse(map['time']),
         zoneOffset: map['zoneOffset'] != null
             ? Duration(hours: map['zoneOffset'] as int)
             : null,
