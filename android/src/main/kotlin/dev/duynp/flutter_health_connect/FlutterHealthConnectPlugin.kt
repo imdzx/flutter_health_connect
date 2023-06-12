@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.health.connect.client.HealthConnectClient
-import androidx.health.connect.client.PermissionController
+import androidx.health.connect.client.PermissionController.Companion.createRequestPermissionResultContract
 import androidx.health.connect.client.changes.UpsertionChange
 import androidx.health.connect.client.request.ChangesTokenRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
@@ -85,9 +85,9 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
         val requestedTypes = (args["types"] as? ArrayList<*>)?.filterIsInstance<String>()
         when (call.method) {
 
-            "isApiSupported" -> result.success(context?.let { HealthConnectClient.sdkStatus(it) } != HealthConnectClient.SDK_UNAVAILABLE)
+            "isApiSupported" -> result.success(context?.let { HealthConnectClient.getSdkStatus(it) } != HealthConnectClient.SDK_UNAVAILABLE)
 
-            "isAvailable" -> result.success(context?.let { HealthConnectClient.sdkStatus(it) } == HealthConnectClient.SDK_AVAILABLE)
+            "isAvailable" -> result.success(context?.let { HealthConnectClient.getSdkStatus(it) } == HealthConnectClient.SDK_AVAILABLE)
 
             "installHealthConnect" -> {
                 try {
@@ -123,7 +123,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                         requestedTypes,
                         isReadOnly
                     )
-                    val contract = PermissionController.createRequestPermissionResultContract()
+                    val contract = createRequestPermissionResultContract()
                     val intent = context?.let { contract.createIntent(it, allPermissions) }
                     activity!!.startActivityForResult(intent, HEALTH_CONNECT_RESULT_CODE)
                 } catch (e: Throwable) {
