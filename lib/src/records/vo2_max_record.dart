@@ -59,7 +59,7 @@ class Vo2MaxRecord extends InstantaneousRecord {
       zoneOffset: map['zoneOffset'] != null
           ? Duration(hours: map['zoneOffset'] as int)
           : null,
-      metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>),
+      metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       vo2MillilitersPerMinuteKilogram:
           map['vo2MillilitersPerMinuteKilogram'] as double,
       measurementMethod: (map['measurementMethod'] != null &&

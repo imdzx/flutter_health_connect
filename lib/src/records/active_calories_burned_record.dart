@@ -76,7 +76,7 @@ class ActiveCaloriesBurnedRecord extends IntervalRecord {
             ? Duration(hours: map['endZoneOffset'] as int)
             : null,
         energy: Energy.kilocalories(map['energy'] as double),
-        metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>));
+        metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])));
   }
 
   @override

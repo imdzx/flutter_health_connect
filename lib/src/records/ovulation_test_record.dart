@@ -45,7 +45,7 @@ class OvulationTestRecord extends InstantaneousRecord {
       zoneOffset: map['zoneOffset'] != null
           ? Duration(hours: map['zoneOffset'] as int)
           : null,
-      metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>),
+      metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       result: (map['result'] != null &&
               map['result'] as int < OvulationTestResult.values.length)
           ? OvulationTestResult.values[map['result'] as int]

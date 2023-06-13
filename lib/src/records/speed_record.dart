@@ -72,7 +72,7 @@ class SpeedRecord extends SeriesRecord<SpeedSample> {
       samples: (map['samples'] as List<dynamic>)
           .map((e) => SpeedSample.fromMap(e as Map<String, dynamic>))
           .toList(),
-      metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>),
+      metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
     );
   }
 

@@ -48,7 +48,7 @@ class HealthConnectFactory {
     });
   }
 
-  static Future<List<Record>> getRecords({
+  static Future<List<dynamic>> getRecords({
     required DateTime startTime,
     required DateTime endTime,
     required HealthConnectDataType type,
@@ -67,16 +67,17 @@ class HealthConnectFactory {
       'ascendingOrder': ascendingOrder,
     };
     List<dynamic>? data = await _channel.invokeMethod('getRecord', args);
-    if (data == null && data!.isNotEmpty) {
-      List<Record> records =
-          data.map((e) => mapToRecord(type, jsonDecode(e))).toList();
+    if (data != null && data.isNotEmpty) {
+      List<dynamic> records = data
+          .map((e) => mapToRecord(type, Map<String, dynamic>.from(e)))
+          .toList();
       return records;
     } else {
       return [];
     }
   }
 
-  static Record mapToRecord(
+  static dynamic mapToRecord(
       HealthConnectDataType type, Map<String, dynamic> map) {
     switch (type) {
       case HealthConnectDataType.ActiveCaloriesBurned:

@@ -46,7 +46,7 @@ class SexualActivityRecord extends InstantaneousRecord {
       zoneOffset: map['zoneOffset'] != null
           ? Duration(hours: map['zoneOffset'] as int)
           : null,
-      metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>),
+      metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       protectionUsed: (map['protectionUsed'] != null &&
               map['protectionUsed'] < Protection.values.length)
           ? Protection.values[map['protectionUsed'] as int]

@@ -65,7 +65,7 @@ class HeartRateRecord extends SeriesRecord<HeartRateSample> {
       endZoneOffset: map['endZoneOffset'] == null
           ? null
           : Duration(hours: map['endZoneOffset'] as int),
-      metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>),
+      metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       samples: (map['samples'] as List<dynamic>)
           .map((e) => HeartRateSample.fromMap(e as Map<String, dynamic>))
           .toList(),

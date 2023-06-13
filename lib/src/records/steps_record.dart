@@ -72,7 +72,7 @@ class StepsRecord extends IntervalRecord {
       endZoneOffset: map['endZoneOffset'] != null
           ? Duration(hours: map['endZoneOffset'] as int)
           : null,
-      metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>),
+      metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       steps: map['steps'] as int,
     );
   }

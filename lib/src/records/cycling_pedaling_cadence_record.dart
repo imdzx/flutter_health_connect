@@ -71,7 +71,7 @@ class CyclingPedalingCadenceRecord extends SeriesRecord<Sample> {
             : null,
         samples:
             List<Sample>.from(map['samples']?.map((e) => Sample.fromMap(e))),
-        metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>));
+        metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])));
   }
 
   @override

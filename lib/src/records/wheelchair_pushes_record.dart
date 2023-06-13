@@ -72,7 +72,7 @@ class WheelchairPushesRecord extends IntervalRecord {
           ? Duration(hours: map['endZoneOffset'] as int)
           : null,
       count: map['count'] as int,
-      metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>),
+      metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
     );
   }
 

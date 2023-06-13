@@ -48,7 +48,7 @@ class CervicalMucusRecord extends InstantaneousRecord {
       zoneOffset: map['zoneOffset'] != null
           ? Duration(hours: map['zoneOffset'] as int)
           : null,
-      metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>),
+      metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       sensation: (map['sensation'] != null &&
               map['sensation'] as int < Sensation.values.length)
           ? Sensation.values[map['sensation'] as int]

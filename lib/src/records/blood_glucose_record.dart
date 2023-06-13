@@ -71,7 +71,7 @@ class BloodGlucoseRecord extends InstantaneousRecord {
       zoneOffset: map['zoneOffset'] != null
           ? Duration(hours: map['zoneOffset'] as int)
           : null,
-      metadata: Metadata.fromMap(map['metadata'] as Map<String, dynamic>),
+      metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       level: BloodGlucose.milligramsPerDeciliter(map['level'] as double),
       specimenSource: (map['specimenSource'] != null &&
               map['specimenSource'] as int < SpecimenSource.values.length)
