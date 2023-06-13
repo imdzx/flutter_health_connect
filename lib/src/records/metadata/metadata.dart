@@ -79,13 +79,17 @@ class Metadata {
         Map<String, dynamic>.from(map['device'] ?? {});
     return Metadata(
       id: map['id'] as String,
-      dataOrigin: DataOrigin(dataOriginMap['packageName'] as String),
+      dataOrigin: dataOriginMap.isNotEmpty
+          ? DataOrigin(dataOriginMap['packageName'] as String)
+          : const DataOrigin(""),
       clientRecordId: map['clientRecordId'] as String?,
       clientRecordVersion: map['clientRecordVersion'] as int,
-      device: Device(
-          manufacturer: deviceMap['manufacturer'] as String?,
-          model: deviceMap['model'] as String?,
-          type: DeviceTypes.values[deviceMap['type'] as int]),
+      device: deviceMap.isNotEmpty
+          ? Device(
+              manufacturer: deviceMap['manufacturer'] as String?,
+              model: deviceMap['model'] as String?,
+              type: DeviceTypes.values[deviceMap['type'] as int])
+          : null,
       recordingMethod: RecordingMethod.values[map['recordingMethod'] as int],
     );
   }
