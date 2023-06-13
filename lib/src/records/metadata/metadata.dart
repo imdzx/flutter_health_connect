@@ -74,8 +74,9 @@ class Metadata {
 
   factory Metadata.fromMap(Map<String, dynamic> map) {
     Map<String, dynamic> dataOriginMap =
-        Map<String, dynamic>.from(map['dataOrigin']);
-    Map<String, dynamic> deviceMap = Map<String, dynamic>.from(map['device']);
+        Map<String, dynamic>.from(map['dataOrigin'] ?? {});
+    Map<String, dynamic> deviceMap =
+        Map<String, dynamic>.from(map['device'] ?? {});
     return Metadata(
       id: map['id'] as String,
       dataOrigin: DataOrigin(dataOriginMap['packageName'] as String),
