@@ -56,8 +56,8 @@ class HealthConnectFactory {
     String? pageToken,
     bool ascendingOrder = true,
   }) async {
-    final start = startTime.toLocal().toUtc().toIso8601String();
-    final end = endTime.toLocal().toUtc().toIso8601String();
+    final start = startTime.toUtc().toIso8601String();
+    final end = endTime.toUtc().toIso8601String();
     final args = <String, dynamic>{
       'type': type.name,
       'startTime': start,

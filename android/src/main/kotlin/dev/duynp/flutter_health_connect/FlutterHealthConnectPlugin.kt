@@ -203,9 +203,9 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                     val records = mutableListOf<Map<String, Any?>>()
                     try {
                         val start =
-                            startTime?.let { LocalDateTime.parse(it) } ?: LocalDateTime.now()
+                            startTime?.let { Instant.parse(it) } ?: Instant.now()
                                 .minus(1, ChronoUnit.DAYS)
-                        val end = endTime?.let { LocalDateTime.parse(it) } ?: LocalDateTime.now()
+                        val end = endTime?.let { Instant.parse(it) } ?: Instant.now()
                         HealthConnectRecordTypeMap[type]?.let { classType ->
                             val reply = client.readRecords(
                                 ReadRecordsRequest(
