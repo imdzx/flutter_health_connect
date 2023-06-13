@@ -21,4 +21,8 @@ class Device {
 
   @override
   int get hashCode => manufacturer.hashCode ^ model.hashCode ^ type.hashCode;
+
+  @override
+  String toString() =>
+      'Device{manufacturer: $manufacturer, model: $model, type: $type}';
 }

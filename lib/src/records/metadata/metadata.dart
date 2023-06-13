@@ -93,6 +93,11 @@ class Metadata {
       recordingMethod: RecordingMethod.values[map['recordingMethod'] as int],
     );
   }
+
+  @override
+  String toString() {
+    return 'Metadata(id: $id, dataOrigin: $dataOrigin, lastModifiedTime: $lastModifiedTime, clientRecordId: $clientRecordId, clientRecordVersion: $clientRecordVersion, device: $device, recordingMethod: $recordingMethod)';
+  }
 }
 
 enum RecordingMethod {

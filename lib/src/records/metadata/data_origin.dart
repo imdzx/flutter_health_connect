@@ -10,4 +10,7 @@ class DataOrigin {
 
   @override
   int get hashCode => packageName.hashCode;
+
+  @override
+  String toString() => 'DataOrigin{packageName: $packageName}';
 }
