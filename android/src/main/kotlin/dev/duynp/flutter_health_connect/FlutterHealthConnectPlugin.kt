@@ -291,7 +291,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                         Metadata(
                             id = metadataMap["id"] as String,
                             dataOrigin = dataOrigin,
-                            lastModifiedTime = Instant.ofEpochMilli(metadataMap["lastModifiedTime"] as Long),
+                            lastModifiedTime = Instant.parse(metadataMap["lastModifiedTime"] as String),
                             clientRecordId = metadataMap["clientRecordId"] as String?,
                             clientRecordVersion = metadataMap["clientRecordVersion"] as Long,
                             device = device
@@ -299,28 +299,28 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                     } else Metadata()
                     val record = when (type) {
                         ACTIVE_CALORIES_BURNED -> ActiveCaloriesBurnedRecord(
-                            startTime = Instant.ofEpochMilli(recordMap["startTime"] as Long),
+                            startTime = Instant.parse(recordMap["startTime"] as String),
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
-                            endTime = Instant.ofEpochMilli(recordMap["endTime"] as Long),
+                            endTime = Instant.parse(recordMap["endTime"] as String),
                             endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             energy = Energy.kilocalories(recordMap["energy"] as Double),
                             metadata = metadata,
                         )
                         BASAL_BODY_TEMPERATURE -> BasalBodyTemperatureRecord(
-                            time = Instant.ofEpochMilli(recordMap["time"] as Long),
+                            time = Instant.parse(recordMap["time"] as String),
                             zoneOffset = if (recordMap["zoneOffset"] != null) ZoneOffset.ofHours(recordMap["zoneOffset"] as Int) else null,
                             temperature = Temperature.celsius(recordMap["temperature"] as Double),
                             measurementLocation = recordMap["measurementLocation"] as Int,
                             metadata = metadata,
                         )
                         BASAL_METABOLIC_RATE -> BasalMetabolicRateRecord(
-                            time = Instant.ofEpochMilli(recordMap["time"] as Long),
+                            time = Instant.parse(recordMap["time"] as String),
                             zoneOffset = if (recordMap["zoneOffset"] != null) ZoneOffset.ofHours(recordMap["zoneOffset"] as Int) else null,
                             basalMetabolicRate = Power.kilocaloriesPerDay(recordMap["basalMetabolicRate"] as Double),
                             metadata = metadata,
                         )
                         BLOOD_GLUCOSE -> BloodGlucoseRecord(
-                            time = Instant.ofEpochMilli(recordMap["time"] as Long),
+                            time = Instant.parse(recordMap["time"] as String),
                             zoneOffset = if (recordMap["zoneOffset"] != null) ZoneOffset.ofHours(recordMap["zoneOffset"] as Int) else null,
                             level = BloodGlucose.millimolesPerLiter(recordMap["level"] as Double),
                             specimenSource = recordMap["specimenSource"] as Int,
@@ -329,7 +329,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             metadata = metadata,
                         )
                         BLOOD_PRESSURE -> BloodPressureRecord(
-                            time = Instant.ofEpochMilli(recordMap["time"] as Long),
+                            time = Instant.parse(recordMap["time"] as String),
                             zoneOffset = if (recordMap["zoneOffset"] != null) ZoneOffset.ofHours(recordMap["zoneOffset"] as Int) else null,
                             systolic = Pressure.millimetersOfMercury(recordMap["systolicPressure"] as Double),
                             diastolic = Pressure.millimetersOfMercury(recordMap["diastolicPressure"] as Double),
@@ -338,52 +338,52 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             metadata = metadata,
                         )
                         BODY_FAT -> BodyFatRecord(
-                            time = Instant.ofEpochMilli(recordMap["time"] as Long),
+                            time = Instant.parse(recordMap["time"] as String),
                             zoneOffset = if (recordMap["zoneOffset"] != null) ZoneOffset.ofHours(recordMap["zoneOffset"] as Int) else null,
                             percentage = Percentage(recordMap["percentage"] as Double),
                             metadata = metadata,
                         )
                         BONE_MASS -> BoneMassRecord(
-                            time = Instant.ofEpochMilli(recordMap["time"] as Long),
+                            time = Instant.parse(recordMap["time"] as String),
                             zoneOffset = if (recordMap["zoneOffset"] != null) ZoneOffset.ofHours(recordMap["zoneOffset"] as Int) else null,
                             mass = Mass.kilograms(recordMap["mass"] as Double),
                             metadata = metadata,
                         )
                         CERVICAL_MUCUS -> CervicalMucusRecord(
-                            time = Instant.ofEpochMilli(recordMap["time"] as Long),
+                            time = Instant.parse(recordMap["time"] as String),
                             zoneOffset = if (recordMap["zoneOffset"] != null) ZoneOffset.ofHours(recordMap["zoneOffset"] as Int) else null,
                             appearance = recordMap["appearance"] as Int,
                             sensation = recordMap["sensation"] as Int,
                             metadata = metadata,
                         )
                         CYCLING_PEDALING_CADENCE -> CyclingPedalingCadenceRecord(
-                            startTime = Instant.ofEpochMilli(recordMap["startTime"] as Long),
+                            startTime = Instant.parse(recordMap["startTime"] as String),
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
-                            endTime = Instant.ofEpochMilli(recordMap["endTime"] as Long),
+                            endTime = Instant.parse(recordMap["endTime"] as String),
                             endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             samples = (recordMap["samples"] as List<*>).filterIsInstance<CyclingPedalingCadenceRecord.Sample>(),
                             metadata = metadata,
                         )
                         DISTANCE -> DistanceRecord(
-                            startTime = Instant.ofEpochMilli(recordMap["startTime"] as Long),
+                            startTime = Instant.parse(recordMap["startTime"] as String),
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
-                            endTime = Instant.ofEpochMilli(recordMap["endTime"] as Long),
+                            endTime = Instant.parse(recordMap["endTime"] as String),
                             endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             distance = Length.meters(recordMap["distance"] as Double),
                             metadata = metadata,
                         )
                         ELEVATION_GAINED -> ElevationGainedRecord(
-                            startTime = Instant.ofEpochMilli(recordMap["startTime"] as Long),
+                            startTime = Instant.parse(recordMap["startTime"] as String),
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
-                            endTime = Instant.ofEpochMilli(recordMap["endTime"] as Long),
+                            endTime = Instant.parse(recordMap["endTime"] as String),
                             endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             elevation = Length.meters(recordMap["elevation"] as Double),
                             metadata = metadata,
                         )
                         EXERCISE_SESSION -> ExerciseSessionRecord(
-                            startTime = Instant.ofEpochMilli(recordMap["startTime"] as Long),
+                            startTime = Instant.parse(recordMap["startTime"] as String),
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
-                            endTime = Instant.ofEpochMilli(recordMap["endTime"] as Long),
+                            endTime = Instant.parse(recordMap["endTime"] as String),
                             endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             exerciseType = recordMap["exerciseType"] as Int,
                             title = recordMap["title"] as String?,
@@ -391,58 +391,58 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             metadata = metadata,
                         )
                         FLOORS_CLIMBED -> FloorsClimbedRecord(
-                            startTime = Instant.ofEpochMilli(recordMap["startTime"] as Long),
+                            startTime = Instant.parse(recordMap["startTime"] as String),
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
-                            endTime = Instant.ofEpochMilli(recordMap["endTime"] as Long),
+                            endTime = Instant.parse(recordMap["endTime"] as String),
                             endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             floors = recordMap["floors"] as Double,
                             metadata = metadata,
                         )
                         HEART_RATE -> HeartRateRecord(
-                            startTime = Instant.ofEpochMilli(recordMap["startTime"] as Long),
+                            startTime = Instant.parse(recordMap["startTime"] as String),
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
-                            endTime = Instant.ofEpochMilli(recordMap["endTime"] as Long),
+                            endTime = Instant.parse(recordMap["endTime"] as String),
                             endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             samples = (recordMap["samples"] as List<*>).filterIsInstance<HeartRateRecord.Sample>(),
                             metadata = metadata,
                         )
                         HEIGHT -> HeightRecord(
-                            time = Instant.ofEpochMilli(recordMap["time"] as Long),
+                            time = Instant.parse(recordMap["time"] as String),
                             zoneOffset = if (recordMap["zoneOffset"] != null) ZoneOffset.ofHours(recordMap["zoneOffset"] as Int) else null,
                             height = Length.meters(recordMap["height"] as Double),
                             metadata = metadata,
                         )
                         HYDRATION -> HydrationRecord(
-                            startTime = Instant.ofEpochMilli(recordMap["startTime"] as Long),
+                            startTime = Instant.parse(recordMap["startTime"] as String),
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
-                            endTime = Instant.ofEpochMilli(recordMap["endTime"] as Long),
+                            endTime = Instant.parse(recordMap["endTime"] as String),
                             endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             volume = Volume.liters(recordMap["volume"] as Double),
                             metadata = metadata,
                         )
                         LEAN_BODY_MASS -> LeanBodyMassRecord(
-                            time = Instant.ofEpochMilli(recordMap["time"] as Long),
+                            time = Instant.parse(recordMap["time"] as String),
                             zoneOffset = if (recordMap["zoneOffset"] != null) ZoneOffset.ofHours(recordMap["zoneOffset"] as Int) else null,
                             mass = Mass.kilograms(recordMap["mass"] as Double),
                             metadata = metadata,
                         )
                         MENSTRUATION_FLOW -> MenstruationFlowRecord(
-                            time = Instant.ofEpochMilli(recordMap["time"] as Long),
+                            time = Instant.parse(recordMap["time"] as String),
                             zoneOffset = if (recordMap["zoneOffset"] != null) ZoneOffset.ofHours(recordMap["zoneOffset"] as Int) else null,
                             flow = recordMap["flow"] as Int,
                             metadata = metadata,
                         )
                         MENSTRUATION_PERIOD -> MenstruationPeriodRecord(
-                            startTime = Instant.ofEpochMilli(recordMap["startTime"] as Long),
+                            startTime = Instant.parse(recordMap["startTime"] as String),
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
-                            endTime = Instant.ofEpochMilli(recordMap["endTime"] as Long),
+                            endTime = Instant.parse(recordMap["endTime"] as String),
                             endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             metadata = metadata,
                         )
                         NUTRITION -> NutritionRecord(
-                            startTime = Instant.ofEpochMilli(recordMap["startTime"] as Long),
+                            startTime = Instant.parse(recordMap["startTime"] as String),
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
-                            endTime = Instant.ofEpochMilli(recordMap["endTime"] as Long),
+                            endTime = Instant.parse(recordMap["endTime"] as String),
                             endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             biotin = if (recordMap["biotin"] != null) Mass.grams(recordMap["biotin"] as Double) else null,
                             caffeine = if (recordMap["caffeine"] != null) Mass.grams(recordMap["caffeine"] as Double) else null,
@@ -491,109 +491,109 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             metadata = metadata,
                         )
                         OVULATION_TEST -> OvulationTestRecord(
-                            time = Instant.ofEpochMilli(recordMap["time"] as Long),
+                            time = Instant.parse(recordMap["time"] as String),
                             zoneOffset = if (recordMap["zoneOffset"] != null) ZoneOffset.ofHours(recordMap["zoneOffset"] as Int) else null,
                             result = recordMap["result"] as Int,
                             metadata = metadata,
                         )
                         OXYGEN_SATURATION -> OxygenSaturationRecord(
-                            time = Instant.ofEpochMilli(recordMap["time"] as Long),
+                            time = Instant.parse(recordMap["time"] as String),
                             zoneOffset = if (recordMap["zoneOffset"] != null) ZoneOffset.ofHours(recordMap["zoneOffset"] as Int) else null,
                             percentage = Percentage(recordMap["percentage"] as Double),
                             metadata = metadata,
                         )
                         POWER -> PowerRecord(
-                            startTime = Instant.ofEpochMilli(recordMap["startTime"] as Long),
+                            startTime = Instant.parse(recordMap["startTime"] as String),
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
-                            endTime = Instant.ofEpochMilli(recordMap["endTime"] as Long),
+                            endTime = Instant.parse(recordMap["endTime"] as String),
                             endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             samples = (recordMap["samples"] as List<*>).filterIsInstance<PowerRecord.Sample>(),
                             metadata = metadata,
                         )
                         RESPIRATORY_RATE -> RespiratoryRateRecord(
-                            time = Instant.ofEpochMilli(recordMap["time"] as Long),
+                            time = Instant.parse(recordMap["time"] as String),
                             zoneOffset = if (recordMap["zoneOffset"] != null) ZoneOffset.ofHours(recordMap["zoneOffset"] as Int) else null,
                             rate = recordMap["rate"] as Double,
                             metadata = metadata,
                         )
                         RESTING_HEART_RATE -> RestingHeartRateRecord(
-                            time = Instant.ofEpochMilli(recordMap["time"] as Long),
+                            time = Instant.parse(recordMap["time"] as String),
                             zoneOffset = if (recordMap["zoneOffset"] != null) ZoneOffset.ofHours(recordMap["zoneOffset"] as Int) else null,
                             beatsPerMinute = recordMap["beatsPerMinute"] as Long,
                             metadata = metadata,
                         )
                         SEXUAL_ACTIVITY -> SexualActivityRecord(
-                            time = Instant.ofEpochMilli(recordMap["time"] as Long),
+                            time = Instant.parse(recordMap["time"] as String),
                             zoneOffset = if (recordMap["zoneOffset"] != null) ZoneOffset.ofHours(recordMap["zoneOffset"] as Int) else null,
                             protectionUsed = recordMap["protectionUsed"] as Int,
                             metadata = metadata,
                         )
                         SLEEP_SESSION -> SleepSessionRecord(
-                            startTime = Instant.ofEpochMilli(recordMap["startTime"] as Long),
+                            startTime = Instant.parse(recordMap["startTime"] as String),
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
-                            endTime = Instant.ofEpochMilli(recordMap["endTime"] as Long),
+                            endTime = Instant.parse(recordMap["endTime"] as String),
                             endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             title = recordMap["title"] as String?,
                             notes = recordMap["notes"] as String?,
                             metadata = metadata,
                         )
                         SLEEP_STAGE -> SleepStageRecord(
-                            startTime = Instant.ofEpochMilli(recordMap["startTime"] as Long),
+                            startTime = Instant.parse(recordMap["startTime"] as String),
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
-                            endTime = Instant.ofEpochMilli(recordMap["endTime"] as Long),
+                            endTime = Instant.parse(recordMap["endTime"] as String),
                             endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             stage = recordMap["stage"] as Int,
                             metadata = metadata,
                         )
                         SPEED -> SpeedRecord(
-                            startTime = Instant.ofEpochMilli(recordMap["startTime"] as Long),
+                            startTime = Instant.parse(recordMap["startTime"] as String),
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
-                            endTime = Instant.ofEpochMilli(recordMap["endTime"] as Long),
+                            endTime = Instant.parse(recordMap["endTime"] as String),
                             endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             samples = (recordMap["samples"] as List<*>).filterIsInstance<SpeedRecord.Sample>(),
                             metadata = metadata,
                         )
                         STEPS_CADENCE -> StepsCadenceRecord(
-                            startTime = Instant.ofEpochMilli(recordMap["startTime"] as Long),
+                            startTime = Instant.parse(recordMap["startTime"] as String),
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
-                            endTime = Instant.ofEpochMilli(recordMap["endTime"] as Long),
+                            endTime = Instant.parse(recordMap["endTime"] as String),
                             endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             samples = (recordMap["samples"] as List<*>).filterIsInstance<StepsCadenceRecord.Sample>(),
                             metadata = metadata,
                         )
                         STEPS -> StepsRecord(
-                            startTime = Instant.ofEpochMilli(recordMap["startTime"] as Long),
+                            startTime = Instant.parse(recordMap["startTime"] as String),
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
-                            endTime = Instant.ofEpochMilli(recordMap["endTime"] as Long),
+                            endTime = Instant.parse(recordMap["endTime"] as String),
                             endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             count = recordMap["count"] as Long,
                             metadata = metadata,
                         )
                         TOTAL_CALORIES_BURNED -> TotalCaloriesBurnedRecord(
-                            startTime = Instant.ofEpochMilli(recordMap["startTime"] as Long),
+                            startTime = Instant.parse(recordMap["startTime"] as String),
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
-                            endTime = Instant.ofEpochMilli(recordMap["endTime"] as Long),
+                            endTime = Instant.parse(recordMap["endTime"] as String),
                             endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             energy = Energy.kilocalories(recordMap["energy"] as Double),
                             metadata = metadata,
                         )
                         VO2_MAX -> Vo2MaxRecord(
-                            time = Instant.ofEpochMilli(recordMap["time"] as Long),
+                            time = Instant.parse(recordMap["time"] as String),
                             zoneOffset = if (recordMap["zoneOffset"] != null) ZoneOffset.ofHours(recordMap["zoneOffset"] as Int) else null,
                             vo2MillilitersPerMinuteKilogram = recordMap["vo2MillilitersPerMinuteKilogram"] as Double,
                             measurementMethod = recordMap["measurementMethod"] as Int,
                             metadata = metadata,
                         )
                         WEIGHT -> WeightRecord(
-                            time = Instant.ofEpochMilli(recordMap["time"] as Long),
+                            time = Instant.parse(recordMap["time"] as String),
                             zoneOffset = if (recordMap["zoneOffset"] != null) ZoneOffset.ofHours(recordMap["zoneOffset"] as Int) else null,
                             weight = Mass.kilograms(recordMap["weight"] as Double),
                             metadata = metadata,
                         )
                         WHEELCHAIR_PUSHES -> WheelchairPushesRecord(
-                            startTime = Instant.ofEpochMilli(recordMap["startTime"] as Long),
+                            startTime = Instant.parse(recordMap["startTime"] as String),
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
-                            endTime = Instant.ofEpochMilli(recordMap["endTime"] as Long),
+                            endTime = Instant.parse(recordMap["endTime"] as String),
                             endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             count = recordMap["count"] as Long,
                             metadata = metadata,
