@@ -52,6 +52,11 @@ class Mass implements Comparable<Mass> {
 
   @override
   String toString() => '$value ${type.name.toLowerCase()}';
+
+  factory Mass.fromMap(Map<String, dynamic> map) => Mass(
+        map['value'] as double,
+        MassUnit.values[map['type'] as int],
+      );
 }
 
 enum MassUnit {

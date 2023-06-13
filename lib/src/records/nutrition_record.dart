@@ -497,114 +497,129 @@ class NutritionRecord extends IntervalRecord {
               map['mealType'] as int < MealType.values.length)
           ? MealType.values[map['mealType'] as int]
           : MealType.unknown,
-      biotin:
-          map['biotin'] == null ? null : Mass.grams(map['biotin'] as double),
+      biotin: map['biotin'] == null
+          ? null
+          : Mass.fromMap(Map<String, dynamic>.from(map['biotin'])),
       caffeine: map['caffeine'] == null
           ? null
-          : Mass.grams(map['caffeine'] as double),
-      calcium:
-          map['calcium'] == null ? null : Mass.grams(map['calcium'] as double),
+          : Mass.fromMap(Map<String, dynamic>.from(map['caffeine'])),
+      calcium: map['calcium'] == null
+          ? null
+          : Mass.fromMap(Map<String, dynamic>.from(map['calcium'])),
       energy: map['energy'] == null
           ? null
-          : Energy.calories(map['energy'] as double),
+          : Energy.fromMap(Map<String, dynamic>.from(map['energy'])),
       energyFromFat: map['energyFromFat'] == null
           ? null
-          : Energy.calories(map['energyFromFat'] as double),
+          : Energy.fromMap(Map<String, dynamic>.from(map['energyFromFat'])),
       chloride: map['chloride'] == null
           ? null
-          : Mass.grams(map['chloride'] as double),
+          : Mass.fromMap(Map<String, dynamic>.from(map['chloride'])),
       cholesterol: map['cholesterol'] == null
           ? null
-          : Mass.grams(map['cholesterol'] as double),
+          : Mass.fromMap(Map<String, dynamic>.from(map['cholesterol'])),
       chromium: map['chromium'] == null
           ? null
-          : Mass.grams(map['chromium'] as double),
-      copper:
-          map['copper'] == null ? null : Mass.grams(map['copper'] as double),
+          : Mass.fromMap(Map<String, dynamic>.from(map['chromium'])),
+      copper: map['copper'] == null
+          ? null
+          : Mass.fromMap(Map<String, dynamic>.from(map['copper'])),
       dietaryFiber: map['dietaryFiber'] == null
           ? null
-          : Mass.grams(map['dietaryFiber'] as double),
-      folate:
-          map['folate'] == null ? null : Mass.grams(map['folate'] as double),
-      iodine:
-          map['iodine'] == null ? null : Mass.grams(map['iodine'] as double),
-      iron: map['iron'] == null ? null : Mass.grams(map['iron'] as double),
+          : Mass.fromMap(Map<String, dynamic>.from(map['dietaryFiber'])),
+      folate: map['folate'] == null
+          ? null
+          : Mass.fromMap(Map<String, dynamic>.from(map['folate'])),
+      iodine: map['iodine'] == null
+          ? null
+          : Mass.fromMap(Map<String, dynamic>.from(map['iodine'])),
+      iron: map['iron'] == null
+          ? null
+          : Mass.fromMap(Map<String, dynamic>.from(map['iron'])),
       magnesium: map['magnesium'] == null
           ? null
-          : Mass.grams(map['magnesium'] as double),
+          : Mass.fromMap(Map<String, dynamic>.from(map['magnesium'])),
       manganese: map['manganese'] == null
           ? null
-          : Mass.grams(map['manganese'] as double),
+          : Mass.fromMap(Map<String, dynamic>.from(map['manganese'])),
       molybdenum: map['molybdenum'] == null
           ? null
-          : Mass.grams(map['molybdenum'] as double),
+          : Mass.fromMap(Map<String, dynamic>.from(map['molybdenum'])),
       monounsaturatedFat: map['monounsaturatedFat'] == null
           ? null
-          : Mass.grams(map['monounsaturatedFat'] as double),
-      niacin:
-          map['niacin'] == null ? null : Mass.grams(map['niacin'] as double),
+          : Mass.fromMap(Map<String, dynamic>.from(map['monounsaturatedFat'])),
+      niacin: map['niacin'] == null
+          ? null
+          : Mass.fromMap(Map<String, dynamic>.from(map['niacin'])),
       pantothenicAcid: map['pantothenicAcid'] == null
           ? null
-          : Mass.grams(map['pantothenicAcid'] as double),
+          : Mass.fromMap(Map<String, dynamic>.from(map['pantothenicAcid'])),
       phosphorus: map['phosphorus'] == null
           ? null
-          : Mass.grams(map['phosphorus'] as double),
+          : Mass.fromMap(Map<String, dynamic>.from(map['phosphorus'])),
       polyunsaturatedFat: map['polyunsaturatedFat'] == null
           ? null
-          : Mass.grams(map['polyunsaturatedFat'] as double),
+          : Mass.fromMap(Map<String, dynamic>.from(map['polyunsaturatedFat'])),
       potassium: map['potassium'] == null
           ? null
-          : Mass.grams(map['potassium'] as double),
-      protein:
-          map['protein'] == null ? null : Mass.grams(map['protein'] as double),
+          : Mass.fromMap(Map<String, dynamic>.from(map['potassium'])),
+      protein: map['protein'] == null
+          ? null
+          : Mass.fromMap(Map<String, dynamic>.from(map['protein'])),
       riboflavin: map['riboflavin'] == null
           ? null
-          : Mass.grams(map['riboflavin'] as double),
+          : Mass.fromMap(Map<String, dynamic>.from(map['riboflavin'])),
       saturatedFat: map['saturatedFat'] == null
           ? null
-          : Mass.grams(map['saturatedFat'] as double),
+          : Mass.fromMap(Map<String, dynamic>.from(map['saturatedFat'])),
       selenium: map['selenium'] == null
           ? null
-          : Mass.grams(map['selenium'] as double),
-      sodium:
-          map['sodium'] == null ? null : Mass.grams(map['sodium'] as double),
-      sugar: map['sugar'] == null ? null : Mass.grams(map['sugar'] as double),
-      thiamin:
-          map['thiamin'] == null ? null : Mass.grams(map['thiamin'] as double),
+          : Mass.fromMap(Map<String, dynamic>.from(map['selenium'])),
+      sodium: map['sodium'] == null
+          ? null
+          : Mass.fromMap(Map<String, dynamic>.from(map['sodium'])),
+      sugar: map['sugar'] == null
+          ? null
+          : Mass.fromMap(Map<String, dynamic>.from(map['sugar'])),
+      thiamin: map['thiamin'] == null
+          ? null
+          : Mass.fromMap(Map<String, dynamic>.from(map['thiamin'])),
       totalCarbohydrates: map['totalCarbohydrates'] == null
           ? null
-          : Mass.grams(map['totalCarbohydrates'] as double),
+          : Mass.fromMap(Map<String, dynamic>.from(map['totalCarbohydrates'])),
       totalFat: map['totalFat'] == null
           ? null
-          : Mass.grams(map['totalFat'] as double),
+          : Mass.fromMap(Map<String, dynamic>.from(map['totalFat'])),
       transFat: map['transFat'] == null
           ? null
-          : Mass.grams(map['transFat'] as double),
+          : Mass.fromMap(Map<String, dynamic>.from(map['transFat'])),
       unsaturatedFat: map['unsaturatedFat'] == null
           ? null
-          : Mass.grams(map['unsaturatedFat'] as double),
+          : Mass.fromMap(Map<String, dynamic>.from(map['unsaturatedFat'])),
       vitaminA: map['vitaminA'] == null
           ? null
-          : Mass.grams(map['vitaminA'] as double),
+          : Mass.fromMap(Map<String, dynamic>.from(map['vitaminA'])),
       vitaminB12: map['vitaminB12'] == null
           ? null
-          : Mass.grams(map['vitaminB12'] as double),
+          : Mass.fromMap(Map<String, dynamic>.from(map['vitaminB12'])),
       vitaminB6: map['vitaminB6'] == null
           ? null
-          : Mass.grams(map['vitaminB6'] as double),
+          : Mass.fromMap(Map<String, dynamic>.from(map['vitaminB6'])),
       vitaminC: map['vitaminC'] == null
           ? null
-          : Mass.grams(map['vitaminC'] as double),
+          : Mass.fromMap(Map<String, dynamic>.from(map['vitaminC'])),
       vitaminD: map['vitaminD'] == null
           ? null
-          : Mass.grams(map['vitaminD'] as double),
+          : Mass.fromMap(Map<String, dynamic>.from(map['vitaminD'])),
       vitaminE: map['vitaminE'] == null
           ? null
-          : Mass.grams(map['vitaminE'] as double),
+          : Mass.fromMap(Map<String, dynamic>.from(map['vitaminE'])),
       vitaminK: map['vitaminK'] == null
           ? null
-          : Mass.grams(map['vitaminK'] as double),
-      zinc: map['zinc'] == null ? null : Mass.grams(map['zinc'] as double),
+          : Mass.fromMap(Map<String, dynamic>.from(map['vitaminK'])),
+      zinc: map['zinc'] == null
+          ? null
+          : Mass.fromMap(Map<String, dynamic>.from(map['zinc'])),
     );
   }
 }

@@ -59,7 +59,7 @@ class BasalMetabolicRateRecord extends InstantaneousRecord {
           : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       basalMetabolicRate:
-          Power.kilocaloriesPerDay(map['basalMetabolicRate'] as double),
+          Power.fromMap(Map<String, dynamic>.from(map['basalMetabolicRate'])),
     );
   }
 

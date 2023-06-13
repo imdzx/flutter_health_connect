@@ -48,13 +48,12 @@ class BoneMassRecord extends InstantaneousRecord {
   @override
   factory BoneMassRecord.fromMap(Map<String, dynamic> map) {
     return BoneMassRecord(
-      time: DateTime.parse(map['time']),
-      zoneOffset: map['zoneOffset'] != null
-          ? Duration(hours: map['zoneOffset'] as int)
-          : null,
-      metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
-      mass: Mass.kilograms(map['mass'] as double),
-    );
+        time: DateTime.parse(map['time']),
+        zoneOffset: map['zoneOffset'] != null
+            ? Duration(hours: map['zoneOffset'] as int)
+            : null,
+        metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
+        mass: Mass.fromMap(Map<String, dynamic>.from(map['mass'])));
   }
 
   @override

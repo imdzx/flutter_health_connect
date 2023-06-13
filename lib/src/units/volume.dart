@@ -34,6 +34,11 @@ class Volume implements Comparable<Volume> {
 
   @override
   String toString() => '$value ${unit.title}';
+
+  factory Volume.fromMap(Map<String, dynamic> map) => Volume(
+        map['value'] as double,
+        VolumeUnit.values[map['unit'] as int],
+      );
 }
 
 enum VolumeUnit {

@@ -58,7 +58,8 @@ class BodyTemperatureRecord extends InstantaneousRecord {
           ? Duration(hours: map['zoneOffset'] as int)
           : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
-      temperature: Temperature.celsius(map['temperature'] as double),
+      temperature:
+          Temperature.fromMap(Map<String, dynamic>.from(map['temperature'])),
       measurementLocation: (map['measurementLocation'] != null &&
               map['measurementLocation'] as int <
                   BodyTemperatureMeasurementLocation.values.length)

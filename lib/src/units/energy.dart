@@ -39,6 +39,11 @@ class Energy implements Comparable<Energy> {
 
   @override
   String toString() => '$value ${unit.title}';
+
+  factory Energy.fromMap(Map<String, dynamic> map) => Energy(
+        map['value'] as double,
+        EnergyUnit.values[map['unit'] as int],
+      );
 }
 
 enum EnergyUnit {

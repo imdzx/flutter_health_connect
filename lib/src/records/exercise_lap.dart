@@ -43,7 +43,9 @@ class ExerciseLap {
     return ExerciseLap(
       startTime: DateTime.parse(map['startTime']),
       endTime: DateTime.parse(map['endTime']),
-      length: map['length'] != null ? Length.meters(map['length']) : null,
+      length: map['length'] != null
+          ? Length.fromMap(Map<String, dynamic>.from(map['distance']))
+          : null,
     );
   }
 

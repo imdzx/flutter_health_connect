@@ -74,7 +74,7 @@ class HydrationRecord extends IntervalRecord {
       startZoneOffset: map['startZoneOffset'] != null
           ? Duration(hours: map['startZoneOffset'] as int)
           : null,
-      volume: Volume.liters(map['volume'] as double),
+      volume: Volume.fromMap(Map<String, dynamic>.from(map['volume'])),
     );
   }
 

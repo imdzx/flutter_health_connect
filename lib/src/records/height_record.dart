@@ -52,7 +52,7 @@ class HeightRecord extends InstantaneousRecord {
           ? Duration(hours: map['zoneOffset'] as int)
           : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
-      height: Length.meters(map['height'] as double),
+      height: Length.fromMap(Map<String, dynamic>.from(map['height'])),
     );
   }
 

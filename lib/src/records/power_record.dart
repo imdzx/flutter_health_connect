@@ -111,7 +111,7 @@ class PowerSample {
 
   static PowerSample fromMap(Map<String, dynamic> map) {
     return PowerSample(
-      power: Power.watts(map['power']),
+      power: Power.fromMap(Map<String, dynamic>.from(map['power'])),
       time: DateTime.fromMillisecondsSinceEpoch(map['time']),
     );
   }

@@ -51,7 +51,7 @@ class LeanBodyMassRecord extends InstantaneousRecord {
       zoneOffset: map['zoneOffset'] != null
           ? Duration(hours: map['zoneOffset'] as int)
           : null,
-      mass: Mass.kilograms(map['mass'] as double),
+      mass: Mass.fromMap(Map<String, dynamic>.from(map['mass'])),
     );
   }
 

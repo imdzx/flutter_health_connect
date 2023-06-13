@@ -21,6 +21,11 @@ class Pressure implements Comparable<Pressure> {
 
   @override
   String toString() => '$value mmHg';
+
+  factory Pressure.fromMap(Map<String, dynamic> map) => Pressure(
+        map['value'] as double,
+        PressureUnit.values[map['unit'] as int],
+      );
 }
 
 enum PressureUnit {

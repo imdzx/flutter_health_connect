@@ -112,7 +112,7 @@ class SpeedSample {
 
   static SpeedSample fromMap(Map<String, dynamic> map) {
     return SpeedSample(
-      speed: Velocity.metersPerSecond(map['speed'] as double),
+      speed: Velocity.fromMap(Map<String, dynamic>.from(map['speed'])),
       time: DateTime.parse(map['time']),
     );
   }

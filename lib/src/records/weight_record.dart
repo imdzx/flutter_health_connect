@@ -55,7 +55,7 @@ class WeightRecord extends InstantaneousRecord {
           ? Duration(hours: map['zoneOffset'] as int)
           : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
-      weight: Mass.kilograms(map['weight'] as double),
+      weight: Mass.fromMap(Map<String, dynamic>.from(map['weight'])),
     );
   }
 

@@ -81,8 +81,8 @@ class BloodPressureRecord extends InstantaneousRecord {
       zoneOffset: map['zoneOffset'] != null
           ? Duration(hours: map['zoneOffset'] as int)
           : null,
-      systolic: Pressure.millimetersOfMercury(map['systolic'] as double),
-      diastolic: Pressure.millimetersOfMercury(map['diastolic'] as double),
+      systolic: Pressure.fromMap(Map<String, dynamic>.from(map['systolic'])),
+      diastolic: Pressure.fromMap(Map<String, dynamic>.from(map['diastolic'])),
       measurementLocation: (map['measurementLocation'] != null &&
               map['measurementLocation'] as int <
                   BloodPressureMeasurementLocation.values.length)

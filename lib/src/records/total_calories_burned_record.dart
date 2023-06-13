@@ -78,7 +78,7 @@ class TotalCaloriesBurnedRecord extends IntervalRecord {
           ? null
           : Duration(hours: map['startZoneOffset'] as int),
       totalCaloriesBurned:
-          Energy.calories(map['totalCaloriesBurned'] as double),
+          Energy.fromMap(Map<String, dynamic>.from(map['totalCaloriesBurned'])),
     );
   } // f
 

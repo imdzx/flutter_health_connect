@@ -74,7 +74,7 @@ class ElevationGainedRecord extends IntervalRecord {
         endZoneOffset: map['endZoneOffset'] != null
             ? Duration(hours: map['endZoneOffset'] as int)
             : null,
-        elevation: Length.meters(map['elevation'] as double),
+        elevation: Length.fromMap(Map<String, dynamic>.from(map['elevation'])),
         metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])));
   }
 

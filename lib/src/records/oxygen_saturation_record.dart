@@ -50,7 +50,8 @@ class OxygenSaturationRecord extends InstantaneousRecord {
           ? Duration(hours: map['zoneOffset'] as int)
           : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
-      percentage: Percentage(map['percentage'] as double),
+      percentage:
+          Percentage.fromMap(Map<String, dynamic>.from(map['percentage'])),
     );
   }
 

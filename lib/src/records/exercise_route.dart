@@ -111,13 +111,13 @@ class Location {
       latitude: map['latitude'] as double,
       longitude: map['longitude'] as double,
       altitude: map['altitude'] != null
-          ? Length.meters(map['altitude'] as double)
+          ? Length.fromMap(Map<String, dynamic>.from(map['altitude']))
           : null,
       horizontalAccuracy: map['horizontalAccuracy'] != null
-          ? Length.meters(map['horizontalAccuracy'] as double)
+          ? Length.fromMap(Map<String, dynamic>.from(map['horizontalAccuracy']))
           : null,
       verticalAccuracy: map['verticalAccuracy'] != null
-          ? Length.meters(map['verticalAccuracy'] as double)
+          ? Length.fromMap(Map<String, dynamic>.from(map['verticalAccuracy']))
           : null,
     );
   }

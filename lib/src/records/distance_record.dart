@@ -74,7 +74,7 @@ class DistanceRecord extends IntervalRecord {
         endZoneOffset: map['endZoneOffset'] != null
             ? Duration(hours: map['endZoneOffset'] as int)
             : null,
-        distance: Length.meters(map['distance'] as double),
+        distance: Length.fromMap(Map<String, dynamic>.from(map['distance'])),
         metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])));
   }
 
