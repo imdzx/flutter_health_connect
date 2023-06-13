@@ -66,9 +66,9 @@ class SleepSessionRecord extends IntervalRecord {
   @override
   Map<String, dynamic> toMap() {
     return {
-      'startTime': startTime.toIso8601String(),
+      'startTime': startTime.toUtc().toIso8601String(),
       'startZoneOffset': startZoneOffset?.inHours,
-      'endTime': endTime.toIso8601String(),
+      'endTime': endTime.toUtc().toIso8601String(),
       'endZoneOffset': endZoneOffset?.inHours,
       'title': title,
       'notes': notes,
@@ -124,8 +124,8 @@ class SleepStage {
 
   Map<String, dynamic> toMap() {
     return {
-      'startTime': startTime.toIso8601String(),
-      'endTime': endTime.toIso8601String(),
+      'startTime': startTime.toUtc().toIso8601String(),
+      'endTime': endTime.toUtc().toIso8601String(),
       'type': type.index,
     };
   }

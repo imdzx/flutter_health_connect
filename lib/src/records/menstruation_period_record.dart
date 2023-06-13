@@ -48,9 +48,9 @@ class MenstruationPeriodRecord extends IntervalRecord {
   @override
   Map<String, dynamic> toMap() {
     return {
-      'startTime': startTime.toIso8601String(),
+      'startTime': startTime.toUtc().toIso8601String(),
       'startZoneOffset': startZoneOffset?.inHours,
-      'endTime': endTime.toIso8601String(),
+      'endTime': endTime.toUtc().toIso8601String(),
       'endZoneOffset': endZoneOffset?.inHours,
       'metadata': metadata.toMap(),
     };

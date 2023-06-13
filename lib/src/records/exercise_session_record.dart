@@ -97,9 +97,9 @@ class ExerciseSessionRecord extends IntervalRecord {
   @override
   Map<String, dynamic> toMap() {
     return {
-      'endTime': endTime.toIso8601String(),
+      'endTime': endTime.toUtc().toIso8601String(),
       'endZoneOffset': endZoneOffset?.inHours,
-      'startTime': startTime.toIso8601String(),
+      'startTime': startTime.toUtc().toIso8601String(),
       'startZoneOffset': startZoneOffset?.inHours,
       'metadata': metadata.toMap(),
       'exerciseType': exerciseType.value,

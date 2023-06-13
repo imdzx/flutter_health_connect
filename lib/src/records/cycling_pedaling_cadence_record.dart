@@ -49,10 +49,10 @@ class CyclingPedalingCadenceRecord extends SeriesRecord<Sample> {
   @override
   Map<String, dynamic> toMap() {
     return {
-      'endTime': endTime.toIso8601String(),
+      'endTime': endTime.toUtc().toIso8601String(),
       'endZoneOffset': endZoneOffset?.inHours,
       'metadata': metadata.toMap(),
-      'startTime': startTime.toIso8601String(),
+      'startTime': startTime.toUtc().toIso8601String(),
       'startZoneOffset': startZoneOffset?.inHours,
       'samples': samples.map((e) => e.toMap()).toList(),
     };

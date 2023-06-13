@@ -30,7 +30,7 @@ class MenstruationFlowRecord extends InstantaneousRecord {
   Map<String, dynamic> toMap() {
     return {
       'metadata': metadata.toMap(),
-      'time': time.toIso8601String(),
+      'time': time.toUtc().toIso8601String(),
       'zoneOffset': zoneOffset?.inHours,
       'flow': flow.index
     };

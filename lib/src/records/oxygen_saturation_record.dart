@@ -35,7 +35,7 @@ class OxygenSaturationRecord extends InstantaneousRecord {
   @override
   Map<String, dynamic> toMap() {
     return {
-      'time': time.toIso8601String(),
+      'time': time.toUtc().toIso8601String(),
       'zoneOffset': zoneOffset?.inHours,
       'metadata': metadata.toMap(),
       'percentage': percentage.value,

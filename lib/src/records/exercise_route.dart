@@ -96,7 +96,7 @@ class Location {
 
   Map<String, dynamic> toMap() {
     return {
-      'time': time.toIso8601String(),
+      'time': time.toUtc().toIso8601String(),
       'latitude': latitude,
       'longitude': longitude,
       'altitude': altitude?.inMeters,

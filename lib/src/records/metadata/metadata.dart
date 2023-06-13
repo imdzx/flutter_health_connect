@@ -58,7 +58,7 @@ class Metadata {
     return {
       'id': id,
       'dataOrigin': {'packageName': dataOrigin.packageName},
-      'lastModifiedTime': lastModifiedTime.toIso8601String(),
+      'lastModifiedTime': lastModifiedTime.toUtc().toIso8601String(),
       'clientRecordId': clientRecordId,
       'clientRecordVersion': clientRecordVersion,
       'device': device == null

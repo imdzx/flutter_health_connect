@@ -154,8 +154,8 @@ class ExerciseSegment {
 
   Map<String, dynamic> toMap() {
     return {
-      'startTime': startTime.toIso8601String(),
-      'endTime': endTime.toIso8601String(),
+      'startTime': startTime.toUtc().toIso8601String(),
+      'endTime': endTime.toUtc().toIso8601String(),
       'segmentType': segmentType.index,
       'repetitions': repetitions,
     };

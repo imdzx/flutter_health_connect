@@ -64,7 +64,7 @@ class BloodPressureRecord extends InstantaneousRecord {
   Map<String, dynamic> toMap() {
     return {
       'metadata': metadata.toMap(),
-      'time': time.toIso8601String(),
+      'time': time.toUtc().toIso8601String(),
       'zoneOffset': zoneOffset?.inHours,
       'systolic': systolic.inMillimetersOfMercury,
       'diastolic': diastolic.inMillimetersOfMercury,

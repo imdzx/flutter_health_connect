@@ -49,9 +49,9 @@ class SpeedRecord extends SeriesRecord<SpeedSample> {
   @override
   Map<String, dynamic> toMap() {
     return {
-      'endTime': endTime.toIso8601String(),
+      'endTime': endTime.toUtc().toIso8601String(),
       'endZoneOffset': endZoneOffset?.inHours,
-      'startTime': startTime.toIso8601String(),
+      'startTime': startTime.toUtc().toIso8601String(),
       'startZoneOffset': startZoneOffset?.inHours,
       'samples': samples.map((e) => e.toMap()).toList(),
       'metadata': metadata.toMap(),
@@ -106,7 +106,7 @@ class SpeedSample {
   Map<String, dynamic> toMap() {
     return {
       'speed': speed.inMetersPerSecond,
-      'time': time.toIso8601String(),
+      'time': time.toUtc().toIso8601String(),
     };
   }
 
