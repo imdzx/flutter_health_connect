@@ -22,12 +22,12 @@ class Energy implements Comparable<Energy> {
   double get inKilojoules => _get(unit: EnergyUnit.kilojoules);
 
   double _get({required EnergyUnit unit}) =>
-      this.unit == unit ? value : inJoules / unit.joulesPerUnit;
+      this.unit == unit ? value : inCalories / unit.caloriesPerUnit;
 
   @override
   int compareTo(Energy other) => unit == other.unit
       ? value.compareTo(other.value)
-      : inJoules.compareTo(other.inJoules);
+      : inCalories.compareTo(other.inCalories);
 
   @override
   bool operator ==(Object other) =>
@@ -40,10 +40,8 @@ class Energy implements Comparable<Energy> {
   @override
   String toString() => '$value ${unit.title}';
 
-  factory Energy.fromMap(Map<String, dynamic> map) => Energy(
-        map['value'] as double,
-        EnergyUnit.values[map['unit'] as int],
-      );
+  factory Energy.fromMap(Map<String, dynamic> map) =>
+      Energy.calories(map['calories'] as double);
 }
 
 enum EnergyUnit {
@@ -52,8 +50,8 @@ enum EnergyUnit {
   joules(0.2390057361, 'J'),
   kilojoules(239.0057361, 'kJ');
 
-  final double joulesPerUnit;
+  final double caloriesPerUnit;
   final String title;
 
-  const EnergyUnit(this.joulesPerUnit, this.title);
+  const EnergyUnit(this.caloriesPerUnit, this.title);
 }

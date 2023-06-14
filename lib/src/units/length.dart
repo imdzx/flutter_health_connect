@@ -43,10 +43,8 @@ class Length implements Comparable<Length> {
   @override
   String toString() => '$value ${unit.title}';
 
-  factory Length.fromMap(Map<String, dynamic> map) => Length(
-        map['value'] as double,
-        LengthUnit.values[map['unit'] as int],
-      );
+  factory Length.fromMap(Map<String, dynamic> map) =>
+      Length.meters(map['meters'] as double);
 }
 
 enum LengthUnit {

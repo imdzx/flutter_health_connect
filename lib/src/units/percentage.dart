@@ -16,7 +16,6 @@ class Percentage implements Comparable<Percentage> {
   @override
   String toString() => '$value%';
 
-  factory Percentage.fromMap(Map<String, dynamic> map) => Percentage(
-        map['value'] as double,
-      );
+  factory Percentage.fromMap(Map<String, dynamic> map) =>
+      Percentage(map['percent'] as double);
 }

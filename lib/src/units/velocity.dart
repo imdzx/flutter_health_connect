@@ -39,10 +39,8 @@ class Velocity implements Comparable<Velocity> {
   @override
   String toString() => '$value ${unit.title}';
 
-  factory Velocity.fromMap(Map<String, dynamic> map) => Velocity(
-        map['value'] as double,
-        VelocityUnits.values[map['unit'] as int],
-      );
+  factory Velocity.fromMap(Map<String, dynamic> map) =>
+      Velocity.metersPerSecond(map['metersPerSecond'] as double);
 }
 
 enum VelocityUnits {

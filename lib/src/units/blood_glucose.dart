@@ -44,10 +44,8 @@ class BloodGlucose implements Comparable<BloodGlucose> {
   @override
   String toString() => '$value ${unit.toString().split('.').last}';
 
-  factory BloodGlucose.fromMap(Map<String, dynamic> map) => BloodGlucose(
-        map['value'] as double,
-        BloodGlucoseUnit.values[map['unit'] as int],
-      );
+  factory BloodGlucose.fromMap(Map<String, dynamic> map) =>
+      BloodGlucose.millimolesPerLiter(map['millimolesPerLiter'] as double);
 }
 
 enum BloodGlucoseUnit {

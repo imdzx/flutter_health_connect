@@ -32,10 +32,8 @@ class Power implements Comparable<Power> {
   @override
   String toString() => '$value ${unit.title}';
 
-  factory Power.fromMap(Map<String, dynamic> map) => Power(
-        map['value'] as double,
-        PowerUnit.values[map['unit'] as int],
-      );
+  factory Power.fromMap(Map<String, dynamic> map) =>
+      Power.watts(map['watts'] as double);
 }
 
 enum PowerUnit {

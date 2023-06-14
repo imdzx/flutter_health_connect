@@ -48,10 +48,8 @@ class Temperature implements Comparable<Temperature> {
   @override
   String toString() => '$value ${unit.toString().split('.').last}';
 
-  factory Temperature.fromMap(Map<String, dynamic> map) => Temperature(
-        map['value'] as double,
-        TemperatureUnit.values[map['unit'] as int],
-      );
+  factory Temperature.fromMap(Map<String, dynamic> map) =>
+      Temperature.celsius(map['celsius'] as double);
 }
 
 enum TemperatureUnit {
