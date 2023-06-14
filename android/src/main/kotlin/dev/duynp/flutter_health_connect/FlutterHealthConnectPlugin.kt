@@ -244,6 +244,46 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                     result.error("UNABLE_TO_START_ACTIVITY", e.message, e)
                 }
             }
+
+            "deleteRecordsByTime" -> {
+                scope.launch {
+                    val type = call.argument<String>("type") ?: ""
+                    val startTime = call.argument<String>("startTime")
+                    val endTime = call.argument<String>("endTime")
+                    try {
+                        HealthConnectRecordTypeMap[type]?.let { classType ->
+                            val start =
+                                startTime?.let { Instant.parse(it) } ?: Instant.now()
+                                    .minus(1, ChronoUnit.DAYS)
+                            val end = endTime?.let { Instant.parse(it) } ?: Instant.now()
+                            val reply = client.deleteRecords(
+                                recordType = classType,
+                                timeRangeFilter = TimeRangeFilter.between(start, end),
+                            )
+                            result.success(reply)
+                        } ?: throw Throwable("Unsupported type $type")
+                    } catch (e: Throwable) {
+                        result.error("DELETE_RECORDS_FAIL", e.localizedMessage, e)
+                    }
+                }
+            }
+
+            "deleteRecordsByIds" -> {
+                scope.launch {
+                    val type = call.argument<String>("type") ?: ""
+                    val idList = call.argument<List<String>>("idList") ?: emptyList()
+                    val clientRecordIdsList = call.argument<List<String>>("clientRecordIdsList") ?: emptyList()
+                    try {
+                        HealthConnectRecordTypeMap[type]?.let { classType ->
+                            val reply = client.deleteRecords(classType, idList, clientRecordIdsList)
+                            result.success(reply)
+                        } ?: throw Throwable("Unsupported type $type")
+                    } catch (e: Throwable) {
+                        result.error("DELETE_RECORDS_FAIL", e.localizedMessage, e)
+                    }
+                }
+            }
+
             else -> {
                 result.notImplemented()
             }

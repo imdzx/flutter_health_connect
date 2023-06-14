@@ -176,4 +176,32 @@ class HealthConnectFactory {
   static Future<bool> openHealthConnectSettings() async {
     return await _channel.invokeMethod('openHealthConnectSettings');
   }
+
+  static Future<bool> deleteRecordsByIds({
+    required HealthConnectDataType type,
+    List<String> idList = const [],
+    List<String> clientRecordIdsList = const [],
+  }) async {
+    final args = <String, dynamic>{
+      'type': type.name,
+      'idList': idList,
+      'clientRecordIdsList': clientRecordIdsList,
+    };
+    return await _channel.invokeMethod('deleteRecordsByIds', args);
+  }
+
+  static Future<bool> deleteRecordsByTime({
+    required HealthConnectDataType type,
+    required DateTime startTime,
+    required DateTime endTime,
+  }) async {
+    final start = startTime.toUtc().toIso8601String();
+    final end = endTime.toUtc().toIso8601String();
+    final args = <String, dynamic>{
+      'type': type.name,
+      'startTime': start,
+      'endTime': end,
+    };
+    return await _channel.invokeMethod('deleteRecordsByTime', args);
+  }
 }
