@@ -293,7 +293,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             dataOrigin = dataOrigin,
                             lastModifiedTime = Instant.parse(metadataMap["lastModifiedTime"] as String),
                             clientRecordId = metadataMap["clientRecordId"] as String?,
-                            clientRecordVersion = metadataMap["clientRecordVersion"] as Long,
+                            clientRecordVersion = (metadataMap["clientRecordVersion"] as Int).toLong(),
                             device = device
                         )
                     } else Metadata()
