@@ -165,9 +165,8 @@ class ExerciseSegment {
     return ExerciseSegment(
       startTime: DateTime.parse(map['startTime']),
       endTime: DateTime.parse(map['endTime']),
-      segmentType: (map['segmentType'] != null &&
-              map['segmentType'] as int < ExerciseSegmentType.values.length)
-          ? ExerciseSegmentType.values[map['segmentType'] as int]
+      segmentType: map['segmentType'] != null
+          ? ExerciseSegmentType.fromValue(map['segmentType'] as int)
           : ExerciseSegmentType.unknown,
       repetitions: map['repetitions'],
     );
@@ -252,4 +251,8 @@ enum ExerciseSegmentType {
   final int value;
 
   const ExerciseSegmentType(this.value);
+
+  factory ExerciseSegmentType.fromValue(int value) {
+    return values.firstWhere((e) => e.value == value, orElse: () => unknown);
+  }
 }

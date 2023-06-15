@@ -124,7 +124,7 @@ class ExerciseSessionRecord extends IntervalRecord {
           ? Duration(hours: map['endZoneOffset'] as int)
           : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
-      exerciseType: ExerciseType.values[map['exerciseType']],
+      exerciseType: ExerciseType.fromValue(map['exerciseType']),
       title: map['title'],
       notes: map['notes'],
       segments: List<ExerciseSegment>.from(
@@ -207,6 +207,11 @@ enum ExerciseType {
   final int value;
 
   const ExerciseType(this.value);
+
+  factory ExerciseType.fromValue(int value) {
+    return values.firstWhere((e) => e.value == value,
+        orElse: () => otherWorkout);
+  }
 
   @override
   String toString() {
