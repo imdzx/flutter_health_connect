@@ -116,213 +116,213 @@ class NutritionRecord extends IntervalRecord {
             "startTime must not be after endTime."),
         assert(
             biotin == null ||
-                biotin.inGrams >= _minMass.inGrams &&
-                    biotin.inGrams <= _maxMass100.inGrams,
+                (biotin.inGrams >= _minMass.inGrams &&
+                    biotin.inGrams <= _maxMass100.inGrams),
             "biotin"),
         assert(
             caffeine == null ||
-                caffeine.inGrams >= _minMass.inGrams &&
-                    caffeine.inGrams <= _maxMass100.inGrams,
+                (caffeine.inGrams >= _minMass.inGrams &&
+                    caffeine.inGrams <= _maxMass100.inGrams),
             "caffeine"),
         assert(
             calcium == null ||
-                calcium.inGrams >= _minMass.inGrams &&
-                    calcium.inGrams <= _maxMass100.inGrams,
+                (calcium.inGrams >= _minMass.inGrams &&
+                    calcium.inGrams <= _maxMass100.inGrams),
             "calcium"),
         assert(
             energy == null ||
-                energy.inCalories >= _minEnergy.inCalories &&
-                    energy.inCalories <= _maxEnergy.inCalories,
+                (energy.inCalories >= _minEnergy.inCalories &&
+                    energy.inCalories <= _maxEnergy.inCalories),
             "energy"),
         assert(
             energyFromFat == null ||
-                energyFromFat.inCalories >= _minEnergy.inCalories &&
-                    energyFromFat.inCalories <= _maxEnergy.inCalories,
+                (energyFromFat.inCalories >= _minEnergy.inCalories &&
+                    energyFromFat.inCalories <= _maxEnergy.inCalories),
             "energyFromFat"),
         assert(
             chloride == null ||
-                chloride.inGrams >= _minMass.inGrams &&
-                    chloride.inGrams <= _maxMass100.inGrams,
+                (chloride.inGrams >= _minMass.inGrams &&
+                    chloride.inGrams <= _maxMass100.inGrams),
             "chloride"),
         assert(
             cholesterol == null ||
-                cholesterol.inGrams >= _minMass.inGrams &&
-                    cholesterol.inGrams <= _maxMass100.inGrams,
+                (cholesterol.inGrams >= _minMass.inGrams &&
+                    cholesterol.inGrams <= _maxMass100.inGrams),
             "cholesterol"),
         assert(
             chromium == null ||
-                chromium.inGrams >= _minMass.inGrams &&
-                    chromium.inGrams <= _maxMass100.inGrams,
+                (chromium.inGrams >= _minMass.inGrams &&
+                    chromium.inGrams <= _maxMass100.inGrams),
             "chromium"),
         assert(
             copper == null ||
-                copper.inGrams >= _minMass.inGrams &&
-                    copper.inGrams <= _maxMass100.inGrams,
+                (copper.inGrams >= _minMass.inGrams &&
+                    copper.inGrams <= _maxMass100.inGrams),
             "copper"),
         assert(
             dietaryFiber == null ||
-                dietaryFiber.inGrams >= _minMass.inGrams &&
-                    dietaryFiber.inGrams <= _maxMass100K.inGrams,
+                (dietaryFiber.inGrams >= _minMass.inGrams &&
+                    dietaryFiber.inGrams <= _maxMass100K.inGrams),
             "dietaryFiber"),
         assert(
             folate == null ||
-                folate.inGrams >= _minMass.inGrams &&
-                    folate.inGrams <= _maxMass100.inGrams,
+                (folate.inGrams >= _minMass.inGrams &&
+                    folate.inGrams <= _maxMass100.inGrams),
             "folate"),
         assert(
             folicAcid == null ||
-                folicAcid.inGrams >= _minMass.inGrams &&
-                    folicAcid.inGrams <= _maxMass100.inGrams,
+                (folicAcid.inGrams >= _minMass.inGrams &&
+                    folicAcid.inGrams <= _maxMass100.inGrams),
             "folicAcid"),
         assert(
             iodine == null ||
-                iodine.inGrams >= _minMass.inGrams &&
-                    iodine.inGrams <= _maxMass100.inGrams,
+                (iodine.inGrams >= _minMass.inGrams &&
+                    iodine.inGrams <= _maxMass100.inGrams),
             "iodine"),
         assert(
             iron == null ||
-                iron.inGrams >= _minMass.inGrams &&
-                    iron.inGrams <= _maxMass100.inGrams,
+                (iron.inGrams >= _minMass.inGrams &&
+                    iron.inGrams <= _maxMass100.inGrams),
             "iron"),
         assert(
             magnesium == null ||
-                magnesium.inGrams >= _minMass.inGrams &&
-                    magnesium.inGrams <= _maxMass100.inGrams,
+                (magnesium.inGrams >= _minMass.inGrams &&
+                    magnesium.inGrams <= _maxMass100.inGrams),
             "magnesium"),
         assert(
             manganese == null ||
-                manganese.inGrams >= _minMass.inGrams &&
-                    manganese.inGrams <= _maxMass100.inGrams,
+                (manganese.inGrams >= _minMass.inGrams &&
+                    manganese.inGrams <= _maxMass100.inGrams),
             "manganese"),
         assert(
             molybdenum == null ||
-                molybdenum.inGrams >= _minMass.inGrams &&
-                    molybdenum.inGrams <= _maxMass100.inGrams,
+                (molybdenum.inGrams >= _minMass.inGrams &&
+                    molybdenum.inGrams <= _maxMass100.inGrams),
             "molybdenum"),
         assert(
             monounsaturatedFat == null ||
-                monounsaturatedFat.inGrams >= _minMass.inGrams &&
-                    monounsaturatedFat.inGrams <= _maxMass100.inGrams,
+                (monounsaturatedFat.inGrams >= _minMass.inGrams &&
+                    monounsaturatedFat.inGrams <= _maxMass100.inGrams),
             "monounsaturatedFat"),
         assert(
             niacin == null ||
-                niacin.inGrams >= _minMass.inGrams &&
-                    niacin.inGrams <= _maxMass100.inGrams,
+                (niacin.inGrams >= _minMass.inGrams &&
+                    niacin.inGrams <= _maxMass100.inGrams),
             "niacin"),
         assert(
             pantothenicAcid == null ||
-                pantothenicAcid.inGrams >= _minMass.inGrams &&
-                    pantothenicAcid.inGrams <= _maxMass100.inGrams,
+                (pantothenicAcid.inGrams >= _minMass.inGrams &&
+                    pantothenicAcid.inGrams <= _maxMass100.inGrams),
             "pantothenicAcid"),
         assert(
             phosphorus == null ||
-                phosphorus.inGrams >= _minMass.inGrams &&
-                    phosphorus.inGrams <= _maxMass100.inGrams,
+                (phosphorus.inGrams >= _minMass.inGrams &&
+                    phosphorus.inGrams <= _maxMass100.inGrams),
             "phosphorus"),
         assert(
             polyunsaturatedFat == null ||
-                polyunsaturatedFat.inGrams >= _minMass.inGrams &&
-                    polyunsaturatedFat.inGrams <= _maxMass100K.inGrams,
+                (polyunsaturatedFat.inGrams >= _minMass.inGrams &&
+                    polyunsaturatedFat.inGrams <= _maxMass100K.inGrams),
             "polyunsaturatedFat"),
         assert(
             potassium == null ||
-                potassium.inGrams >= _minMass.inGrams &&
-                    potassium.inGrams <= _maxMass100.inGrams,
+                (potassium.inGrams >= _minMass.inGrams &&
+                    potassium.inGrams <= _maxMass100.inGrams),
             "potassium"),
         assert(
             protein == null ||
-                protein.inGrams >= _minMass.inGrams &&
-                    protein.inGrams <= _maxMass100K.inGrams,
+                (protein.inGrams >= _minMass.inGrams &&
+                    protein.inGrams <= _maxMass100K.inGrams),
             "protein"),
         assert(
             riboflavin == null ||
-                riboflavin.inGrams >= _minMass.inGrams &&
-                    riboflavin.inGrams <= _maxMass100.inGrams,
+                (riboflavin.inGrams >= _minMass.inGrams &&
+                    riboflavin.inGrams <= _maxMass100.inGrams),
             "riboflavin"),
         assert(
             saturatedFat == null ||
-                saturatedFat.inGrams >= _minMass.inGrams &&
-                    saturatedFat.inGrams <= _maxMass100K.inGrams,
+                (saturatedFat.inGrams >= _minMass.inGrams &&
+                    saturatedFat.inGrams <= _maxMass100K.inGrams),
             "saturatedFat"),
         assert(
             selenium == null ||
-                selenium.inGrams >= _minMass.inGrams &&
-                    selenium.inGrams <= _maxMass100.inGrams,
+                (selenium.inGrams >= _minMass.inGrams &&
+                    selenium.inGrams <= _maxMass100.inGrams),
             "selenium"),
         assert(
             sodium == null ||
-                sodium.inGrams >= _minMass.inGrams &&
-                    sodium.inGrams <= _maxMass100.inGrams,
+                (sodium.inGrams >= _minMass.inGrams &&
+                    sodium.inGrams <= _maxMass100.inGrams),
             "sodium"),
         assert(
             sugar == null ||
-                sugar.inGrams >= _minMass.inGrams &&
-                    sugar.inGrams <= _maxMass100K.inGrams,
+                (sugar.inGrams >= _minMass.inGrams &&
+                    sugar.inGrams <= _maxMass100K.inGrams),
             "sugar"),
         assert(
             thiamin == null ||
-                thiamin.inGrams >= _minMass.inGrams &&
-                    thiamin.inGrams <= _maxMass100.inGrams,
+                (thiamin.inGrams >= _minMass.inGrams &&
+                    thiamin.inGrams <= _maxMass100.inGrams),
             "thiamin"),
         assert(
             totalCarbohydrates == null ||
-                totalCarbohydrates.inGrams >= _minMass.inGrams &&
-                    totalCarbohydrates.inGrams <= _maxMass100K.inGrams,
+                (totalCarbohydrates.inGrams >= _minMass.inGrams &&
+                    totalCarbohydrates.inGrams <= _maxMass100K.inGrams),
             "totalCarbohydrates"),
         assert(
             totalFat == null ||
-                totalFat.inGrams >= _minMass.inGrams &&
-                    totalFat.inGrams <= _maxMass100K.inGrams,
+                (totalFat.inGrams >= _minMass.inGrams &&
+                    totalFat.inGrams <= _maxMass100K.inGrams),
             "totalFat"),
         assert(
             transFat == null ||
-                transFat.inGrams >= _minMass.inGrams &&
-                    transFat.inGrams <= _maxMass100K.inGrams,
+                (transFat.inGrams >= _minMass.inGrams &&
+                    transFat.inGrams <= _maxMass100K.inGrams),
             "transFat"),
         assert(
             unsaturatedFat == null ||
-                unsaturatedFat.inGrams >= _minMass.inGrams &&
-                    unsaturatedFat.inGrams <= _maxMass100K.inGrams,
+                (unsaturatedFat.inGrams >= _minMass.inGrams &&
+                    unsaturatedFat.inGrams <= _maxMass100K.inGrams),
             "unsaturatedFat"),
         assert(
             vitaminA == null ||
-                vitaminA.inGrams >= _minMass.inGrams &&
-                    vitaminA.inGrams <= _maxMass100.inGrams,
+                (vitaminA.inGrams >= _minMass.inGrams &&
+                    vitaminA.inGrams <= _maxMass100.inGrams),
             "vitaminA"),
         assert(
             vitaminB12 == null ||
-                vitaminB12.inGrams >= _minMass.inGrams &&
-                    vitaminB12.inGrams <= _maxMass100.inGrams,
+                (vitaminB12.inGrams >= _minMass.inGrams &&
+                    vitaminB12.inGrams <= _maxMass100.inGrams),
             "vitaminB12"),
         assert(
             vitaminB6 == null ||
-                vitaminB6.inGrams >= _minMass.inGrams &&
-                    vitaminB6.inGrams <= _maxMass100.inGrams,
+                (vitaminB6.inGrams >= _minMass.inGrams &&
+                    vitaminB6.inGrams <= _maxMass100.inGrams),
             "vitaminB6"),
         assert(
             vitaminC == null ||
-                vitaminC.inGrams >= _minMass.inGrams &&
-                    vitaminC.inGrams <= _maxMass100.inGrams,
+                (vitaminC.inGrams >= _minMass.inGrams &&
+                    vitaminC.inGrams <= _maxMass100.inGrams),
             "vitaminC"),
         assert(
             vitaminD == null ||
-                vitaminD.inGrams >= _minMass.inGrams &&
-                    vitaminD.inGrams <= _maxMass100.inGrams,
+                (vitaminD.inGrams >= _minMass.inGrams &&
+                    vitaminD.inGrams <= _maxMass100.inGrams),
             "vitaminD"),
         assert(
             vitaminE == null ||
-                vitaminE.inGrams >= _minMass.inGrams &&
-                    vitaminE.inGrams <= _maxMass100.inGrams,
+                (vitaminE.inGrams >= _minMass.inGrams &&
+                    vitaminE.inGrams <= _maxMass100.inGrams),
             "vitaminE"),
         assert(
             vitaminK == null ||
-                vitaminK.inGrams >= _minMass.inGrams &&
-                    vitaminK.inGrams <= _maxMass100.inGrams,
+                (vitaminK.inGrams >= _minMass.inGrams &&
+                    vitaminK.inGrams <= _maxMass100.inGrams),
             "vitaminK"),
         assert(
             zinc == null ||
-                zinc.inGrams >= _minMass.inGrams &&
-                    zinc.inGrams <= _maxMass100.inGrams,
+                (zinc.inGrams >= _minMass.inGrams &&
+                    zinc.inGrams <= _maxMass100.inGrams),
             "zinc");
 
   static const Mass _minMass = Mass.grams(0);
@@ -621,5 +621,10 @@ class NutritionRecord extends IntervalRecord {
           ? null
           : Mass.fromMap(Map<String, dynamic>.from(map['zinc'])),
     );
+  }
+
+  @override
+  String toString() {
+    return 'NutritionRecord {Energy: $energy, EnergyFromFat: $energyFromFat, Chloride: $chloride, Cholesterol: $cholesterol, Chromium: $chromium, Copper: $copper, DietaryFiber: $dietaryFiber, Folate: $folate, Iodine: $iodine, Iron: $iron, Magnesium: $magnesium, Manganese: $manganese, Molybdenum: $molybdenum, MonounsaturatedFat: $monounsaturatedFat, Niacin: $niacin, PantothenicAcid: $pantothenicAcid, Phosphorus: $phosphorus, PolyunsaturatedFat: $polyunsaturatedFat, Potassium: $potassium, Protein: $protein, Riboflavin: $riboflavin, SaturatedFat: $saturatedFat, Selenium: $selenium, Sodium: $sodium, Sugar: $sugar, Thiamin: $thiamin, TotalCarbohydrates: $totalCarbohydrates, TotalFat: $totalFat, TransFat: $transFat, UnsaturatedFat: $unsaturatedFat, VitaminA: $vitaminA, VitaminB12: $vitaminB12, VitaminB6: $vitaminB6, VitaminC: $vitaminC, VitaminD: $vitaminD, VitaminE: $vitaminE, VitaminK: $vitaminK, Zinc: $zinc}';
   }
 }
