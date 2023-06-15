@@ -57,6 +57,7 @@ class TotalCaloriesBurnedRecord extends IntervalRecord {
   @override
   Map<String, dynamic> toMap() {
     return {
+      'metadata': metadata.toMap(),
       'startTime': startTime.toUtc().toIso8601String(),
       'startZoneOffset': startZoneOffset?.inHours,
       'endTime': endTime.toUtc().toIso8601String(),

@@ -434,6 +434,7 @@ class NutritionRecord extends IntervalRecord {
       'startZoneOffset': startZoneOffset?.inHours,
       'endTime': endTime.toUtc().toIso8601String(),
       'endZoneOffset': endZoneOffset?.inHours,
+      'metadata': metadata.toMap(),
       'name': name,
       'mealType': mealType.index,
       'biotin': biotin?.inGrams,
