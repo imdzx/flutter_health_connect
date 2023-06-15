@@ -73,6 +73,7 @@ class SleepSessionRecord extends IntervalRecord {
       'title': title,
       'notes': notes,
       'stages': stages.map((e) => e.toMap()).toList(),
+      'metadata': metadata.toMap(),
     };
   }
 
@@ -87,6 +88,7 @@ class SleepSessionRecord extends IntervalRecord {
       endZoneOffset: map['endZoneOffset'] != null
           ? Duration(hours: map['endZoneOffset'] as int)
           : null,
+      metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       title: map['title'] as String?,
       notes: map['notes'] as String?,
       stages:
