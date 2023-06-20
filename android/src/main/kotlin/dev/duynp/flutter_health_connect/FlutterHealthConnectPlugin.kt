@@ -93,14 +93,11 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
 
             "installHealthConnect" -> {
                 try {
-                    context?.startActivity(
-                            Intent(Intent.ACTION_VIEW).apply {
-                                setPackage("com.android.vending")
-                                data =
-                                        Uri.parse("market://details?id=com.google.android.apps.healthdata&url=healthconnect%3A%2F%2Fonboarding")
-                                putExtra("overlay", true)
-                                putExtra("callerId", context?.packageName)
-                            })
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.apps.healthdata&url=healthconnect%3A%2F%2Fonboarding"))
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED)
+                    context?.startActivity(intent)
                     result.success(true)
                 } catch (e: Throwable) {
                     result.error("UNABLE_TO_START_ACTIVITY", e.message, e)
@@ -237,6 +234,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
             "openHealthConnectSettings" -> {
                 try {
                     val intent = Intent()
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     intent.action = HealthConnectClient.ACTION_HEALTH_CONNECT_SETTINGS
                     context?.startActivity(intent)
                     result.success(true)

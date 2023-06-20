@@ -202,7 +202,7 @@ class NutritionRecord extends IntervalRecord {
         assert(
             monounsaturatedFat == null ||
                 (monounsaturatedFat.inGrams >= _minMass.inGrams &&
-                    monounsaturatedFat.inGrams <= _maxMass100.inGrams),
+                    monounsaturatedFat.inGrams <= _maxMass100K.inGrams),
             "monounsaturatedFat"),
         assert(
             niacin == null ||
