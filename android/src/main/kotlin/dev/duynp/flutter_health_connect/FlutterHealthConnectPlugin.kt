@@ -381,6 +381,18 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             percentage = Percentage(recordMap["percentage"] as Double),
                             metadata = metadata,
                         )
+                        BODY_TEMPERATURE -> BodyTemperatureRecord(
+                            time = Instant.parse(recordMap["time"] as String),
+                            zoneOffset = if (recordMap["zoneOffset"] != null) ZoneOffset.ofHours(recordMap["zoneOffset"] as Int) else null,
+                            temperature = Temperature.celsius(recordMap["temperature"] as Double),
+                            metadata = metadata,
+                        )
+                        BODY_WATER_MASS -> BodyWaterMassRecord(
+                            time = Instant.parse(recordMap["time"] as String),
+                            zoneOffset = if (recordMap["zoneOffset"] != null) ZoneOffset.ofHours(recordMap["zoneOffset"] as Int) else null,
+                            mass = Mass.kilograms(recordMap["mass"] as Double),
+                            metadata = metadata,
+                        )
                         BONE_MASS -> BoneMassRecord(
                             time = Instant.parse(recordMap["time"] as String),
                             zoneOffset = if (recordMap["zoneOffset"] != null) ZoneOffset.ofHours(recordMap["zoneOffset"] as Int) else null,
@@ -444,6 +456,12 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             samples = (recordMap["samples"] as List<*>).filterIsInstance<HeartRateRecord.Sample>(),
                             metadata = metadata,
                         )
+                        HEART_RATE_VARIABILITY -> HeartRateVariabilityRmssdRecord(
+                            time = Instant.parse(recordMap["time"] as String),
+                            zoneOffset = if (recordMap["zoneOffset"] != null) ZoneOffset.ofHours(recordMap["zoneOffset"] as Int) else null,
+                            heartRateVariabilityMillis = recordMap["heartRateVariabilityMillis"] as Double,
+                            metadata = metadata,
+                        )
                         HEIGHT -> HeightRecord(
                             time = Instant.parse(recordMap["time"] as String),
                             zoneOffset = if (recordMap["zoneOffset"] != null) ZoneOffset.ofHours(recordMap["zoneOffset"] as Int) else null,
@@ -456,6 +474,11 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             endTime = Instant.parse(recordMap["endTime"] as String),
                             endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             volume = Volume.liters(recordMap["volume"] as Double),
+                            metadata = metadata,
+                        )
+                        INTERMENSTRUAL_BLEEDING -> IntermenstrualBleedingRecord(
+                            time = Instant.parse(recordMap["time"] as String),
+                            zoneOffset = if (recordMap["zoneOffset"] != null) ZoneOffset.ofHours(recordMap["zoneOffset"] as Int) else null,
                             metadata = metadata,
                         )
                         LEAN_BODY_MASS -> LeanBodyMassRecord(

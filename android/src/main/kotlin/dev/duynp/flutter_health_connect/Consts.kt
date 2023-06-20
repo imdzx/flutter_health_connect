@@ -10,6 +10,7 @@ const val BLOOD_GLUCOSE = "BloodGlucose"
 const val BLOOD_PRESSURE = "BloodPressure"
 const val BODY_FAT = "BodyFat"
 const val BODY_TEMPERATURE = "BodyTemperature"
+const val BODY_WATER_MASS = "BodyWaterMass"
 const val BONE_MASS = "BoneMass"
 const val CERVICAL_MUCUS = "CervicalMucus"
 const val CYCLING_PEDALING_CADENCE = "CyclingPedalingCadence"
@@ -18,8 +19,10 @@ const val ELEVATION_GAINED = "ElevationGained"
 const val EXERCISE_SESSION = "ExerciseSession"
 const val FLOORS_CLIMBED = "FloorsClimbed"
 const val HEART_RATE = "HeartRate"
+const val HEART_RATE_VARIABILITY = "HeartRateVariability"
 const val HEIGHT = "Height"
 const val HYDRATION = "Hydration"
+const val INTERMENSTRUAL_BLEEDING = "IntermenstrualBleedingRecord"
 const val LEAN_BODY_MASS = "LeanBodyMass"
 const val MENSTRUATION_FLOW = "MenstruationFlow"
 const val MENSTRUATION_PERIOD = "MenstruationPeriod"
@@ -48,6 +51,7 @@ val HealthConnectRecordTypeMap = hashMapOf(
     BLOOD_PRESSURE to BloodPressureRecord::class,
     BODY_FAT to BodyFatRecord::class,
     BODY_TEMPERATURE to BodyTemperatureRecord::class,
+    BODY_WATER_MASS to BodyWaterMassRecord::class,
     BONE_MASS to BoneMassRecord::class,
     CERVICAL_MUCUS to CervicalMucusRecord::class,
     CYCLING_PEDALING_CADENCE to CyclingPedalingCadenceRecord::class,
@@ -56,8 +60,10 @@ val HealthConnectRecordTypeMap = hashMapOf(
     EXERCISE_SESSION to ExerciseSessionRecord::class,
     FLOORS_CLIMBED to FloorsClimbedRecord::class,
     HEART_RATE to HeartRateRecord::class,
+    HEART_RATE_VARIABILITY to HeartRateVariabilityRmssdRecord::class,
     HEIGHT to HeightRecord::class,
     HYDRATION to HydrationRecord::class,
+    INTERMENSTRUAL_BLEEDING to IntermenstrualBleedingRecord::class,
     LEAN_BODY_MASS to LeanBodyMassRecord::class,
     MENSTRUATION_FLOW to MenstruationFlowRecord::class,
     MENSTRUATION_PERIOD to MenstruationPeriodRecord::class,
