@@ -309,7 +309,7 @@ enum ExerciseType {
       case ExerciseType.squash:
         return 'Squash';
       case ExerciseType.stairClimbing:
-        return 'Stair Climbing'
+        return 'Stair Climbing';
       case ExerciseType.stairClimbingMachine:
         return 'Stair Climbing Machine';
       case ExerciseType.strengthTraining:
