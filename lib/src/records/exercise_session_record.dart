@@ -217,127 +217,127 @@ enum ExerciseType {
   String toString() {
     switch (this) {
       case ExerciseType.otherWorkout:
-        return 'other_workout';
+        return 'Other Workout';
       case ExerciseType.badminton:
-        return 'badminton';
+        return 'Badminton';
       case ExerciseType.baseball:
-        return 'baseball';
+        return 'Baseball';
       case ExerciseType.basketball:
-        return 'basketball';
+        return 'Basketball';
       case ExerciseType.biking:
-        return 'biking';
+        return 'Biking';
       case ExerciseType.bikingStationary:
-        return 'biking_stationary';
+        return 'Stationary Biking';
       case ExerciseType.bootCamp:
-        return 'bootCamp';
+        return 'BootCamp';
       case ExerciseType.boxing:
-        return 'boxing';
+        return 'Boxing';
       case ExerciseType.calisthenics:
-        return 'calisthenics';
+        return 'Calisthenics';
       case ExerciseType.cricket:
-        return 'cricket';
+        return 'Cricket';
       case ExerciseType.dancing:
-        return 'dancing';
+        return 'Dancing';
       case ExerciseType.elliptical:
-        return 'elliptical';
+        return 'Elliptical';
       case ExerciseType.exerciseClass:
-        return 'exercise_class';
+        return 'Exercise Class';
       case ExerciseType.fencing:
-        return 'fencing';
+        return 'Fencing';
       case ExerciseType.footballAmerican:
-        return 'football_american';
+        return 'American Football';
       case ExerciseType.footballAustralian:
-        return 'football_australian';
+        return 'Australian Football';
       case ExerciseType.frisbeeDisc:
-        return 'frisbee_disc';
+        return 'Frisbee Disc';
       case ExerciseType.golf:
-        return 'golf';
+        return 'Golf';
       case ExerciseType.guidedBreathing:
-        return 'guided_breathing';
+        return 'Guided Breathing';
       case ExerciseType.gymnastics:
-        return 'gymnastics';
+        return 'Gymnastics';
       case ExerciseType.handball:
-        return 'handball';
+        return 'Handball';
       case ExerciseType.highIntensityIntervalTraining:
-        return 'high_intensity_interval_training';
+        return 'High Intensity Interval Training';
       case ExerciseType.hiking:
-        return 'hiking';
+        return 'Hiking';
       case ExerciseType.iceHockey:
-        return 'ice_hockey';
+        return 'Ice Hockey';
       case ExerciseType.iceSkating:
-        return 'ice_skating';
+        return 'Ice Skating';
       case ExerciseType.martialArts:
-        return 'martial_arts';
+        return 'Martial Arts';
       case ExerciseType.paddling:
-        return 'paddling';
+        return 'Paddling';
       case ExerciseType.paragliding:
-        return 'paragliding';
+        return 'Paragliding';
       case ExerciseType.pilates:
-        return 'pilates';
+        return 'Pilates';
       case ExerciseType.racquetball:
-        return 'racquetball';
+        return 'Racquetball';
       case ExerciseType.rockClimbing:
-        return 'rock_climbing';
+        return 'Rock Climbing';
       case ExerciseType.rollerHockey:
-        return 'roller_hockey';
+        return 'Roller Hockey';
       case ExerciseType.rowing:
-        return 'rowing';
+        return 'Rowing';
       case ExerciseType.rowingMachine:
-        return 'rowing_machine';
+        return 'Rowing Machine';
       case ExerciseType.rugby:
-        return 'rugby';
+        return 'Rugby';
       case ExerciseType.running:
-        return 'running';
+        return 'Running';
       case ExerciseType.runningTreadmill:
-        return 'running_treadmill';
+        return 'Treadmill Running';
       case ExerciseType.sailing:
-        return 'sailing';
+        return 'Sailing';
       case ExerciseType.scubaDiving:
-        return 'scuba_diving';
+        return 'Scuba Diving';
       case ExerciseType.skating:
-        return 'skating';
+        return 'Skating';
       case ExerciseType.skiing:
-        return 'skiing';
+        return 'Skiing';
       case ExerciseType.snowboarding:
-        return 'snowboarding';
+        return 'Snowboarding';
       case ExerciseType.snowshoeing:
-        return 'snowshoeing';
+        return 'Snowshoeing';
       case ExerciseType.soccer:
-        return 'soccer';
+        return 'Soccer';
       case ExerciseType.softball:
-        return 'softball';
+        return 'Softball';
       case ExerciseType.squash:
-        return 'squash';
+        return 'Squash';
       case ExerciseType.stairClimbing:
-        return 'stairClimbing';
+        return 'Stair Climbing'
       case ExerciseType.stairClimbingMachine:
-        return 'stairClimbingMachine';
+        return 'Stair Climbing Machine';
       case ExerciseType.strengthTraining:
-        return 'strengthTraining';
+        return 'Strength Training';
       case ExerciseType.stretching:
-        return 'stretching';
+        return 'Stretching';
       case ExerciseType.surfing:
-        return 'surfing';
+        return 'Surfing';
       case ExerciseType.swimmingOpenWater:
-        return 'swimmingOpenWater';
+        return 'Open Water Swimming';
       case ExerciseType.swimmingPool:
-        return 'swimmingPool';
+        return 'Pool Swimming';
       case ExerciseType.tableTennis:
-        return 'tableTennis';
+        return 'Table Tennis';
       case ExerciseType.tennis:
-        return 'tennis';
+        return 'Tennis';
       case ExerciseType.volleyball:
-        return 'volleyball';
+        return 'Volleyball';
       case ExerciseType.walking:
-        return 'walking';
+        return 'Walking';
       case ExerciseType.waterPolo:
-        return 'water_polo';
+        return 'Water Polo';
       case ExerciseType.weightlifting:
-        return 'weightlifting';
+        return 'Weightlifting';
       case ExerciseType.wheelchair:
-        return 'wheelchair';
+        return 'Wheelchair';
       case ExerciseType.yoga:
-        return 'yoga';
+        return 'Yoga';
     }
   }
 }
