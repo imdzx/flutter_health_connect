@@ -19,9 +19,7 @@ class BloodGlucose implements Comparable<BloodGlucose> {
   }
 
   double _get({required BloodGlucoseUnit unit}) {
-    return this.unit == unit
-        ? value
-        : inMilligramsPerDeciliter / unit.millimolesPerLiterPerUnit;
+    return this.unit == unit ? value : value / unit.millimolesPerLiterPerUnit;
   }
 
   @override

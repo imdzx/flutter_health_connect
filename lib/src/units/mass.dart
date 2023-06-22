@@ -35,7 +35,7 @@ class Mass implements Comparable<Mass> {
   double get inPounds => _get(type: MassUnit.pounds);
 
   double _get({required MassUnit type}) =>
-      this.type == type ? value : inGrams / type.gramsPerUnit;
+      this.type == type ? value : value / type.gramsPerUnit;
 
   @override
   int compareTo(Mass other) => type == other.type
