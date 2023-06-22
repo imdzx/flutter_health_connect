@@ -41,7 +41,7 @@ class Energy implements Comparable<Energy> {
   String toString() => '$value ${unit.title}';
 
   factory Energy.fromMap(Map<String, dynamic> map) =>
-      Energy.calories(map['calories'] as double);
+      Energy.kilocalories(map['kilocalories'] as double);
 }
 
 enum EnergyUnit {

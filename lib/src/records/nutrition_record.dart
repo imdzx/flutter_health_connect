@@ -328,8 +328,8 @@ class NutritionRecord extends IntervalRecord {
   static const Mass _minMass = Mass.grams(0);
   static const Mass _maxMass100 = Mass.grams(100);
   static const Mass _maxMass100K = Mass.grams(100000);
-  static const Energy _minEnergy = Energy.calories(0);
-  static const Energy _maxEnergy = Energy.calories(100000000);
+  static const Energy _minEnergy = Energy.kilocalories(0);
+  static const Energy _maxEnergy = Energy.kilocalories(100000);
 
   @override
   bool operator ==(Object other) =>
@@ -440,8 +440,8 @@ class NutritionRecord extends IntervalRecord {
       'biotin': biotin?.inGrams,
       'caffeine': caffeine?.inGrams,
       'calcium': calcium?.inGrams,
-      'energy': energy?.inCalories,
-      'energyFromFat': energyFromFat?.inCalories,
+      'energy': energy?.inKilocalories,
+      'energyFromFat': energyFromFat?.inKilocalories,
       'chloride': chloride?.inGrams,
       'cholesterol': cholesterol?.inGrams,
       'chromium': chromium?.inGrams,

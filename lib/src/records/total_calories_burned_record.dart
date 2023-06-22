@@ -14,22 +14,21 @@ class TotalCaloriesBurnedRecord extends IntervalRecord {
   Duration? startZoneOffset;
   @override
   Metadata metadata;
-  Energy totalCaloriesBurned;
+  Energy energy;
 
   TotalCaloriesBurnedRecord({
     required this.endTime,
     this.endZoneOffset,
     required this.startTime,
     this.startZoneOffset,
-    required this.totalCaloriesBurned,
+    required this.energy,
     metadata,
   })  : metadata = metadata ?? Metadata.empty(),
         assert(startTime.isBefore(endTime),
             "startTime must not be after endTime."),
-        assert(totalCaloriesBurned.inCalories >=
-                _minTotalCaloriesBurned.inCalories &&
-            totalCaloriesBurned.inCalories <=
-                _maxTotalCaloriesBurned.inCalories);
+        assert(energy.inKilocalories >=
+                _minTotalCaloriesBurned.inKilocalories &&
+            energy.inKilocalories <= _maxTotalCaloriesBurned.inKilocalories);
 
   @override
   bool operator ==(Object other) =>
@@ -40,7 +39,7 @@ class TotalCaloriesBurnedRecord extends IntervalRecord {
           startTime == other.startTime &&
           startZoneOffset == other.startZoneOffset &&
           metadata == other.metadata &&
-          totalCaloriesBurned == other.totalCaloriesBurned;
+          energy == other.energy;
 
   @override
   int get hashCode =>
@@ -49,10 +48,10 @@ class TotalCaloriesBurnedRecord extends IntervalRecord {
       startTime.hashCode ^
       startZoneOffset.hashCode ^
       metadata.hashCode ^
-      totalCaloriesBurned.hashCode;
+      energy.hashCode;
 
-  static const Energy _minTotalCaloriesBurned = Energy.calories(0);
-  static const Energy _maxTotalCaloriesBurned = Energy.calories(1000000);
+  static const Energy _minTotalCaloriesBurned = Energy.kilocalories(0);
+  static const Energy _maxTotalCaloriesBurned = Energy.kilocalories(1000000);
 
   @override
   Map<String, dynamic> toMap() {
@@ -62,7 +61,7 @@ class TotalCaloriesBurnedRecord extends IntervalRecord {
       'startZoneOffset': startZoneOffset?.inHours,
       'endTime': endTime.toUtc().toIso8601String(),
       'endZoneOffset': endZoneOffset?.inHours,
-      'totalCaloriesBurned': totalCaloriesBurned.inCalories,
+      'energy': energy.inKilocalories,
     };
   }
 
@@ -78,13 +77,12 @@ class TotalCaloriesBurnedRecord extends IntervalRecord {
       startZoneOffset: map['startZoneOffset'] == null
           ? null
           : Duration(hours: map['startZoneOffset'] as int),
-      totalCaloriesBurned:
-          Energy.fromMap(Map<String, dynamic>.from(map['totalCaloriesBurned'])),
+      energy: Energy.fromMap(Map<String, dynamic>.from(map['energy'])),
     );
   } // f
 
   @override
   String toString() {
-    return 'TotalCaloriesBurnedRecord{endTime: $endTime, endZoneOffset: $endZoneOffset, startTime: $startTime, startZoneOffset: $startZoneOffset, metadata: $metadata, totalCaloriesBurned: $totalCaloriesBurned}';
+    return 'TotalCaloriesBurnedRecord{endTime: $endTime, endZoneOffset: $endZoneOffset, startTime: $startTime, startZoneOffset: $startZoneOffset, metadata: $metadata, energy: $energy}';
   }
 }
