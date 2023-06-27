@@ -13,7 +13,7 @@ class StepsRecord extends IntervalRecord {
   Duration? startZoneOffset;
   @override
   Metadata metadata;
-  int steps;
+  int count;
 
   StepsRecord({
     required this.endTime,
@@ -21,11 +21,11 @@ class StepsRecord extends IntervalRecord {
     required this.startTime,
     this.startZoneOffset,
     metadata,
-    required this.steps,
+    required this.count,
   })  : metadata = metadata ?? Metadata.empty(),
         assert(startTime.isBefore(endTime),
             "startTime must not be after endTime."),
-        assert(steps >= _minSteps && steps <= _maxSteps);
+        assert(count >= _minSteps && count <= _maxSteps);
 
   @override
   bool operator ==(Object other) =>
@@ -36,7 +36,7 @@ class StepsRecord extends IntervalRecord {
           startTime == other.startTime &&
           startZoneOffset == other.startZoneOffset &&
           metadata == other.metadata &&
-          steps == other.steps;
+          count == other.count;
 
   @override
   int get hashCode =>
@@ -45,7 +45,7 @@ class StepsRecord extends IntervalRecord {
       startTime.hashCode ^
       startZoneOffset.hashCode ^
       metadata.hashCode ^
-      steps.hashCode;
+      count.hashCode;
 
   static const int _minSteps = 1;
   static const int _maxSteps = 1000000;
@@ -58,7 +58,7 @@ class StepsRecord extends IntervalRecord {
       'startZoneOffset': startZoneOffset?.inHours,
       'endTime': endTime.toUtc().toIso8601String(),
       'endZoneOffset': endZoneOffset?.inHours,
-      'steps': steps,
+      'count': count,
     };
   }
 
@@ -74,12 +74,12 @@ class StepsRecord extends IntervalRecord {
           ? Duration(hours: map['endZoneOffset'] as int)
           : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
-      steps: map['steps'] as int,
+      count: map['count'] as int,
     );
   }
 
   @override
   String toString() {
-    return 'StepsRecord{endTime: $endTime, endZoneOffset: $endZoneOffset, startTime: $startTime, startZoneOffset: $startZoneOffset, metadata: $metadata, steps: $steps}';
+    return 'StepsRecord{endTime: $endTime, endZoneOffset: $endZoneOffset, startTime: $startTime, startZoneOffset: $startZoneOffset, metadata: $metadata, count: $count}';
   }
 }

@@ -580,7 +580,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                         RESTING_HEART_RATE -> RestingHeartRateRecord(
                             time = Instant.parse(recordMap["time"] as String),
                             zoneOffset = if (recordMap["zoneOffset"] != null) ZoneOffset.ofHours(recordMap["zoneOffset"] as Int) else null,
-                            beatsPerMinute = recordMap["beatsPerMinute"] as Long,
+                            beatsPerMinute = (recordMap["beatsPerMinute"] as Int).toLong(),
                             metadata = metadata,
                         )
                         SEXUAL_ACTIVITY -> SexualActivityRecord(
@@ -627,7 +627,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
                             endTime = Instant.parse(recordMap["endTime"] as String),
                             endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
-                            count = recordMap["count"] as Long,
+                            count = (recordMap["count"] as Int).toLong(),
                             metadata = metadata,
                         )
                         TOTAL_CALORIES_BURNED -> TotalCaloriesBurnedRecord(
@@ -656,7 +656,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
                             endTime = Instant.parse(recordMap["endTime"] as String),
                             endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
-                            count = recordMap["count"] as Long,
+                            count = (recordMap["count"] as Int).toLong(),
                             metadata = metadata,
                         )
                         else -> throw IllegalArgumentException("The type $type was not supported in this version of the plugin")
