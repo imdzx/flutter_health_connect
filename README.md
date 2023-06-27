@@ -9,7 +9,7 @@ Flutter plugin for Google Health Connect integration. Health Connect gives you a
 ### Android
 
 - minSdkVersion: `26` (Recommend 28)
-- compileSdkVersion: `33`
+- compileSdkVersion: `34`
 - This package requires Flutter `2.5.0` or higher.
 
 ## How to install
@@ -119,6 +119,8 @@ import 'package:flutter_health_connect/flutter_health_connect.dart';
 ## Example
 
 ````dart
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_health_connect/flutter_health_connect.dart';
 
@@ -177,14 +179,17 @@ class _MyAppState extends State<MyApp> {
 
   List<HealthConnectDataType> types = [
     HealthConnectDataType.Steps,
-    HealthConnectDataType.HeartRate,
-    HealthConnectDataType.SleepSession,
-    HealthConnectDataType.OxygenSaturation,
-    HealthConnectDataType.RespiratoryRate,
+    HealthConnectDataType.ExerciseSession,
+    // HealthConnectDataType.HeartRate,
+    // HealthConnectDataType.SleepSession,
+    // HealthConnectDataType.OxygenSaturation,
+    // HealthConnectDataType.RespiratoryRate,
   ];
 
-  bool readOnly = false;
+  bool readOnly = true;
   String resultText = '';
+
+  String token = "";
 
   @override
   Widget build(BuildContext context) {
@@ -214,13 +219,25 @@ class _MyAppState extends State<MyApp> {
             ),
             ElevatedButton(
               onPressed: () async {
-                await HealthConnectFactory.installHealthConnect();
+                try {
+                  await HealthConnectFactory.installHealthConnect();
+                  resultText = 'Install activity started';
+                } catch (e) {
+                  resultText = e.toString();
+                }
+                _updateResultText();
               },
               child: const Text('Install Health Connect'),
             ),
             ElevatedButton(
               onPressed: () async {
-                await HealthConnectFactory.openHealthConnectSettings();
+                try {
+                  await HealthConnectFactory.openHealthConnectSettings();
+                  resultText = 'Settings activity started';
+                } catch (e) {
+                  resultText = e.toString();
+                }
+                _updateResultText();
               },
               child: const Text('Open Health Connect Settings'),
             ),
@@ -237,11 +254,39 @@ class _MyAppState extends State<MyApp> {
             ),
             ElevatedButton(
               onPressed: () async {
-                var result = await HealthConnectFactory.requestPermissions(
-                  types,
-                  readOnly: readOnly,
-                );
-                resultText = 'requestPermissions: $result';
+                try {
+                  token = await HealthConnectFactory.getChangesToken(types);
+                  resultText = 'token: $token';
+                } catch (e) {
+                  resultText = e.toString();
+                }
+                _updateResultText();
+              },
+              child: const Text('Get Changes Token'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                try {
+                  var result = await HealthConnectFactory.getChanges(token);
+                  resultText = 'token: $result';
+                } catch (e) {
+                  resultText = e.toString();
+                }
+                _updateResultText();
+              },
+              child: const Text('Get Changes'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                try {
+                  var result = await HealthConnectFactory.requestPermissions(
+                    types,
+                    //readOnly: readOnly,
+                  );
+                  resultText = 'requestPermissions: $result';
+                } catch (e) {
+                  resultText = e.toString();
+                }
                 _updateResultText();
               },
               child: const Text('Request Permissions'),
@@ -251,20 +296,65 @@ class _MyAppState extends State<MyApp> {
                 var startTime =
                 DateTime.now().subtract(const Duration(days: 4));
                 var endTime = DateTime.now();
-                var results = await HealthConnectFactory.getRecord(
-                  types: types,
-                  startTime: startTime,
-                  endTime: endTime,
-                );
-                // results.forEach((key, value) {
-                //   if (key == HealthConnectDataType.Steps.name) {
-                //     print(value);
-                //   }
-                // });
-                resultText = '\ntype: $types\n\n$results';
+                try {
+                  final requests = <Future>[];
+                  Map<String, dynamic> typePoints = {};
+                  for (var type in types) {
+                    requests.add(HealthConnectFactory.getRecords(
+                      type: type,
+                      startTime: startTime,
+                      endTime: endTime,
+                    ).then((value) => typePoints.addAll({type.name: value})));
+                  }
+                  await Future.wait(requests);
+                  resultText = '$typePoints';
+                } catch (e, s) {
+                  resultText = '$e:$s'.toString();
+                }
                 _updateResultText();
               },
               child: const Text('Get Record'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                var startTime =
+                DateTime.now().subtract(const Duration(seconds: 5));
+                var endTime = DateTime.now();
+                StepsRecord stepsRecord = StepsRecord(
+                  startTime: startTime,
+                  endTime: endTime,
+                  count: 5,
+                );
+                ExerciseSessionRecord exerciseSessionRecord =
+                ExerciseSessionRecord(
+                  startTime: startTime,
+                  endTime: endTime,
+                  exerciseType: ExerciseType.walking,
+                );
+                try {
+                  final requests = <Future>[];
+                  Map<String, dynamic> typePoints = {};
+                  requests.add(HealthConnectFactory.writeData(
+                    type: HealthConnectDataType.Steps,
+                    data: [stepsRecord],
+                  ).then((value) => typePoints.addAll(
+                      {HealthConnectDataType.Steps.name: stepsRecord})));
+
+                  requests.add(HealthConnectFactory.writeData(
+                    type: HealthConnectDataType.ExerciseSession,
+                    data: [exerciseSessionRecord],
+                  ).then((value) => typePoints.addAll({
+                    HealthConnectDataType.ExerciseSession.name:
+                    exerciseSessionRecord
+                  })));
+                  await Future.wait(requests);
+                  resultText = '$typePoints';
+                } catch (e, s) {
+                  resultText = '$e:$s'.toString();
+                }
+                _updateResultText();
+              },
+              child: const Text('Send Record'),
             ),
             Text(resultText),
           ],

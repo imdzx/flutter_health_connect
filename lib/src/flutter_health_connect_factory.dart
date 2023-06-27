@@ -48,6 +48,30 @@ class HealthConnectFactory {
     });
   }
 
+  @Deprecated('Use getRecords instead')
+  static Future<Map<String, dynamic>> getRecord({
+    required DateTime startTime,
+    required DateTime endTime,
+    required HealthConnectDataType type,
+    int? pageSize,
+    String? pageToken,
+    bool ascendingOrder = true,
+  }) async {
+    final start = startTime.toLocal().toIso8601String();
+    final end = endTime.toLocal().toIso8601String();
+    final args = <String, dynamic>{
+      'type': type.name,
+      'startTime': start,
+      'endTime': end,
+      'pageSize': pageSize,
+      'pageToken': pageToken,
+      'ascendingOrder': ascendingOrder,
+    };
+    return await _channel
+        .invokeMethod('getRecord', args)
+        .then((value) => Map<String, Object>.from(value));
+  }
+
   static Future<List<dynamic>> getRecords({
     required DateTime startTime,
     required DateTime endTime,
@@ -66,7 +90,7 @@ class HealthConnectFactory {
       'pageToken': pageToken,
       'ascendingOrder': ascendingOrder,
     };
-    List<dynamic>? data = await _channel.invokeMethod('getRecord', args);
+    List<dynamic>? data = await _channel.invokeMethod('getRecords', args);
     if (data != null && data.isNotEmpty) {
       List<dynamic> records = data
           .map((e) => mapToRecord(type, Map<String, dynamic>.from(e)))

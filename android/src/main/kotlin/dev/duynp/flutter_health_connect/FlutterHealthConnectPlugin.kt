@@ -197,6 +197,42 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                     val pageSize = call.argument<Int>("pageSize") ?: MAX_LENGTH
                     val pageToken = call.argument<String?>("pageToken")
                     val ascendingOrder = call.argument<Boolean?>("ascendingOrder") ?: true
+                    try {
+                        val start =
+                            startTime?.let { LocalDateTime.parse(it) } ?: LocalDateTime.now()
+                                .minus(1, ChronoUnit.DAYS)
+                        val end = endTime?.let { LocalDateTime.parse(it) } ?: LocalDateTime.now()
+                        HealthConnectRecordTypeMap[type]?.let { classType ->
+                            val reply = client.readRecords(
+                                ReadRecordsRequest(
+                                    recordType = classType,
+                                    timeRangeFilter = TimeRangeFilter.between(start, end),
+                                    pageSize = pageSize,
+                                    pageToken = pageToken,
+                                    ascendingOrder = ascendingOrder,
+                                )
+                            )
+                            result.success(
+                                replyMapper.convertValue(
+                                    reply,
+                                    hashMapOf<String, Any>()::class.java
+                                )
+                            )
+                        } ?: throw Throwable("Unsupported type $type")
+                    } catch (e: Throwable) {
+                        result.error("GET_RECORD_FAIL", e.localizedMessage, e)
+                    }
+                }
+            }
+
+            "getRecords" -> {
+                scope.launch {
+                    val type = call.argument<String>("type") ?: ""
+                    val startTime = call.argument<String>("startTime")
+                    val endTime = call.argument<String>("endTime")
+                    val pageSize = call.argument<Int>("pageSize") ?: MAX_LENGTH
+                    val pageToken = call.argument<String?>("pageToken")
+                    val ascendingOrder = call.argument<Boolean?>("ascendingOrder") ?: true
                     val records = mutableListOf<Map<String, Any?>>()
                     try {
                         val start =
@@ -224,7 +260,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             result.success(records)
                         } ?: throw Throwable("Unsupported type $type")
                     } catch (e: Throwable) {
-                        result.error("GET_RECORD_FAIL", e.localizedMessage, e)
+                        result.error("GET_RECORDS_FAIL", e.localizedMessage, e)
                     }
                 }
             }
