@@ -2,6 +2,10 @@ import 'package:flutter_health_connect/src/records/interval_record.dart';
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 
 class WheelchairPushesRecord extends IntervalRecord {
+  /// Unit: No unit
+  static const String aggregationKeyCountTotal =
+      'WheelchairPushesRecordCountTotal';
+
   @override
   DateTime endTime;
   @override

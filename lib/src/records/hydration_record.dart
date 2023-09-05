@@ -3,6 +3,9 @@ import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 import 'package:flutter_health_connect/src/units/volume.dart';
 
 class HydrationRecord extends IntervalRecord {
+  /// Unit: liters
+  static const String aggregationKeyVolumeTotal = 'HydrationRecordVolumeTotal';
+
   @override
   DateTime endTime;
   @override

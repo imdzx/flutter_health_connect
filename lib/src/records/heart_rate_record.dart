@@ -2,6 +2,19 @@ import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 import 'package:flutter_health_connect/src/records/series_record.dart';
 
 class HeartRateRecord extends SeriesRecord<HeartRateSample> {
+  /// Unit: Beats per minute (BPM)
+  static const String aggregationKeyBpmAvg = 'HeartRateRecordBpmAvg';
+
+  /// Unit: Beats per minute (BPM)
+  static const String aggregationKeyBpmMin = 'HeartRateRecordBpmMin';
+
+  /// Unit: Beats per minute (BPM)
+  static const String aggregationKeyBpmMax = 'HeartRateRecordBpmMax';
+
+  /// Unit: No unit
+  static const String aggregationKeyMeasurementsCount =
+      'HeartRateRecordMeasurementsCount';
+
   @override
   DateTime endTime;
   @override

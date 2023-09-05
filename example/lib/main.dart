@@ -235,6 +235,28 @@ class _MyAppState extends State<MyApp> {
               },
               child: const Text('Send Record'),
             ),
+            ElevatedButton(
+              onPressed: () async {
+                var startTime =
+                    DateTime.now().subtract(const Duration(days: 1));
+                var endTime = DateTime.now();
+                try {
+                  var result = await HealthConnectFactory.aggregate(
+                    aggregationKeys: [
+                      StepsRecord.aggregationKeyCountTotal,
+                      ExerciseSessionRecord.aggregationKeyExerciseDurationTotal,
+                    ],
+                    startTime: startTime,
+                    endTime: endTime,
+                  );
+                  resultText = '$result';
+                } catch (e, s) {
+                  resultText = '$e:$s'.toString();
+                }
+                _updateResultText();
+              },
+              child: const Text('Get aggregated data'),
+            ),
             Text(resultText),
           ],
         ),

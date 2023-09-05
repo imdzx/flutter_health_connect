@@ -2,6 +2,10 @@ import 'package:flutter_health_connect/src/records/interval_record.dart';
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 
 class FloorsClimbedRecord extends IntervalRecord {
+  /// Unit: No unit
+  static const String aggregationKeyFloorsClimbedTotal =
+      'FloorsClimbedRecordFloorsClimbedTotal';
+
   @override
   DateTime endTime;
   @override

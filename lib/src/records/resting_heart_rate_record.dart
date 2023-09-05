@@ -2,6 +2,15 @@ import 'package:flutter_health_connect/src/records/instantaneous_record.dart';
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 
 class RestingHeartRateRecord extends InstantaneousRecord {
+  /// Unit: Beats per minute (BPM)
+  static const String aggregationKeyBpmAvg = 'RestingHeartRateRecordBpmAvg';
+
+  /// Unit: Beats per minute (BPM)
+  static const String aggregationKeyBpmMin = 'RestingHeartRateRecordBpmMin';
+
+  /// Unit: Beats per minute (BPM)
+  static const String aggregationKeyBpmMax = 'RestingHeartRateRecordBpmMax';
+
   @override
   Metadata metadata;
   @override

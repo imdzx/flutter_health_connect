@@ -3,6 +3,10 @@ import 'package:flutter_health_connect/src/records/interval_record.dart';
 import 'metadata/metadata.dart';
 
 class SleepSessionRecord extends IntervalRecord {
+  /// Unit: seconds
+  static const String aggregationKeySleepDurationTotal =
+      'SleepSessionRecordSleepDurationTotal';
+
   @override
   DateTime startTime;
   @override

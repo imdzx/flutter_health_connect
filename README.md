@@ -15,6 +15,9 @@ Flutter plugin for Google Health Connect integration. Health Connect gives you a
 ## How to install
 
 ### Android
+Add the following line to the end of your "android/gradle.properties" file:
+```android.jetifier.ignorelist = jackson-core, jackson-databind, jackson-datatype-jsr310, fastdoubleparser```
+
 To interact with Health Connect within the app, declare the Health Connect package name in your `AndroidManifest.xml` file:
 ```
 <!-- Check whether Health Connect is installed or not -->

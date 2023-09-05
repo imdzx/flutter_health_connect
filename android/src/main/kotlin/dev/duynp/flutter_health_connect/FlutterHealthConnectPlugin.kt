@@ -14,6 +14,7 @@ import androidx.health.connect.client.units.*
 import androidx.health.connect.client.records.metadata.DataOrigin
 import androidx.health.connect.client.records.metadata.Device
 import androidx.health.connect.client.records.metadata.Metadata
+import androidx.health.connect.client.request.AggregateRequest
 import androidx.health.connect.client.time.TimeRangeFilter
 import androidx.health.connect.client.units.Energy
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -317,6 +318,8 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                     }
                 }
             }
+
+            "aggregate" -> aggregate(call, result)
 
             else -> {
                 result.notImplemented()
@@ -709,4 +712,49 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
             }
         }
     }
+
+    private fun aggregate(call: MethodCall, result: Result) {
+        scope.launch {
+            try {
+                val aggregationKeys =
+                    (call.argument<ArrayList<*>>("aggregationKeys")?.filterIsInstance<String>() as ArrayList<String>?)?.toList()
+
+                if(aggregationKeys.isNullOrEmpty()) {
+                    result.success(LinkedHashMap<String, Any?>())
+                } else {
+                    val startTime = call.argument<String>("startTime")
+                    val endTime = call.argument<String>("endTime")
+                    val start = startTime?.let { Instant.parse(it) } ?: Instant.now()
+                        .minus(1, ChronoUnit.DAYS)
+                    val end = endTime?.let { Instant.parse(it) } ?: Instant.now()
+                    val metrics =
+                        aggregationKeys.mapNotNull { HealthConnectAggregateMetricTypeMap[it] }
+
+                    val response =
+                        client.aggregate(
+                            AggregateRequest(
+                                metrics.toSet(),
+                                timeRangeFilter = TimeRangeFilter.between(start, end)
+                            )
+                        )
+
+                    val resultData = aggregationKeys.associateBy(
+                        {it},
+                        {
+                            replyMapper.convertValue(
+                                response[HealthConnectAggregateMetricTypeMap[it]!!],
+                                Double::class.java
+                            )
+                        }
+                    )
+                    result.success(resultData)
+                }
+            } catch (e: Exception) {
+                result.error("AGGREGATE_FAIL", e.localizedMessage, e)
+            }
+        }
+
+    }
+
+
 }

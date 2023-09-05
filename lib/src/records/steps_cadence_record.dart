@@ -3,6 +3,15 @@ import 'package:flutter_health_connect/src/records/series_record.dart';
 import 'metadata/metadata.dart';
 
 class StepsCadenceRecord extends SeriesRecord<StepsCadenceSample> {
+  /// Unit: No unit
+  static const String aggregationKeyRateAvg = 'StepsCadenceRecordRateAvg';
+
+  /// Unit: No unit
+  static const String aggregationKeyRateMin = 'StepsCadenceRecordRateMin';
+
+  /// Unit: No unit
+  static const String aggregationKeyRateMax = 'StepsCadenceRecordRateMax';
+
   @override
   DateTime endTime;
   @override

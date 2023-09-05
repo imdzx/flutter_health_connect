@@ -4,6 +4,10 @@ import 'package:flutter_health_connect/src/units/power.dart';
 import 'instantaneous_record.dart';
 
 class BasalMetabolicRateRecord extends InstantaneousRecord {
+  /// Unit: kilocalories
+  static const String aggregationKeyBasalCaloriesTotal =
+      'BasalMetabolicRateRecordBasalCaloriesTotal';
+
   final Power basalMetabolicRate;
   @override
   Metadata metadata;

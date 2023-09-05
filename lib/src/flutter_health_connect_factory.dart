@@ -228,4 +228,54 @@ class HealthConnectFactory {
     };
     return await _channel.invokeMethod('deleteRecordsByTime', args);
   }
+
+  /// Get statistics by aggregating data.
+  /// This can, for example, give you the total steps count over the last 7 days, or the average heart rate over the last month.
+  ///
+  /// You need the corresponding permission to get statistic for a given type. See [requestPermissions].
+  ///
+  /// [aggregationKeys] is a list of all the metrics you want to get statistics about. These keys can be found in
+  /// their corresponding records, like [StepsRecord.aggregationKeyCountTotal].
+  ///
+  /// This function returns a map with the [aggregationKeys] as keys and the associated results as values. All values are
+  /// doubles, look at the aggregationKey description to read more about the units.
+  ///
+  /// This function calls the "aggregate" function of the Health Connect SDK on Android. See:
+  /// https://developer.android.com/health-and-fitness/guides/health-connect/common-workflows/aggregate-data
+  /// NOTE: This does not support Bucket aggregation, only Basic aggregation.
+  ///
+  /// Example:
+  ///  var result = await HealthConnectFactory.aggregate(
+  ///     aggregationKeys: [
+  ///       StepsRecord.aggregationKeyCountTotal,
+  ///       ExerciseSessionRecord.aggregationKeyExerciseDurationTotal,
+  ///     ],
+  ///     startTime: DateTime.now().subtract(const Duration(days: 1)),
+  ///     endTime: DateTime.now(),
+  ///   );
+  ///
+  ///  // Statics over the last 24 hours:
+  ///  var stepsCountTotal = result[StepsRecord.aggregationKeyCountTotal];
+  ///  var exerciseDurationTotal = result[ExerciseSessionRecord.aggregationKeyExerciseDurationTotal];
+  ///
+  static Future<Map<String, double>> aggregate({
+    required List<String> aggregationKeys,
+    required DateTime startTime,
+    required DateTime endTime,
+  }) async {
+    if (aggregationKeys.isEmpty) {
+      return {};
+    }
+    final start = startTime.toUtc().toIso8601String();
+    final end = endTime.toUtc().toIso8601String();
+    final args = <String, dynamic>{
+      'aggregationKeys': aggregationKeys,
+      'startTime': start,
+      'endTime': end,
+    };
+
+    return await _channel
+        .invokeMethod('aggregate', args)
+        .then((value) => Map<String, double>.from(value));
+  }
 }
