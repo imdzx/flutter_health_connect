@@ -24,8 +24,8 @@ class BloodGlucoseRecord extends InstantaneousRecord {
       this.relationToMeal = RelationToMeal.unknown,
       this.mealType = MealType.unknown,
       metadata})
-      : assert(level.value <= _maxLevel.value),
-        assert(level.value >= _minLevel.value),
+      : assert(level.inMilligramsPerDeciliter <= _maxLevel.inMilligramsPerDeciliter),
+        assert(level.inMilligramsPerDeciliter >= _minLevel.inMilligramsPerDeciliter),
         metadata = metadata ?? Metadata.empty();
 
   static const BloodGlucose _maxLevel = BloodGlucose.millimolesPerLiter(50.0);
