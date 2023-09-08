@@ -396,7 +396,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                         BLOOD_GLUCOSE -> BloodGlucoseRecord(
                             time = Instant.parse(recordMap["time"] as String),
                             zoneOffset = if (recordMap["zoneOffset"] != null) ZoneOffset.ofHours(recordMap["zoneOffset"] as Int) else null,
-                            level = BloodGlucose.millimolesPerLiter(recordMap["level"] as Double),
+                            level = BloodGlucose.milligramsPerDeciliter(recordMap["level"] as Double),
                             specimenSource = recordMap["specimenSource"] as Int,
                             mealType = recordMap["mealType"] as Int,
                             relationToMeal = recordMap["relationToMeal"] as Int,
