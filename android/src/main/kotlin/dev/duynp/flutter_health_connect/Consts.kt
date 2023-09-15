@@ -1,5 +1,6 @@
 package dev.duynp.flutter_health_connect
 
+import androidx.health.connect.client.aggregate.AggregateMetric
 import androidx.health.connect.client.permission.HealthPermission
 import androidx.health.connect.client.records.*
 
@@ -106,5 +107,163 @@ fun mapTypesToPermissions(
     return permissions
 }
 
+// Used by the "aggregate" function.
+// List of all possible records: https://developer.android.com/reference/kotlin/androidx/health/connect/client/records/package-summary
+val HealthConnectAggregateMetricTypeMap = hashMapOf<String, AggregateMetric<*>>(
+    // ActiveCaloriesBurnedRecord
+    "ActiveCaloriesBurnedRecordActiveCaloriesTotal" to ActiveCaloriesBurnedRecord.ACTIVE_CALORIES_TOTAL,
 
+    // BasalBodyTemperatureRecord: No AggregateMetric
 
+    // BasalMetabolicRateRecord:
+    "BasalMetabolicRateRecordBasalCaloriesTotal" to BasalMetabolicRateRecord.BASAL_CALORIES_TOTAL,
+
+    // BloodGlucoseRecord: No AggregateMetric
+
+    // BloodPressureRecord
+    "BloodPressureRecordSystolicAvg" to BloodPressureRecord.SYSTOLIC_AVG,
+    "BloodPressureRecordSystolicMin" to BloodPressureRecord.SYSTOLIC_MIN,
+    "BloodPressureRecordSystolicMax" to BloodPressureRecord.SYSTOLIC_MAX,
+    "BloodPressureRecordDiastolicAvg" to BloodPressureRecord.DIASTOLIC_AVG,
+    "BloodPressureRecordDiastolicMin" to BloodPressureRecord.DIASTOLIC_MIN,
+    "BloodPressureRecordDiastolicMax" to BloodPressureRecord.DIASTOLIC_MAX,
+
+    // BodyFatRecord: No AggregateMetric
+
+    // BodyTemperatureRecord: No AggregateMetric
+
+    // BodyWaterMassRecord: No AggregateMetric
+
+    // BoneMassRecord: No AggregateMetric
+
+    // CervicalMucusRecord: No AggregateMetric
+
+    // CyclingPedalingCadenceRecord
+    "CyclingPedalingCadenceRecordRpmAvg" to CyclingPedalingCadenceRecord.RPM_AVG,
+    "CyclingPedalingCadenceRecordRpmMin" to CyclingPedalingCadenceRecord.RPM_MIN,
+    "CyclingPedalingCadenceRecordRpmMax" to CyclingPedalingCadenceRecord.RPM_MAX,
+
+    // DistanceRecord
+    "DistanceRecordDistanceTotal" to DistanceRecord.DISTANCE_TOTAL,
+
+    // ElevationGainedRecord
+    "ElevationGainedRecordElevationGainedTotal" to ElevationGainedRecord.ELEVATION_GAINED_TOTAL,
+
+    // ExerciseSessionRecord
+    "ExerciseSessionRecordExerciseDurationTotal" to ExerciseSessionRecord.EXERCISE_DURATION_TOTAL,
+
+    // FloorsClimbedRecord
+    "FloorsClimbedRecordFloorsClimbedTotal" to FloorsClimbedRecord.FLOORS_CLIMBED_TOTAL,
+
+    // HeartRateRecord
+    "HeartRateRecordBpmAvg" to HeartRateRecord.BPM_AVG,
+    "HeartRateRecordBpmMin" to HeartRateRecord.BPM_MIN,
+    "HeartRateRecordBpmMax" to HeartRateRecord.BPM_MAX,
+    "HeartRateRecordMeasurementsCount" to HeartRateRecord.MEASUREMENTS_COUNT,
+
+    // HeartRateVariabilityRmssdRecord: No AggregateMetric
+
+    "HeightRecordHeightAvg" to HeightRecord.HEIGHT_AVG,
+    "HeightRecordHeightMin" to HeightRecord.HEIGHT_MIN,
+    "HeightRecordHeightMax" to HeightRecord.HEIGHT_MAX,
+    "HydrationRecordVolumeTotal" to HydrationRecord.VOLUME_TOTAL,
+
+    // IntermenstrualBleedingRecord: No AggregateMetric
+
+    // LeanBodyMassRecord: No AggregateMetric
+
+    // MenstruationFlowRecord: No AggregateMetric
+
+    // MenstruationPeriodRecord: No AggregateMetric
+
+    // NutritionRecord
+    "NutritionRecordBiotinTotal" to NutritionRecord.BIOTIN_TOTAL,
+    "NutritionRecordCaffeineTotal" to NutritionRecord.CAFFEINE_TOTAL,
+    "NutritionRecordCalciumTotal" to NutritionRecord.CALCIUM_TOTAL,
+    "NutritionRecordEnergyTotal" to NutritionRecord.ENERGY_TOTAL,
+    "NutritionRecordEnergyFromFatTotal" to NutritionRecord.ENERGY_FROM_FAT_TOTAL,
+    "NutritionRecordChlorideTotal" to NutritionRecord.CHLORIDE_TOTAL,
+    "NutritionRecordCholesterolTotal" to NutritionRecord.CHOLESTEROL_TOTAL,
+    "NutritionRecordChromiumTotal" to NutritionRecord.CHROMIUM_TOTAL,
+    "NutritionRecordCopperTotal" to NutritionRecord.COPPER_TOTAL,
+    "NutritionRecordDietaryFiberTotal" to NutritionRecord.DIETARY_FIBER_TOTAL,
+    "NutritionRecordFolateTotal" to NutritionRecord.FOLATE_TOTAL,
+    "NutritionRecordFolicAcidTotal" to NutritionRecord.FOLIC_ACID_TOTAL,
+    "NutritionRecordIodineTotal" to NutritionRecord.IODINE_TOTAL,
+    "NutritionRecordIronTotal" to NutritionRecord.IRON_TOTAL,
+    "NutritionRecordMagnesiumTotal" to NutritionRecord.MAGNESIUM_TOTAL,
+    "NutritionRecordManganeseTotal" to NutritionRecord.MANGANESE_TOTAL,
+    "NutritionRecordMolybdenumTotal" to NutritionRecord.MOLYBDENUM_TOTAL,
+    "NutritionRecordMonounsaturatedFatTotal" to NutritionRecord.MONOUNSATURATED_FAT_TOTAL,
+    "NutritionRecordNiacinTotal" to NutritionRecord.NIACIN_TOTAL,
+    "NutritionRecordPantothenicAcidTotal" to NutritionRecord.PANTOTHENIC_ACID_TOTAL,
+    "NutritionRecordPhosphorusTotal" to NutritionRecord.PHOSPHORUS_TOTAL,
+    "NutritionRecordPolyunsaturatedFatTotal" to NutritionRecord.POLYUNSATURATED_FAT_TOTAL,
+    "NutritionRecordPotassiumTotal" to NutritionRecord.POTASSIUM_TOTAL,
+    "NutritionRecordProteinTotal" to NutritionRecord.PROTEIN_TOTAL,
+    "NutritionRecordRiboflavinTotal" to NutritionRecord.RIBOFLAVIN_TOTAL,
+    "NutritionRecordSaturatedFatTotal" to NutritionRecord.SATURATED_FAT_TOTAL,
+    "NutritionRecordSeleniumTotal" to NutritionRecord.SELENIUM_TOTAL,
+    "NutritionRecordSodiumTotal" to NutritionRecord.SODIUM_TOTAL,
+    "NutritionRecordSugarTotal" to NutritionRecord.SUGAR_TOTAL,
+    "NutritionRecordThiaminTotal" to NutritionRecord.THIAMIN_TOTAL,
+    "NutritionRecordTotalCarbohydrateTotal" to NutritionRecord.TOTAL_CARBOHYDRATE_TOTAL,
+    "NutritionRecordTotalFatTotal" to NutritionRecord.TOTAL_FAT_TOTAL,
+    "NutritionRecordTransFatTotal" to NutritionRecord.TRANS_FAT_TOTAL,
+    "NutritionRecordUnsaturatedFatTotal" to NutritionRecord.UNSATURATED_FAT_TOTAL,
+    "NutritionRecordVitaminATotal" to NutritionRecord.VITAMIN_A_TOTAL,
+    "NutritionRecordVitaminB12Total" to NutritionRecord.VITAMIN_B12_TOTAL,
+    "NutritionRecordVitaminB6Total" to NutritionRecord.VITAMIN_B6_TOTAL,
+    "NutritionRecordVitaminCTotal" to NutritionRecord.VITAMIN_C_TOTAL,
+    "NutritionRecordVitaminDTotal" to NutritionRecord.VITAMIN_D_TOTAL,
+    "NutritionRecordVitaminETotal" to NutritionRecord.VITAMIN_E_TOTAL,
+    "NutritionRecordVitaminKTotal" to NutritionRecord.VITAMIN_K_TOTAL,
+    "NutritionRecordZincTotal" to NutritionRecord.ZINC_TOTAL,
+
+    // OvulationTestRecord: No AggregateMetric
+
+    // OxygenSaturationRecord: No AggregateMetric
+
+    // PowerRecord
+    "PowerRecordPowerAvg" to PowerRecord.POWER_AVG,
+    "PowerRecordPowerMin" to PowerRecord.POWER_MIN,
+    "PowerRecordPowerMax" to PowerRecord.POWER_MAX,
+
+    // RespiratoryRateRecord: No AggregateMetric
+
+    // RestingHeartRate
+    "RestingHeartRateRecordBpmAvg" to RestingHeartRateRecord.BPM_AVG,
+    "RestingHeartRateRecordBpmMin" to RestingHeartRateRecord.BPM_MIN,
+    "RestingHeartRateRecordBpmMax" to RestingHeartRateRecord.BPM_MAX,
+
+    // SexualActivityRecord: No AggregateMetric
+
+    // SleepSessionRecord
+    "SleepSessionRecordSleepDurationTotal" to SleepSessionRecord.SLEEP_DURATION_TOTAL,
+
+    // SpeedRecord
+    "SpeedRecordSpeedAvg" to SpeedRecord.SPEED_AVG,
+    "SpeedRecordSpeedMin" to SpeedRecord.SPEED_MIN,
+    "SpeedRecordSpeedMax" to SpeedRecord.SPEED_MAX,
+
+    // StepsCadenceRecord
+    "StepsCadenceRecordRateAvg" to StepsCadenceRecord.RATE_AVG,
+    "StepsCadenceRecordRateMin" to StepsCadenceRecord.RATE_MIN,
+    "StepsCadenceRecordRateMax" to StepsCadenceRecord.RATE_MAX,
+
+    // StepsRecord
+    "StepsRecordCountTotal" to StepsRecord.COUNT_TOTAL,
+
+    // TotalCaloriesBurnedRecord
+    "TotalCaloriesBurnedRecordEnergyTotal" to TotalCaloriesBurnedRecord.ENERGY_TOTAL,
+
+    // Vo2MaxRecord: No AggregateMetric
+
+    // WeightRecord
+    "WeightRecordWeightAvg" to WeightRecord.WEIGHT_AVG,
+    "WeightRecordWeightMin" to WeightRecord.WEIGHT_MIN,
+    "WeightRecordWeightMax" to WeightRecord.WEIGHT_MAX,
+
+    // WheelchairPushesRecord
+    "WheelchairPushesRecordCountTotal" to WheelchairPushesRecord.COUNT_TOTAL,
+)

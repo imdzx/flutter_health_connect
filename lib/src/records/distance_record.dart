@@ -3,6 +3,10 @@ import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 import 'package:flutter_health_connect/src/units/length.dart';
 
 class DistanceRecord extends IntervalRecord {
+  /// Unit: meters
+  static const String aggregationKeyDistanceTotal =
+      'DistanceRecordDistanceTotal';
+
   @override
   DateTime endTime;
   @override

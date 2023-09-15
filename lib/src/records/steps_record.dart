@@ -3,6 +3,9 @@ import 'package:flutter_health_connect/src/records/interval_record.dart';
 import 'metadata/metadata.dart';
 
 class StepsRecord extends IntervalRecord {
+  /// Unit: No unit
+  static const String aggregationKeyCountTotal = 'StepsRecordCountTotal';
+
   @override
   DateTime endTime;
   @override

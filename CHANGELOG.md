@@ -1,3 +1,6 @@
+## [2.1.0]
+* Added `aggregate` function to get statistics
+* Updated README.md
 ## [2.0.0]
 * Added missing data types
 * Added Models for each data type

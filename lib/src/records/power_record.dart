@@ -4,6 +4,15 @@ import 'package:flutter_health_connect/src/units/power.dart';
 import 'metadata/metadata.dart';
 
 class PowerRecord extends SeriesRecord<PowerSample> {
+  /// Unit: watts
+  static const String aggregationKeyPowerAvg = 'PowerRecordPowerAvg';
+
+  /// Unit: watts
+  static const String aggregationKeyPowerMin = 'PowerRecordPowerMin';
+
+  /// Unit: watts
+  static const String aggregationKeyPowerMax = 'PowerRecordPowerMax';
+
   @override
   DateTime endTime;
   @override

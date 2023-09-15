@@ -4,6 +4,10 @@ import 'package:flutter_health_connect/src/units/energy.dart';
 import 'interval_record.dart';
 
 class ActiveCaloriesBurnedRecord extends IntervalRecord {
+  /// Unit: kilocalories
+  static const aggregationKeyActiveCaloriesTotal =
+      'ActiveCaloriesBurnedRecordActiveCaloriesTotal';
+
   Energy energy;
   @override
   DateTime endTime;

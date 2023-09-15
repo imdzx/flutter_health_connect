@@ -3,6 +3,15 @@ import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 import 'package:flutter_health_connect/src/units/length.dart';
 
 class HeightRecord extends InstantaneousRecord {
+  /// Unit: meters
+  static const String aggregationKeyHeightAvg = 'HeightRecordHeightAvg';
+
+  /// Unit: meters
+  static const String aggregationKeyHeightMin = 'HeightRecordHeightMin';
+
+  /// Unit: meters
+  static const String aggregationKeyHeightMax = 'HeightRecordHeightMax';
+
   @override
   Metadata metadata;
   @override

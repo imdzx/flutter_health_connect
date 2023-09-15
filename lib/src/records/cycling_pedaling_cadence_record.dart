@@ -2,6 +2,18 @@ import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 import 'package:flutter_health_connect/src/records/series_record.dart';
 
 class CyclingPedalingCadenceRecord extends SeriesRecord<Sample> {
+  /// Unit: Revolutions per minute (RPM)
+  static const String aggregationKeyRpmAvg =
+      'CyclingPedalingCadenceRecordRpmAvg';
+
+  /// Unit: Revolutions per minute (RPM)
+  static const String aggregationKeyRpmMin =
+      'CyclingPedalingCadenceRecordRpmMin';
+
+  /// Unit: Revolutions per minute (RPM)
+  static const String aggregationKeyRpmMax =
+      'CyclingPedalingCadenceRecordRpmMax';
+
   @override
   DateTime endTime;
   @override

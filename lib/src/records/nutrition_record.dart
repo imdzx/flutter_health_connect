@@ -6,6 +6,164 @@ import 'package:flutter_health_connect/src/units/mass.dart';
 import 'meal_type.dart';
 
 class NutritionRecord extends IntervalRecord {
+  /// Unit: grams
+  static const String aggregationKeyBiotinTotal = 'NutritionRecordBiotinTotal';
+
+  /// Unit: grams
+  static const String aggregationKeyCaffeineTotal =
+      'NutritionRecordCaffeineTotal';
+
+  /// Unit: grams
+  static const String aggregationKeyCalciumTotal =
+      'NutritionRecordCalciumTotal';
+
+  /// Unit: kilocalories
+  static const String aggregationKeyEnergyTotal = 'NutritionRecordEnergyTotal';
+
+  /// Unit: kilocalories
+  static const String aggregationKeyEnergyFromFatTotal =
+      'NutritionRecordEnergyFromFatTotal';
+
+  /// Unit: grams
+  static const String aggregationKeyChlorideTotal =
+      'NutritionRecordChlorideTotal';
+
+  /// Unit: grams
+  static const String aggregationKeyCholesterolTotal =
+      'NutritionRecordCholesterolTotal';
+
+  /// Unit: grams
+  static const String aggregationKeyChromiumTotal =
+      'NutritionRecordChromiumTotal';
+
+  /// Unit: grams
+  static const String aggregationKeyCopperTotal = 'NutritionRecordCopperTotal';
+
+  /// Unit: grams
+  static const String aggregationKeyDietaryFiberTotal =
+      'NutritionRecordDietaryFiberTotal';
+
+  /// Unit: grams
+  static const String aggregationKeyFolateTotal = 'NutritionRecordFolateTotal';
+
+  /// Unit: grams
+  static const String aggregationKeyFolicAcidTotal =
+      'NutritionRecordFolicAcidTotal';
+
+  /// Unit: grams
+  static const String aggregationKeyIodineTotal = 'NutritionRecordIodineTotal';
+
+  /// Unit: grams
+  static const String aggregationKeyIronTotal = 'NutritionRecordIronTotal';
+
+  /// Unit: grams
+  static const String aggregationKeyMagnesiumTotal =
+      'NutritionRecordMagnesiumTotal';
+
+  /// Unit: grams
+  static const String aggregationKeyManganeseTotal =
+      'NutritionRecordManganeseTotal';
+
+  /// Unit: grams
+  static const String aggregationKeyMolybdenumTotal =
+      'NutritionRecordMolybdenumTotal';
+
+  /// Unit: grams
+  static const String aggregationKeyMonounsaturatedFatTotal =
+      'NutritionRecordMonounsaturatedFatTotal';
+
+  /// Unit: grams
+  static const String aggregationKeyNiacinTotal = 'NutritionRecordNiacinTotal';
+
+  /// Unit: grams
+  static const String aggregationKeyPantothenicAcidTotal =
+      'NutritionRecordPantothenicAcidTotal';
+
+  /// Unit: grams
+  static const String aggregationKeyPhosphorusTotal =
+      'NutritionRecordPhosphorusTotal';
+
+  /// Unit: grams
+  static const String aggregationKeyPolyunsaturatedFatTotal =
+      'NutritionRecordPolyunsaturatedFatTotal';
+
+  /// Unit: grams
+  static const String aggregationKeyPotassiumTotal =
+      'NutritionRecordPotassiumTotal';
+
+  /// Unit: grams
+  static const String aggregationKeyProteinTotal =
+      'NutritionRecordProteinTotal';
+
+  /// Unit: grams
+  static const String aggregationKeyRiboflavinTotal =
+      'NutritionRecordRiboflavinTotal';
+
+  /// Unit: grams
+  static const String aggregationKeySaturatedFatTotal =
+      'NutritionRecordSaturatedFatTotal';
+
+  /// Unit: grams
+  static const String aggregationKeySeleniumTotal =
+      'NutritionRecordSeleniumTotal';
+
+  /// Unit: grams
+  static const String aggregationKeySodiumTotal = 'NutritionRecordSodiumTotal';
+
+  /// Unit: grams
+  static const String aggregationKeySugarTotal = 'NutritionRecordSugarTotal';
+
+  /// Unit: grams
+  static const String aggregationKeyThiaminTotal =
+      'NutritionRecordThiaminTotal';
+
+  /// Unit: grams
+  static const String aggregationKeyTotalCarbohydrateTotal =
+      'NutritionRecordTotalCarbohydrateTotal';
+
+  /// Unit: grams
+  static const String aggregationKeyTotalFatTotal =
+      'NutritionRecordTotalFatTotal';
+
+  /// Unit: grams
+  static const String aggregationKeyTransFatTotal =
+      'NutritionRecordTransFatTotal';
+
+  /// Unit: grams
+  static const String aggregationKeyUnsaturatedFatTotal =
+      'NutritionRecordUnsaturatedFatTotal';
+
+  /// Unit: grams
+  static const String aggregationKeyVitaminATotal =
+      'NutritionRecordVitaminATotal';
+
+  /// Unit: grams
+  static const String aggregationKeyVitaminB12Total =
+      'NutritionRecordVitaminB12Total';
+
+  /// Unit: grams
+  static const String aggregationKeyVitaminB6Total =
+      'NutritionRecordVitaminB6Total';
+
+  /// Unit: grams
+  static const String aggregationKeyVitaminCTotal =
+      'NutritionRecordVitaminCTotal';
+
+  /// Unit: grams
+  static const String aggregationKeyVitaminDTotal =
+      'NutritionRecordVitaminDTotal';
+
+  /// Unit: grams
+  static const String aggregationKeyVitaminETotal =
+      'NutritionRecordVitaminETotal';
+
+  /// Unit: grams
+  static const String aggregationKeyVitaminKTotal =
+      'NutritionRecordVitaminKTotal';
+
+  /// Unit: grams
+  static const String aggregationKeyZincTotal = 'NutritionRecordZincTotal';
+
   @override
   DateTime endTime;
   @override

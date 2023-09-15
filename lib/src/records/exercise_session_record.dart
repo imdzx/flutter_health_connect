@@ -6,6 +6,10 @@ import 'exercise_segment.dart';
 import 'metadata/metadata.dart';
 
 class ExerciseSessionRecord extends IntervalRecord {
+  /// Unit: seconds
+  static const String aggregationKeyExerciseDurationTotal =
+      'ExerciseSessionRecordExerciseDurationTotal';
+
   @override
   DateTime endTime;
   @override

@@ -4,6 +4,15 @@ import 'package:flutter_health_connect/src/units/velocity.dart';
 import 'metadata/metadata.dart';
 
 class SpeedRecord extends SeriesRecord<SpeedSample> {
+  /// Unit: meters per second
+  static const String aggregationKeySpeedAvg = 'SpeedRecordSpeedAvg';
+
+  /// Unit: meters per second
+  static const String aggregationKeySpeedMin = 'SpeedRecordSpeedMin';
+
+  /// Unit: meters per second
+  static const String aggregationKeySpeedMax = 'SpeedRecordSpeedMax';
+
   @override
   DateTime endTime;
   @override

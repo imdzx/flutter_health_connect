@@ -3,6 +3,30 @@ import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 import 'package:flutter_health_connect/src/units/pressure.dart';
 
 class BloodPressureRecord extends InstantaneousRecord {
+  /// Unit: millimeters of mercury
+  static const String aggregationKeySystolicAvg =
+      'BloodPressureRecordSystolicAvg';
+
+  /// Unit: millimeters of mercury
+  static const String aggregationKeySystolicMin =
+      'BloodPressureRecordSystolicMin';
+
+  /// Unit: millimeters of mercury
+  static const String aggregationKeySystolicMax =
+      'BloodPressureRecordSystolicMax';
+
+  /// Unit: millimeters of mercury
+  static const String aggregationKeyDiastolicAvg =
+      'BloodPressureRecordDiastolicAvg';
+
+  /// Unit: millimeters of mercury
+  static const String aggregationKeyDiastolicMin =
+      'BloodPressureRecordDiastolicMin';
+
+  /// Unit: millimeters of mercury
+  static const String aggregationKeyDiastolicMax =
+      'BloodPressureRecordDiastolicMax';
+
   @override
   Metadata metadata;
   @override

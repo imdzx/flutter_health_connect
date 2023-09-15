@@ -4,6 +4,15 @@ import 'package:flutter_health_connect/src/units/mass.dart';
 import 'metadata/metadata.dart';
 
 class WeightRecord extends InstantaneousRecord {
+  /// Unit: kilograms
+  static const String aggregationKeyWeightAvg = 'WeightRecordWeightAvg';
+
+  /// Unit: kilograms
+  static const String aggregationKeyWeightMin = 'WeightRecordWeightMin';
+
+  /// Unit: kilograms
+  static const String aggregationKeyWeightMax = 'WeightRecordWeightMax';
+
   @override
   DateTime time;
   @override
