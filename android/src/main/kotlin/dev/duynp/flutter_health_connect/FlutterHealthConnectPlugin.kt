@@ -50,7 +50,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
         context = flutterPluginBinding.applicationContext
         client = HealthConnectClient.getOrCreate(context!!)
         replyMapper.registerModule(JavaTimeModule())
-        replyMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        replyMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
     }
 
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
@@ -475,6 +475,9 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             title = recordMap["title"] as String?,
                             notes = recordMap["notes"] as String?,
                             metadata = metadata,
+                            laps = (recordMap["laps"] as List<*>).filterIsInstance<ExerciseLap>(),
+                            segments = (recordMap["segments"] as List<*>).filterIsInstance<ExerciseSegment>(),
+                            exerciseRoute = if (recordMap["route"] != null) ExerciseRoute((recordMap["route"] as List<*>).filterIsInstance<ExerciseRoute.Location>()) else null,
                         )
                         FLOORS_CLIMBED -> FloorsClimbedRecord(
                             startTime = Instant.parse(recordMap["startTime"] as String),

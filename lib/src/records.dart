@@ -15,6 +15,7 @@ export 'records/distance_record.dart';
 export 'records/elevation_gained_record.dart';
 export 'records/exercise_lap.dart';
 export 'records/exercise_route.dart';
+export 'records/exercise_route_result.dart';
 export 'records/exercise_segment.dart';
 export 'records/exercise_session_record.dart';
 export 'records/floors_climbed_record.dart';
