@@ -9,7 +9,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath 'com.android.tools.build:gradle:8.1.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -26,6 +26,8 @@ apply plugin: 'kotlin-android'
 
 android {
     compileSdk 34
+
+    namespace = "dev.duynp.flutter_health_connect"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

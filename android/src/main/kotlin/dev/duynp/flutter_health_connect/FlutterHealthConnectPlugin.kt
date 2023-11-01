@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.health.connect.client.HealthConnectClient
-import androidx.health.connect.client.PermissionController.Companion.createRequestPermissionResultContract
+import androidx.health.connect.client.PermissionController
 import androidx.health.connect.client.changes.UpsertionChange
 import androidx.health.connect.client.request.ChangesTokenRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
@@ -122,7 +122,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                         requestedTypes,
                         isReadOnly
                     )
-                    val contract = createRequestPermissionResultContract()
+                    val contract = PermissionController.createRequestPermissionResultContract()
                     val intent = context?.let { contract.createIntent(it, allPermissions) }
                     activity!!.startActivityForResult(intent, HEALTH_CONNECT_RESULT_CODE)
                 } catch (e: Throwable) {
@@ -326,18 +326,9 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
         if (requestCode == HEALTH_CONNECT_RESULT_CODE) {
-            val result = permissionResult
-            permissionResult = null
             if (resultCode == Activity.RESULT_OK) {
-                if (data != null && result != null) {
-                    scope.launch {
-                        result.success(true)
-                    }
-                    return true
-                }
-            }
-            scope.launch {
-                result?.success(false)
+                permissionResult?.success(true)
+                return true
             }
         }
         return false

@@ -4,11 +4,15 @@ class HealthConnectFactory {
   static const MethodChannel _channel = MethodChannel('flutter_health_connect');
 
   static Future<bool> isApiSupported() async {
-    return await _channel.invokeMethod('isApiSupported');
+    return await _channel.invokeMethod('isApiSupported', {
+      'packageName': (await PackageInfo.fromPlatform()).packageName,
+    });
   }
 
   static Future<bool> isAvailable() async {
-    return await _channel.invokeMethod('isAvailable');
+    return await _channel.invokeMethod('isAvailable', {
+      'packageName': (await PackageInfo.fromPlatform()).packageName,
+    });
   }
 
   static installHealthConnect() async {
@@ -31,6 +35,7 @@ class HealthConnectFactory {
   }) async {
     return await _channel.invokeMethod('requestPermissions', {
       'types': types.map((e) => e.name).toList(),
+      'packageName': (await PackageInfo.fromPlatform()).packageName,
       'readOnly': readOnly,
     });
   }

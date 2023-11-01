@@ -1,6 +1,6 @@
 name: flutter_health_connect
 description: Flutter plugin for Google Health Connect integration. Health Connect gives you a simple way to store and connect the data between your health and fitness apps.
-version: 2.0.0
+version: 2.0.1
 homepage: https://github.com/duynguyen242/flutter_health_connect
 
 environment:
@@ -11,6 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   plugin_platform_interface: ^2.0.2
+  package_info_plus: ^4.2.0
 
 dev_dependencies:
   flutter_test:

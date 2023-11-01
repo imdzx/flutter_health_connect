@@ -1,3 +1,5 @@
+## [2.0.1]
+* Upgrade Health Connect API to `1.1.0-alpha6`
 ## [2.0.0]
 * Added missing data types
 * Added Models for each data type
