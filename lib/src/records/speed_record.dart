@@ -1,4 +1,3 @@
-import 'package:duration/duration.dart';
 import 'package:flutter_health_connect/src/records/series_record.dart';
 import 'package:flutter_health_connect/src/units/velocity.dart';
 
@@ -63,12 +62,13 @@ class SpeedRecord extends SeriesRecord<SpeedSample> {
   factory SpeedRecord.fromMap(Map<String, dynamic> map) {
     return SpeedRecord(
       endTime: DateTime.parse(map['endTime']),
-      endZoneOffset:
-          map['endZoneOffset'] == null ? null : parseTime(map['endZoneOffset']),
+      endZoneOffset: map['endZoneOffset'] == null
+          ? null
+          : Duration(hours: int.parse(map['endZoneOffset'])),
       startTime: DateTime.parse(map['startTime']),
       startZoneOffset: map['startZoneOffset'] == null
           ? null
-          : parseTime(map['startZoneOffset']),
+          : Duration(hours: int.parse(map['startZoneOffset'])),
       samples: (map['samples'] as List<dynamic>)
           .map((e) => SpeedSample.fromMap(e as Map<String, dynamic>))
           .toList(),

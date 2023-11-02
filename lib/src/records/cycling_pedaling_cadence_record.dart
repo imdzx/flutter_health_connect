@@ -1,4 +1,3 @@
-import 'package:duration/duration.dart';
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 import 'package:flutter_health_connect/src/records/series_record.dart';
 
@@ -64,11 +63,11 @@ class CyclingPedalingCadenceRecord extends SeriesRecord<Sample> {
     return CyclingPedalingCadenceRecord(
         startTime: DateTime.parse(map['startTime']),
         startZoneOffset: map['startZoneOffset'] != null
-            ? parseTime(map['startZoneOffset'])
+            ? Duration(hours: int.parse(map['startZoneOffset']))
             : null,
         endTime: DateTime.parse(map['endTime']),
         endZoneOffset: map['endZoneOffset'] != null
-            ? parseTime(map['endZoneOffset'])
+            ? Duration(hours: int.parse(map['endZoneOffset']))
             : null,
         samples:
             List<Sample>.from(map['samples']?.map((e) => Sample.fromMap(e))),

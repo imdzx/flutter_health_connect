@@ -1,4 +1,3 @@
-import 'package:duration/duration.dart';
 import 'package:flutter_health_connect/src/records/interval_record.dart';
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 
@@ -61,12 +60,13 @@ class MenstruationPeriodRecord extends IntervalRecord {
   factory MenstruationPeriodRecord.fromMap(Map<String, dynamic> map) {
     return MenstruationPeriodRecord(
       endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime']),
-      endZoneOffset:
-          map['endZoneOffset'] != null ? parseTime(map['endZoneOffset']) : null,
+      endZoneOffset: map['endZoneOffset'] != null
+          ? Duration(hours: int.parse(map['endZoneOffset']))
+          : null,
       metadata: Metadata.fromMap(map['metadata']),
       startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime']),
       startZoneOffset: map['startZoneOffset'] != null
-          ? parseTime(map['startZoneOffset'])
+          ? Duration(hours: int.parse(map['startZoneOffset']))
           : null,
     );
   }

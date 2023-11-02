@@ -1,4 +1,3 @@
-import 'package:duration/duration.dart';
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 import 'package:flutter_health_connect/src/units/energy.dart';
 
@@ -70,11 +69,11 @@ class ActiveCaloriesBurnedRecord extends IntervalRecord {
     return ActiveCaloriesBurnedRecord(
         startTime: DateTime.parse(map['startTime']),
         startZoneOffset: map['startZoneOffset'] != null
-            ? parseTime(map['startZoneOffset'])
+            ? Duration(hours: int.parse(map['startZoneOffset']))
             : null,
         endTime: DateTime.parse(map['endTime']),
         endZoneOffset: map['endZoneOffset'] != null
-            ? parseTime(map['endZoneOffset'])
+            ? Duration(hours: int.parse(map['endZoneOffset']))
             : null,
         energy: Energy.fromMap(Map<String, dynamic>.from(map['energy'])),
         metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])));

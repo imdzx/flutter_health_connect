@@ -1,4 +1,3 @@
-import 'package:duration/duration.dart';
 import 'package:flutter_health_connect/src/records/interval_record.dart';
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 import 'package:flutter_health_connect/src/units/energy.dart';
@@ -486,13 +485,14 @@ class NutritionRecord extends IntervalRecord {
   factory NutritionRecord.fromMap(Map<String, dynamic> map) {
     return NutritionRecord(
       endTime: DateTime.parse(map['endTime']),
-      endZoneOffset:
-          map['endZoneOffset'] == null ? null : parseTime(map['endZoneOffset']),
+      endZoneOffset: map['endZoneOffset'] == null
+          ? null
+          : Duration(hours: int.parse(map['endZoneOffset'])),
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       startTime: DateTime.parse(map['startTime']),
       startZoneOffset: map['startZoneOffset'] == null
           ? null
-          : parseTime(map['startZoneOffset']),
+          : Duration(hours: int.parse(map['startZoneOffset'])),
       name: map['name'] as String,
       mealType: (map['mealType'] != null &&
               map['mealType'] as int < MealType.values.length)

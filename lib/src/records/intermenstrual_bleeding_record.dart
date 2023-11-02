@@ -1,4 +1,3 @@
-import 'package:duration/duration.dart';
 import 'package:flutter_health_connect/src/records/instantaneous_record.dart';
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 
@@ -40,8 +39,9 @@ class IntermenstrualBleedingRecord extends InstantaneousRecord {
   factory IntermenstrualBleedingRecord.fromMap(Map<String, dynamic> map) {
     return IntermenstrualBleedingRecord(
       time: DateTime.parse(map['time']),
-      zoneOffset:
-          map['zoneOffset'] != null ? parseTime(map['zoneOffset']) : null,
+      zoneOffset: map['zoneOffset'] != null
+          ? Duration(hours: int.parse(map['zoneOffset']))
+          : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
     );
   }

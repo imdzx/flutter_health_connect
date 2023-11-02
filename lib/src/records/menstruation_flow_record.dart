@@ -1,4 +1,3 @@
-import 'package:duration/duration.dart';
 import 'package:flutter_health_connect/src/records/instantaneous_record.dart';
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 
@@ -42,8 +41,9 @@ class MenstruationFlowRecord extends InstantaneousRecord {
     return MenstruationFlowRecord(
         metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
         time: DateTime.parse(map['time']),
-        zoneOffset:
-            map['zoneOffset'] != null ? parseTime(map['zoneOffset']) : null,
+        zoneOffset: map['zoneOffset'] != null
+            ? Duration(hours: int.parse(map['zoneOffset']))
+            : null,
         flow: (map['flow'] != null && map['flow'] as int < Flow.values.length)
             ? Flow.values[map['flow'] as int]
             : Flow.unknown);

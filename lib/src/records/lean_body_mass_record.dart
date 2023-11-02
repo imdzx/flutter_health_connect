@@ -1,4 +1,3 @@
-import 'package:duration/duration.dart';
 import 'package:flutter_health_connect/src/records/instantaneous_record.dart';
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 import 'package:flutter_health_connect/src/units/mass.dart';
@@ -49,8 +48,9 @@ class LeanBodyMassRecord extends InstantaneousRecord {
     return LeanBodyMassRecord(
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       time: DateTime.parse(map['time']),
-      zoneOffset:
-          map['zoneOffset'] != null ? parseTime(map['zoneOffset']) : null,
+      zoneOffset: map['zoneOffset'] != null
+          ? Duration(hours: int.parse(map['zoneOffset']))
+          : null,
       mass: Mass.fromMap(Map<String, dynamic>.from(map['mass'])),
     );
   }
