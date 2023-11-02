@@ -1,3 +1,4 @@
+import 'package:duration/duration.dart';
 import 'package:flutter_health_connect/src/records/interval_record.dart';
 
 import 'metadata/metadata.dart';
@@ -67,12 +68,11 @@ class StepsRecord extends IntervalRecord {
     return StepsRecord(
       startTime: DateTime.parse(map['startTime']),
       startZoneOffset: map['startZoneOffset'] != null
-          ? Duration(hours: int.parse(map['startZoneOffset']))
+          ? parseTime(map['startZoneOffset'])
           : null,
       endTime: DateTime.parse(map['endTime']),
-      endZoneOffset: map['endZoneOffset'] != null
-          ? Duration(hours: int.parse(map['endZoneOffset']))
-          : null,
+      endZoneOffset:
+          map['endZoneOffset'] != null ? parseTime(map['endZoneOffset']) : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       count: map['count'] as int,
     );

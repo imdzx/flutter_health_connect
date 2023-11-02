@@ -1,3 +1,4 @@
+import 'package:duration/duration.dart';
 import 'package:flutter_health_connect/src/records/instantaneous_record.dart';
 import 'package:flutter_health_connect/src/units/temperature.dart';
 
@@ -54,9 +55,8 @@ class BodyTemperatureRecord extends InstantaneousRecord {
   factory BodyTemperatureRecord.fromMap(Map<String, dynamic> map) {
     return BodyTemperatureRecord(
       time: DateTime.parse(map['time']),
-      zoneOffset: map['zoneOffset'] != null
-          ? Duration(hours: int.parse(map['zoneOffset']))
-          : null,
+      zoneOffset:
+          map['zoneOffset'] != null ? parseTime(map['zoneOffset']) : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       temperature:
           Temperature.fromMap(Map<String, dynamic>.from(map['temperature'])),

@@ -1,3 +1,4 @@
+import 'package:duration/duration.dart';
 import 'package:flutter_health_connect/src/records/instantaneous_record.dart';
 
 import 'metadata/metadata.dart';
@@ -42,9 +43,8 @@ class OvulationTestRecord extends InstantaneousRecord {
   factory OvulationTestRecord.fromMap(Map<String, dynamic> map) {
     return OvulationTestRecord(
       time: DateTime.parse(map['time']),
-      zoneOffset: map['zoneOffset'] != null
-          ? Duration(hours: int.parse(map['zoneOffset']))
-          : null,
+      zoneOffset:
+          map['zoneOffset'] != null ? parseTime(map['zoneOffset']) : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       result: (map['result'] != null &&
               map['result'] as int < OvulationTestResult.values.length)

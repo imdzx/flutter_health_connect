@@ -1,3 +1,4 @@
+import 'package:duration/duration.dart';
 import 'package:flutter_health_connect/src/records/interval_record.dart';
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 import 'package:flutter_health_connect/src/units/length.dart';
@@ -68,11 +69,11 @@ class ElevationGainedRecord extends IntervalRecord {
     return ElevationGainedRecord(
         startTime: DateTime.parse(map['startTime']),
         startZoneOffset: map['startZoneOffset'] != null
-            ? Duration(hours: int.parse(map['startZoneOffset']))
+            ? parseTime(map['startZoneOffset'])
             : null,
         endTime: DateTime.parse(map['endTime']),
         endZoneOffset: map['endZoneOffset'] != null
-            ? Duration(hours: int.parse(map['endZoneOffset']))
+            ? parseTime(map['endZoneOffset'])
             : null,
         elevation: Length.fromMap(Map<String, dynamic>.from(map['elevation'])),
         metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])));

@@ -1,3 +1,4 @@
+import 'package:duration/duration.dart';
 import 'package:flutter_health_connect/src/records/series_record.dart';
 import 'package:flutter_health_connect/src/units/power.dart';
 
@@ -62,14 +63,13 @@ class PowerRecord extends SeriesRecord<PowerSample> {
   factory PowerRecord.fromMap(Map<String, dynamic> map) {
     return PowerRecord(
       endTime: DateTime.parse(map['endTime']),
-      endZoneOffset: map['endZoneOffset'] == null
-          ? null
-          : Duration(hours: int.parse(map['endZoneOffset'])),
+      endZoneOffset:
+          map['endZoneOffset'] == null ? null : parseTime(map['endZoneOffset']),
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       startTime: DateTime.parse(map['startTime']),
       startZoneOffset: map['startZoneOffset'] == null
           ? null
-          : Duration(hours: int.parse(map['startZoneOffset'])),
+          : parseTime(map['startZoneOffset']),
       samples: List<PowerSample>.from(
           map['samples']?.map((x) => PowerSample.fromMap(x))),
     );

@@ -12,6 +12,7 @@ dependencies:
     sdk: flutter
   plugin_platform_interface: ^2.0.2
   package_info_plus: ^4.2.0
+  duration: ^3.0.13
 
 dev_dependencies:
   flutter_test:
