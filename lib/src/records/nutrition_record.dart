@@ -487,12 +487,12 @@ class NutritionRecord extends IntervalRecord {
       endTime: DateTime.parse(map['endTime']),
       endZoneOffset: map['endZoneOffset'] == null
           ? null
-          : Duration(hours: map['endZoneOffset'] as int),
+          : Duration(hours: int.parse(map['endZoneOffset'])),
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       startTime: DateTime.parse(map['startTime']),
       startZoneOffset: map['startZoneOffset'] == null
           ? null
-          : Duration(hours: map['startZoneOffset'] as int),
+          : Duration(hours: int.parse(map['startZoneOffset'])),
       name: map['name'] as String,
       mealType: (map['mealType'] != null &&
               map['mealType'] as int < MealType.values.length)

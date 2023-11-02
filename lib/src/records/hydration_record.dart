@@ -68,12 +68,12 @@ class HydrationRecord extends IntervalRecord {
     return HydrationRecord(
       endTime: DateTime.parse(map['endTime']),
       endZoneOffset: map['endZoneOffset'] != null
-          ? Duration(hours: map['endZoneOffset'] as int)
+          ? Duration(hours: int.parse(map['endZoneOffset']))
           : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       startTime: DateTime.parse(map['startTime']),
       startZoneOffset: map['startZoneOffset'] != null
-          ? Duration(hours: map['startZoneOffset'] as int)
+          ? Duration(hours: int.parse(map['startZoneOffset']))
           : null,
       volume: Volume.fromMap(Map<String, dynamic>.from(map['volume'])),
     );

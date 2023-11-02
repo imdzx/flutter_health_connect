@@ -63,11 +63,11 @@ class CyclingPedalingCadenceRecord extends SeriesRecord<Sample> {
     return CyclingPedalingCadenceRecord(
         startTime: DateTime.parse(map['startTime']),
         startZoneOffset: map['startZoneOffset'] != null
-            ? Duration(hours: map['startZoneOffset'] as int)
+            ? Duration(hours: int.parse(map['startZoneOffset']))
             : null,
         endTime: DateTime.parse(map['endTime']),
         endZoneOffset: map['endZoneOffset'] != null
-            ? Duration(hours: map['endZoneOffset'] as int)
+            ? Duration(hours: int.parse(map['endZoneOffset']))
             : null,
         samples:
             List<Sample>.from(map['samples']?.map((e) => Sample.fromMap(e))),

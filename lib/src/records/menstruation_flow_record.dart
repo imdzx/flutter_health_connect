@@ -42,7 +42,7 @@ class MenstruationFlowRecord extends InstantaneousRecord {
         metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
         time: DateTime.parse(map['time']),
         zoneOffset: map['zoneOffset'] != null
-            ? Duration(hours: map['zoneOffset'] as int)
+            ? Duration(hours: int.parse(map['zoneOffset']))
             : null,
         flow: (map['flow'] != null && map['flow'] as int < Flow.values.length)
             ? Flow.values[map['flow'] as int]

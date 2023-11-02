@@ -61,12 +61,12 @@ class MenstruationPeriodRecord extends IntervalRecord {
     return MenstruationPeriodRecord(
       endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime']),
       endZoneOffset: map['endZoneOffset'] != null
-          ? Duration(hours: map['endZoneOffset'] as int)
+          ? Duration(hours: int.parse(map['endZoneOffset']))
           : null,
       metadata: Metadata.fromMap(map['metadata']),
       startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime']),
       startZoneOffset: map['startZoneOffset'] != null
-          ? Duration(hours: map['startZoneOffset'] as int)
+          ? Duration(hours: int.parse(map['startZoneOffset']))
           : null,
     );
   }

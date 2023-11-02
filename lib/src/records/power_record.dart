@@ -64,12 +64,12 @@ class PowerRecord extends SeriesRecord<PowerSample> {
       endTime: DateTime.parse(map['endTime']),
       endZoneOffset: map['endZoneOffset'] == null
           ? null
-          : Duration(hours: map['endZoneOffset'] as int),
+          : Duration(hours: int.parse(map['endZoneOffset'])),
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       startTime: DateTime.parse(map['startTime']),
       startZoneOffset: map['startZoneOffset'] == null
           ? null
-          : Duration(hours: map['startZoneOffset'] as int),
+          : Duration(hours: int.parse(map['startZoneOffset'])),
       samples: List<PowerSample>.from(
           map['samples']?.map((x) => PowerSample.fromMap(x))),
     );

@@ -45,7 +45,7 @@ class RestingHeartRateRecord extends InstantaneousRecord {
     return RestingHeartRateRecord(
       time: DateTime.parse(map['time']),
       zoneOffset: map['zoneOffset'] != null
-          ? Duration(hours: map['zoneOffset'] as int)
+          ? Duration(hours: int.parse(map['zoneOffset']))
           : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       beatsPerMinute: map['beatsPerMinute'] as int,
