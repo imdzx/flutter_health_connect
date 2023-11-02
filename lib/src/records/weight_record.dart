@@ -1,5 +1,6 @@
 import 'package:flutter_health_connect/src/records/instantaneous_record.dart';
 import 'package:flutter_health_connect/src/units/mass.dart';
+import 'package:flutter_health_connect/src/utils.dart';
 
 import 'metadata/metadata.dart';
 
@@ -51,9 +52,8 @@ class WeightRecord extends InstantaneousRecord {
   factory WeightRecord.fromMap(Map<String, dynamic> map) {
     return WeightRecord(
       time: DateTime.parse(map['time']),
-      zoneOffset: map['zoneOffset'] != null
-          ? Duration(hours: int.parse(map['zoneOffset']))
-          : null,
+      zoneOffset:
+          map['zoneOffset'] != null ? parseDuration(map['zoneOffset']) : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       weight: Mass.fromMap(Map<String, dynamic>.from(map['weight'])),
     );

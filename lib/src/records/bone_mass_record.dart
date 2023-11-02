@@ -1,5 +1,6 @@
 import 'package:flutter_health_connect/src/records/instantaneous_record.dart';
 import 'package:flutter_health_connect/src/units/mass.dart';
+import 'package:flutter_health_connect/src/utils.dart';
 
 import 'metadata/metadata.dart';
 
@@ -49,9 +50,8 @@ class BoneMassRecord extends InstantaneousRecord {
   factory BoneMassRecord.fromMap(Map<String, dynamic> map) {
     return BoneMassRecord(
         time: DateTime.parse(map['time']),
-        zoneOffset: map['zoneOffset'] != null
-            ? Duration(hours: int.parse(map['zoneOffset']))
-            : null,
+        zoneOffset:
+            map['zoneOffset'] != null ? parseDuration(map['zoneOffset']) : null,
         metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
         mass: Mass.fromMap(Map<String, dynamic>.from(map['mass'])));
   }
