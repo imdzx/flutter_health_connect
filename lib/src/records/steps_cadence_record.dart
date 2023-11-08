@@ -73,7 +73,7 @@ class StepsCadenceRecord extends SeriesRecord<StepsCadenceSample> {
           ? null
           : parseDuration(map['startZoneOffset']),
       samples: (map['samples'] as List)
-          .map((e) => StepsCadenceSample.fromMap(e as Map<String, dynamic>))
+          .map((e) => StepsCadenceSample.fromMap(Map<String, dynamic>.from(e)))
           .toList(),
     );
   }

@@ -71,8 +71,8 @@ class PowerRecord extends SeriesRecord<PowerSample> {
       startZoneOffset: map['startZoneOffset'] == null
           ? null
           : parseDuration(map['startZoneOffset']),
-      samples: List<PowerSample>.from(
-          map['samples']?.map((x) => PowerSample.fromMap(x))),
+      samples: List<PowerSample>.from(map['samples']
+          ?.map((e) => PowerSample.fromMap(Map<String, dynamic>.from(e)))),
     );
   }
 

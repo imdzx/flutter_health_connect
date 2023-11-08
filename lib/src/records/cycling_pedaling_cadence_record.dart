@@ -70,8 +70,8 @@ class CyclingPedalingCadenceRecord extends SeriesRecord<Sample> {
         endZoneOffset: map['endZoneOffset'] != null
             ? parseDuration(map['endZoneOffset'])
             : null,
-        samples:
-            List<Sample>.from(map['samples']?.map((e) => Sample.fromMap(e))),
+        samples: List<Sample>.from(map['samples']
+            ?.map((e) => Sample.fromMap(Map<String, dynamic>.from(e)))),
         metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])));
   }
 
