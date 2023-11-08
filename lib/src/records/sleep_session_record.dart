@@ -33,7 +33,7 @@ class SleepSessionRecord extends IntervalRecord {
       List<SleepStage> sortedStages = stages
         ..sort((a, b) => a.startTime.compareTo(b.startTime));
       for (int i = 0; i < sortedStages.length - 1; i++) {
-        assert(sortedStages[i].endTime.isAfter(sortedStages[i + 1].startTime));
+        assert(!sortedStages[i].endTime.isAfter(sortedStages[i + 1].startTime));
       }
       assert(!sortedStages.first.startTime.isBefore(startTime));
       assert(!sortedStages.last.endTime.isAfter(endTime));
