@@ -58,7 +58,7 @@ class BloodGlucoseRecord extends InstantaneousRecord {
       'time': time.toUtc().toIso8601String(),
       'zoneOffset': zoneOffset?.inHours,
       'metadata': metadata.toMap(),
-      'level': level.inMilligramsPerDeciliter,
+      'level': level.inMillimolesPerLiter,
       'specimenSource': specimenSource.index,
       'relationToMeal': relationToMeal.index,
       'mealType': mealType.index,
