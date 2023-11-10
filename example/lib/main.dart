@@ -231,7 +231,6 @@ class _MyAppState extends State<MyApp> {
                 } catch (e, s) {
                   resultText = '$e:$s'.toString();
                 }
-                debugPrint(resultText);
                 _updateResultText();
               },
               child: const Text('Send Record'),
