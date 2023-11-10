@@ -4,7 +4,6 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_health_connect/src/records.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 export 'src/metadata.dart';
 export 'src/records.dart';
