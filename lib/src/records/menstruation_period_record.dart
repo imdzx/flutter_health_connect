@@ -60,12 +60,12 @@ class MenstruationPeriodRecord extends IntervalRecord {
   @override
   factory MenstruationPeriodRecord.fromMap(Map<String, dynamic> map) {
     return MenstruationPeriodRecord(
-      endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime']),
+      endTime: DateTime.parse(map['endTime']),
       endZoneOffset: map['endZoneOffset'] != null
           ? parseDuration(map['endZoneOffset'])
           : null,
       metadata: Metadata.fromMap(map['metadata']),
-      startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime']),
+      startTime: DateTime.parse(map['startTime']),
       startZoneOffset: map['startZoneOffset'] != null
           ? parseDuration(map['startZoneOffset'])
           : null,

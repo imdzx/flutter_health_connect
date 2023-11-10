@@ -113,7 +113,7 @@ class PowerSample {
   static PowerSample fromMap(Map<String, dynamic> map) {
     return PowerSample(
       power: Power.fromMap(Map<String, dynamic>.from(map['power'])),
-      time: DateTime.fromMillisecondsSinceEpoch(map['time']),
+      time: DateTime.parse(map['time']),
     );
   }
 }

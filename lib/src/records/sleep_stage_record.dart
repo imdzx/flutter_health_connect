@@ -61,12 +61,12 @@ class SleepStageRecord extends IntervalRecord {
   @override
   factory SleepStageRecord.fromMap(Map<String, dynamic> map) {
     return SleepStageRecord(
-        endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime']),
+        endTime: DateTime.parse(map['endTime']),
         endZoneOffset: map['endZoneOffset'] != null
             ? Duration(hours: map['endZoneOffset'])
             : null,
         metadata: Metadata.fromMap(map['metadata']),
-        startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime']),
+        startTime: DateTime.parse(map['startTime']),
         startZoneOffset: map['startZoneOffset'] != null
             ? Duration(hours: map['startZoneOffset'])
             : null,

@@ -136,8 +136,8 @@ class SleepStage {
 
   static SleepStage fromMap(Map<String, dynamic> map) {
     return SleepStage(
-      startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime']),
-      endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime']),
+      startTime: DateTime.parse(map['startTime']),
+      endTime: DateTime.parse(map['endTime']),
       type: (map['type'] != null &&
               map['type'] as int < SleepStageType.values.length)
           ? SleepStageType.values[map['type'] as int]
