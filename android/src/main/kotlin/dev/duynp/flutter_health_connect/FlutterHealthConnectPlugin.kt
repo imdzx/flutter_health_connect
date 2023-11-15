@@ -400,8 +400,8 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                         BLOOD_PRESSURE -> BloodPressureRecord(
                             time = Instant.parse(recordMap["time"] as String),
                             zoneOffset = if (recordMap["zoneOffset"] != null) ZoneOffset.ofHours(recordMap["zoneOffset"] as Int) else null,
-                            systolic = Pressure.millimetersOfMercury(recordMap["systolicPressure"] as Double),
-                            diastolic = Pressure.millimetersOfMercury(recordMap["diastolicPressure"] as Double),
+                            systolic = Pressure.millimetersOfMercury(recordMap["systolic"] as Double),
+                            diastolic = Pressure.millimetersOfMercury(recordMap["diastolic"] as Double),
                             bodyPosition = recordMap["bodyPosition"] as Int,
                             measurementLocation = recordMap["measurementLocation"] as Int,
                             metadata = metadata,
