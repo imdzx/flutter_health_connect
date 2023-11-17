@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import androidx.health.connect.client.HealthConnectClient
 import androidx.health.connect.client.PermissionController
 import androidx.health.connect.client.changes.UpsertionChange
@@ -345,6 +346,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
             if (data.isNotEmpty()) {
                 val recordsList: MutableList<Record> = emptyList<Record>().toMutableList()
                 for (recordMap in data) {
+                    Log.d("recordMap", recordMap.toString())
                     val metadataMap = recordMap["metadata"] as Map<*, *>?
                     val metadata = if (metadataMap != null) {
                         val dataOriginMap = metadataMap["dataOrigin"] as Map<*, *>?
@@ -487,7 +489,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
                             endTime = Instant.parse(recordMap["endTime"] as String),
                             endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
-                            samples = (recordMap["samples"] as List<*>).filterIsInstance<HeartRateRecord.Sample>(),
+                            samples = (recordMap["samples"] as List<*>).filterIsInstance(HeartRateRecord.Sample::class.java),
                             metadata = metadata,
                         )
                         HEART_RATE_VARIABILITY -> HeartRateVariabilityRmssdRecord(
@@ -695,6 +697,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                         )
                         else -> throw IllegalArgumentException("The type $type was not supported in this version of the plugin")
                     }
+                    Log.d("Flutter Health Connect", "record: $record")
                     recordsList.add(record)
                 }
                 scope.launch {
