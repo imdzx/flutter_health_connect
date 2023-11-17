@@ -444,7 +444,13 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
                             endTime = Instant.parse(recordMap["endTime"] as String),
                             endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
-                            samples = (recordMap["samples"] as List<*>).filterIsInstance<CyclingPedalingCadenceRecord.Sample>(),
+                            samples = (recordMap["samples"] as List<*>).map {
+                                val sampleMap = it as Map<*, *>
+                                CyclingPedalingCadenceRecord.Sample(
+                                    time = Instant.parse(sampleMap["time"] as String),
+                                    revolutionsPerMinute = (sampleMap["revolutionsPerMinute"] as Double)
+                                )
+                            },
                             metadata = metadata,
                         )
                         DISTANCE -> DistanceRecord(
@@ -472,9 +478,39 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             title = recordMap["title"] as String?,
                             notes = recordMap["notes"] as String?,
                             metadata = metadata,
-                            laps = (recordMap["laps"] as List<*>).filterIsInstance<ExerciseLap>(),
-                            segments = (recordMap["segments"] as List<*>).filterIsInstance<ExerciseSegment>(),
-                            exerciseRoute = if (recordMap["route"] != null) ExerciseRoute((recordMap["route"] as List<*>).filterIsInstance<ExerciseRoute.Location>()) else null,
+                            laps = (recordMap["laps"] as List<*>).map {
+                                val lapMap = it as Map<*, *>
+                                ExerciseLap(
+                                    startTime = Instant.parse(lapMap["startTime"] as String),
+                                    endTime = Instant.parse(lapMap["endTime"] as String),
+                                    length = if (lapMap["length"] != null) Length.meters(lapMap["length"] as Double) else null,
+                                )
+                            },
+                            segments = (recordMap["segments"] as List<*>).map{
+                                val segmentMap = it as Map<*, *>
+                                ExerciseSegment(
+                                    startTime = Instant.parse(segmentMap["startTime"] as String),
+                                    endTime = Instant.parse(segmentMap["endTime"] as String),
+                                    segmentType = segmentMap["segmentType"] as Int,
+                                    repetitions = segmentMap["repetitions"] as Int,
+                                )
+                            },
+                            exerciseRoute = if (recordMap["route"] != null) {
+                                val routeMap = recordMap["route"] as Map<*, *>
+                                ExerciseRoute(
+                                    route = (routeMap["route"] as List<*>).map {
+                                        val routePointMap = it as Map<*, *>
+                                        ExerciseRoute.Location(
+                                            latitude = routePointMap["latitude"] as Double,
+                                            longitude = routePointMap["longitude"] as Double,
+                                            altitude = if (routePointMap["altitude"] != null) Length.meters(routePointMap["altitude"] as Double) else null,
+                                            time = Instant.parse(routePointMap["time"] as String),
+                                            horizontalAccuracy = if (routePointMap["horizontalAccuracy"] != null) Length.meters(routePointMap["horizontalAccuracy"] as Double) else null,
+                                            verticalAccuracy = if (routePointMap["verticalAccuracy"] != null) Length.meters(routePointMap["verticalAccuracy"] as Double) else null,
+                                        )
+                                    },
+                                )
+                            } else null,
                         )
                         FLOORS_CLIMBED -> FloorsClimbedRecord(
                             startTime = Instant.parse(recordMap["startTime"] as String),
@@ -610,7 +646,13 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
                             endTime = Instant.parse(recordMap["endTime"] as String),
                             endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
-                            samples = (recordMap["samples"] as List<*>).filterIsInstance<PowerRecord.Sample>(),
+                            samples = (recordMap["samples"] as List<*>).map {
+                                val sampleMap = it as Map<*, *>
+                                PowerRecord.Sample(
+                                    time = Instant.parse(sampleMap["time"] as String),
+                                    power = Power.watts(sampleMap["power"] as Double),
+                                )
+                            },
                             metadata = metadata,
                         )
                         RESPIRATORY_RATE -> RespiratoryRateRecord(
@@ -653,7 +695,13 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
                             endTime = Instant.parse(recordMap["endTime"] as String),
                             endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
-                            samples = (recordMap["samples"] as List<*>).filterIsInstance<SpeedRecord.Sample>(),
+                            samples = (recordMap["samples"] as List<*>).map {
+                                val sampleMap = it as Map<*, *>
+                                SpeedRecord.Sample(
+                                    time = Instant.parse(sampleMap["time"] as String),
+                                    speed = Velocity.metersPerSecond(sampleMap["speed"] as Double),
+                                )
+                            },
                             metadata = metadata,
                         )
                         STEPS_CADENCE -> StepsCadenceRecord(
@@ -661,7 +709,13 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
                             endTime = Instant.parse(recordMap["endTime"] as String),
                             endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
-                            samples = (recordMap["samples"] as List<*>).filterIsInstance<StepsCadenceRecord.Sample>(),
+                            samples = (recordMap["samples"] as List<*>).map {
+                                val sampleMap = it as Map<*, *>
+                                StepsCadenceRecord.Sample(
+                                    time = Instant.parse(sampleMap["time"] as String),
+                                    rate = (sampleMap["rate"] as Double)
+                                )
+                            },
                             metadata = metadata,
                         )
                         STEPS -> StepsRecord(
