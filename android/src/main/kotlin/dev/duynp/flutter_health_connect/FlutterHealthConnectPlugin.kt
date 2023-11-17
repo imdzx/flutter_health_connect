@@ -489,7 +489,13 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
                             endTime = Instant.parse(recordMap["endTime"] as String),
                             endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
-                            samples = (recordMap["samples"] as List<*>).filterIsInstance(HeartRateRecord.Sample::class.java),
+                            samples = (recordMap["samples"] as List<*>).map { sample ->
+                                val sampleMap = sample as Map<*, *>
+                                HeartRateRecord.Sample(
+                                    time = Instant.parse(sampleMap["time"] as String),
+                                    beatsPerMinute = (sampleMap["beatsPerMinute"] as Long),
+                                )
+                            },
                             metadata = metadata,
                         )
                         HEART_RATE_VARIABILITY -> HeartRateVariabilityRmssdRecord(
