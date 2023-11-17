@@ -493,7 +493,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                                 val sampleMap = sample as Map<*, *>
                                 HeartRateRecord.Sample(
                                     time = Instant.parse(sampleMap["time"] as String),
-                                    beatsPerMinute = (sampleMap["beatsPerMinute"] as Long),
+                                    beatsPerMinute = ((sampleMap["beatsPerMinute"] as Int).toLong()),
                                 )
                             },
                             metadata = metadata,
