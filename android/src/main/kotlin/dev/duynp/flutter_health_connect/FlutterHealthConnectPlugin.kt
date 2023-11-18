@@ -295,11 +295,11 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                                 startTime?.let { Instant.parse(it) } ?: Instant.now()
                                     .minus(1, ChronoUnit.DAYS)
                             val end = endTime?.let { Instant.parse(it) } ?: Instant.now()
-                            val reply = client.deleteRecords(
+                            client.deleteRecords(
                                 recordType = classType,
                                 timeRangeFilter = TimeRangeFilter.between(start, end),
                             )
-                            result.success(reply)
+                            result.success(true)
                         } ?: throw Throwable("Unsupported type $type")
                     } catch (e: Throwable) {
                         result.error("DELETE_RECORDS_FAIL", e.localizedMessage, e)
@@ -318,8 +318,8 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                     Log.d("Flutter Health Connect", "deleteRecordsByIds: clientRecordIdsList:$clientRecordIdsList")
                     try {
                         HealthConnectRecordTypeMap[type]?.let { classType ->
-                            val reply = client.deleteRecords(classType, idList, clientRecordIdsList)
-                            result.success(reply)
+                            client.deleteRecords(classType, idList, clientRecordIdsList)
+                            result.success(true)
                         } ?: throw Throwable("Unsupported type $type")
                     } catch (e: Throwable) {
                         result.error("DELETE_RECORDS_FAIL", e.localizedMessage, e)
