@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import androidx.health.connect.client.HealthConnectClient
 import androidx.health.connect.client.PermissionController
 import androidx.health.connect.client.changes.UpsertionChange
@@ -309,13 +308,9 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
 
             "deleteRecordsByIds" -> {
                 scope.launch {
-                    Log.d("Flutter Health Connect", "deleteRecordsByIds:$")
                     val type = call.argument<String>("type") ?: ""
                     val idList: List<String> = call.argument<List<String>>("idList") ?: emptyList()
                     val clientRecordIdsList: List<String> = call.argument<List<String>>("clientRecordIdsList") ?: emptyList()
-                    Log.d("Flutter Health Connect", "deleteRecordsByIds: type:$type")
-                    Log.d("Flutter Health Connect", "deleteRecordsByIds: idList:$idList")
-                    Log.d("Flutter Health Connect", "deleteRecordsByIds: clientRecordIdsList:$clientRecordIdsList")
                     try {
                         HealthConnectRecordTypeMap[type]?.let { classType ->
                             client.deleteRecords(classType, idList, clientRecordIdsList)
@@ -350,7 +345,6 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
             if (data.isNotEmpty()) {
                 val recordsList: MutableList<Record> = emptyList<Record>().toMutableList()
                 for (recordMap in data) {
-                    Log.d("Flutter Health Connect", "recordMap: $recordMap")
                     val metadataMap = recordMap["metadata"] as Map<*, *>?
                     val metadata = if (metadataMap != null) {
                         val dataOriginMap = metadataMap["dataOrigin"] as Map<*, *>?
@@ -761,7 +755,6 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                         )
                         else -> throw IllegalArgumentException("The type $type was not supported in this version of the plugin")
                     }
-                    Log.d("Flutter Health Connect", "record: $record")
                     recordsList.add(record)
                 }
                 scope.launch {
