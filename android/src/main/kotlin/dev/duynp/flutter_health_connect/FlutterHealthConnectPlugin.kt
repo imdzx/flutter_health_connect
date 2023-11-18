@@ -309,9 +309,13 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
 
             "deleteRecordsByIds" -> {
                 scope.launch {
+                    Log.d("Flutter Health Connect", "deleteRecordsByIds:$")
                     val type = call.argument<String>("type") ?: ""
-                    val idList = call.argument<List<String>>("idList") ?: emptyList()
-                    val clientRecordIdsList = call.argument<List<String>>("clientRecordIdsList") ?: emptyList()
+                    val idList: List<String> = call.argument<List<String>>("idList") ?: emptyList()
+                    val clientRecordIdsList: List<String> = call.argument<List<String>>("clientRecordIdsList") ?: emptyList()
+                    Log.d("Flutter Health Connect", "deleteRecordsByIds: type:$type")
+                    Log.d("Flutter Health Connect", "deleteRecordsByIds: idList:$idList")
+                    Log.d("Flutter Health Connect", "deleteRecordsByIds: clientRecordIdsList:$clientRecordIdsList")
                     try {
                         HealthConnectRecordTypeMap[type]?.let { classType ->
                             val reply = client.deleteRecords(classType, idList, clientRecordIdsList)
@@ -346,7 +350,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
             if (data.isNotEmpty()) {
                 val recordsList: MutableList<Record> = emptyList<Record>().toMutableList()
                 for (recordMap in data) {
-                    Log.d("recordMap", recordMap.toString())
+                    Log.d("Flutter Health Connect", "recordMap: $recordMap")
                     val metadataMap = recordMap["metadata"] as Map<*, *>?
                     val metadata = if (metadataMap != null) {
                         val dataOriginMap = metadataMap["dataOrigin"] as Map<*, *>?
