@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import androidx.activity.ComponentActivity
+import androidx.activity.result.ActivityResultLauncher
 import androidx.health.connect.client.HealthConnectClient
 import androidx.health.connect.client.PermissionController
 import androidx.health.connect.client.changes.UpsertionChange
@@ -42,6 +44,8 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
     private var activity: Activity? = null
     private var context: Context? = null
     private lateinit var scope: CoroutineScope
+    private var healthConnectRequestPermissionsLauncher: ActivityResultLauncher<Set<String>>? = null
+    private var onHealthConnectPermissionCallback = fun (_: Set<String>){}
 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
@@ -57,6 +61,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
         scope.cancel()
         channel = null
         activity = null
+        healthConnectRequestPermissionsLauncher = null
     }
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
@@ -65,6 +70,10 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
         }
         binding.addActivityResultListener(this)
         activity = binding.activity
+        val contract = PermissionController.createRequestPermissionResultContract()
+        healthConnectRequestPermissionsLauncher = (activity as ComponentActivity).registerForActivityResult(contract) { granted ->
+            onHealthConnectPermissionCallback(granted)
+        }
     }
 
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
@@ -122,9 +131,20 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                         requestedTypes,
                         isReadOnly
                     )
-                    val contract = PermissionController.createRequestPermissionResultContract()
-                    val intent = context?.let { contract.createIntent(it, allPermissions) }
-                    activity!!.startActivityForResult(intent, HEALTH_CONNECT_RESULT_CODE)
+                    if( healthConnectRequestPermissionsLauncher == null) {
+                        result.success(false)
+                        return
+                    }
+                    onHealthConnectPermissionCallback = fun (permissionGranted: Set<String>)
+                    {
+                        if (permissionGranted.isEmpty()) {
+                            result.success(false)
+
+                        } else {
+                            result.success(true)
+                        }
+                    }
+                    healthConnectRequestPermissionsLauncher!!.launch(allPermissions)
                 } catch (e: Throwable) {
                     result.error("UNABLE_TO_START_ACTIVITY", e.message, e)
                 }
