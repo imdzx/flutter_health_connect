@@ -1,16 +1,14 @@
-/// parses duration string (obtained from Duration.toString(), of format H:MM:SS.mmmmmm) into [Duration]
-/// sourced from https://gist.github.com/werainkhatri/af51c7d143dab802f07f1bba0142c638#file-parseduration-dart
-Duration parseDuration(String s) {
-  int hours = 0;
-  int minutes = 0;
-  int micros;
+/// parses zoneOffset string (of format (-)HH:MM or "Z") into [Duration]
+Duration parseTimeZoneOffset(String s) {
+  if (s == 'Z') {
+    return Duration.zero;
+  }
   List<String> parts = s.split(':');
-  if (parts.length > 2) {
-    hours = int.parse(parts[parts.length - 3]);
+  if (parts.length == 2) {
+    int hours = int.parse(parts[0]);
+    int minutes = int.parse(parts[1]);
+    return Duration(hours: hours, minutes: minutes);
+  } else {
+    throw ArgumentError.value(s, 's', 'Invalid zoneOffset string');
   }
-  if (parts.length > 1) {
-    minutes = int.parse(parts[parts.length - 2]);
-  }
-  micros = (double.parse(parts[parts.length - 1]) * 1000000).round();
-  return Duration(hours: hours, minutes: minutes, microseconds: micros);
 }

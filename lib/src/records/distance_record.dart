@@ -69,11 +69,11 @@ class DistanceRecord extends IntervalRecord {
     return DistanceRecord(
         startTime: DateTime.parse(map['startTime']),
         startZoneOffset: map['startZoneOffset'] != null
-            ? parseDuration(map['startZoneOffset'])
+            ? parseTimeZoneOffset(map['startZoneOffset'])
             : null,
         endTime: DateTime.parse(map['endTime']),
         endZoneOffset: map['endZoneOffset'] != null
-            ? parseDuration(map['endZoneOffset'])
+            ? parseTimeZoneOffset(map['endZoneOffset'])
             : null,
         distance: Length.fromMap(Map<String, dynamic>.from(map['distance'])),
         metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])));

@@ -49,8 +49,9 @@ class LeanBodyMassRecord extends InstantaneousRecord {
     return LeanBodyMassRecord(
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       time: DateTime.parse(map['time']),
-      zoneOffset:
-          map['zoneOffset'] != null ? parseDuration(map['zoneOffset']) : null,
+      zoneOffset: map['zoneOffset'] != null
+          ? parseTimeZoneOffset(map['zoneOffset'])
+          : null,
       mass: Mass.fromMap(Map<String, dynamic>.from(map['mass'])),
     );
   }

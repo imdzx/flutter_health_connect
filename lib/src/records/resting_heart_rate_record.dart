@@ -45,8 +45,9 @@ class RestingHeartRateRecord extends InstantaneousRecord {
   factory RestingHeartRateRecord.fromMap(Map<String, dynamic> map) {
     return RestingHeartRateRecord(
       time: DateTime.parse(map['time']),
-      zoneOffset:
-          map['zoneOffset'] != null ? parseDuration(map['zoneOffset']) : null,
+      zoneOffset: map['zoneOffset'] != null
+          ? parseTimeZoneOffset(map['zoneOffset'])
+          : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       beatsPerMinute: map['beatsPerMinute'] as int,
     );

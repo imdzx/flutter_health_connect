@@ -55,8 +55,9 @@ class BasalMetabolicRateRecord extends InstantaneousRecord {
   factory BasalMetabolicRateRecord.fromMap(Map<String, dynamic> map) {
     return BasalMetabolicRateRecord(
       time: DateTime.parse(map['time']),
-      zoneOffset:
-          map['zoneOffset'] != null ? parseDuration(map['zoneOffset']) : null,
+      zoneOffset: map['zoneOffset'] != null
+          ? parseTimeZoneOffset(map['zoneOffset'])
+          : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       basalMetabolicRate:
           Power.fromMap(Map<String, dynamic>.from(map['basalMetabolicRate'])),

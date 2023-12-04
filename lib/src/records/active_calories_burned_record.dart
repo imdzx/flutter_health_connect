@@ -70,11 +70,11 @@ class ActiveCaloriesBurnedRecord extends IntervalRecord {
     return ActiveCaloriesBurnedRecord(
         startTime: DateTime.parse(map['startTime']),
         startZoneOffset: map['startZoneOffset'] != null
-            ? parseDuration(map['startZoneOffset'])
+            ? parseTimeZoneOffset(map['startZoneOffset'])
             : null,
         endTime: DateTime.parse(map['endTime']),
         endZoneOffset: map['endZoneOffset'] != null
-            ? parseDuration(map['endZoneOffset'])
+            ? parseTimeZoneOffset(map['endZoneOffset'])
             : null,
         energy: Energy.fromMap(Map<String, dynamic>.from(map['energy'])),
         metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])));

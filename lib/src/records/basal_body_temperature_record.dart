@@ -53,8 +53,9 @@ class BasalBodyTemperatureRecord extends InstantaneousRecord {
   factory BasalBodyTemperatureRecord.fromMap(Map<String, dynamic> map) {
     return BasalBodyTemperatureRecord(
       time: DateTime.parse(map['time']),
-      zoneOffset:
-          map['zoneOffset'] != null ? parseDuration(map['zoneOffset']) : null,
+      zoneOffset: map['zoneOffset'] != null
+          ? parseTimeZoneOffset(map['zoneOffset'])
+          : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       temperature:
           Temperature.fromMap(Map<String, dynamic>.from(map['temperature'])),

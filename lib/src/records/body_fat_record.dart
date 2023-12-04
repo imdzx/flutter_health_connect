@@ -50,8 +50,9 @@ class BodyFatRecord extends InstantaneousRecord {
   factory BodyFatRecord.fromMap(Map<String, dynamic> map) {
     return BodyFatRecord(
         time: DateTime.parse(map['time']),
-        zoneOffset:
-            map['zoneOffset'] != null ? parseDuration(map['zoneOffset']) : null,
+        zoneOffset: map['zoneOffset'] != null
+            ? parseTimeZoneOffset(map['zoneOffset'])
+            : null,
         metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
         percentage:
             Percentage.fromMap(Map<String, dynamic>.from(map['percentage'])));

@@ -66,12 +66,12 @@ class StepsCadenceRecord extends SeriesRecord<StepsCadenceSample> {
       endTime: DateTime.parse(map['endTime']),
       endZoneOffset: map['endZoneOffset'] == null
           ? null
-          : parseDuration(map['endZoneOffset']),
+          : parseTimeZoneOffset(map['endZoneOffset']),
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       startTime: DateTime.parse(map['startTime']),
       startZoneOffset: map['startZoneOffset'] == null
           ? null
-          : parseDuration(map['startZoneOffset']),
+          : parseTimeZoneOffset(map['startZoneOffset']),
       samples: (map['samples'] as List)
           .map((e) => StepsCadenceSample.fromMap(Map<String, dynamic>.from(e)))
           .toList(),

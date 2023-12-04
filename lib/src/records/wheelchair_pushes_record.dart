@@ -67,11 +67,11 @@ class WheelchairPushesRecord extends IntervalRecord {
     return WheelchairPushesRecord(
       startTime: DateTime.parse(map['startTime']),
       startZoneOffset: map['startZoneOffset'] != null
-          ? parseDuration(map['startZoneOffset'])
+          ? parseTimeZoneOffset(map['startZoneOffset'])
           : null,
       endTime: DateTime.parse(map['endTime']),
       endZoneOffset: map['endZoneOffset'] != null
-          ? parseDuration(map['endZoneOffset'])
+          ? parseTimeZoneOffset(map['endZoneOffset'])
           : null,
       count: map['count'] as int,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),

@@ -46,8 +46,9 @@ class CervicalMucusRecord extends InstantaneousRecord {
   factory CervicalMucusRecord.fromMap(Map<String, dynamic> map) {
     return CervicalMucusRecord(
       time: DateTime.parse(map['time']),
-      zoneOffset:
-          map['zoneOffset'] != null ? parseDuration(map['zoneOffset']) : null,
+      zoneOffset: map['zoneOffset'] != null
+          ? parseTimeZoneOffset(map['zoneOffset'])
+          : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       sensation: (map['sensation'] != null &&
               map['sensation'] as int < Sensation.values.length)

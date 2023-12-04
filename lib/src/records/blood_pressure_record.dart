@@ -79,8 +79,9 @@ class BloodPressureRecord extends InstantaneousRecord {
     return BloodPressureRecord(
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       time: DateTime.parse(map['time']),
-      zoneOffset:
-          map['zoneOffset'] != null ? parseDuration(map['zoneOffset']) : null,
+      zoneOffset: map['zoneOffset'] != null
+          ? parseTimeZoneOffset(map['zoneOffset'])
+          : null,
       systolic: Pressure.fromMap(Map<String, dynamic>.from(map['systolic'])),
       diastolic: Pressure.fromMap(Map<String, dynamic>.from(map['diastolic'])),
       measurementLocation: (map['measurementLocation'] != null &&
