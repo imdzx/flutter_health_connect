@@ -35,7 +35,6 @@ enum HealthConnectDataType {
   RestingHeartRate,
   SexualActivity,
   SleepSession,
-  SleepStage,
   Speed,
   StepsCadence,
   Steps,

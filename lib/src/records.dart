@@ -40,7 +40,6 @@ export 'records/resting_heart_rate_record.dart';
 export 'records/series_record.dart';
 export 'records/sexual_activity_record.dart';
 export 'records/sleep_session_record.dart';
-export 'records/sleep_stage_record.dart';
 export 'records/speed_record.dart';
 export 'records/steps_cadence_record.dart';
 export 'records/steps_record.dart';

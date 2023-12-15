@@ -34,7 +34,6 @@ const val RESPIRATORY_RATE = "RespiratoryRate"
 const val RESTING_HEART_RATE = "RestingHeartRate"
 const val SEXUAL_ACTIVITY = "SexualActivity"
 const val SLEEP_SESSION = "SleepSession"
-const val SLEEP_STAGE = "SleepStage"
 const val SPEED = "Speed"
 const val STEPS_CADENCE = "StepsCadence"
 const val STEPS = "Steps"
@@ -75,7 +74,6 @@ val HealthConnectRecordTypeMap = hashMapOf(
     RESTING_HEART_RATE to RestingHeartRateRecord::class,
     SEXUAL_ACTIVITY to SexualActivityRecord::class,
     SLEEP_SESSION to SleepSessionRecord::class,
-    SLEEP_STAGE to SleepStageRecord::class,
     SPEED to SpeedRecord::class,
     STEPS_CADENCE to StepsCadenceRecord::class,
     STEPS to StepsRecord::class,

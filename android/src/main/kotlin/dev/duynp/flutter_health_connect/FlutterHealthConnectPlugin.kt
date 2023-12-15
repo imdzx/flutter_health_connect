@@ -698,14 +698,14 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             title = recordMap["title"] as String?,
                             notes = recordMap["notes"] as String?,
-                            metadata = metadata,
-                        )
-                        SLEEP_STAGE -> SleepStageRecord(
-                            startTime = Instant.parse(recordMap["startTime"] as String),
-                            startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
-                            endTime = Instant.parse(recordMap["endTime"] as String),
-                            endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
-                            stage = recordMap["stage"] as Int,
+                            stages = (recordMap["stages"] as List<*>).map {
+                                val stageMap = it as Map<*, *>
+                                SleepSessionRecord.Stage(
+                                    startTime = Instant.parse(stageMap["startTime"] as String),
+                                    endTime = Instant.parse(stageMap["endTime"] as String),
+                                    stage = stageMap["stage"] as Int,
+                                )
+                            },
                             metadata = metadata,
                         )
                         SPEED -> SpeedRecord(

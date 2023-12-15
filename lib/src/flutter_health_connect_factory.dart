@@ -166,8 +166,6 @@ class HealthConnectFactory {
         return SexualActivityRecord.fromMap(map);
       case HealthConnectDataType.SleepSession:
         return SleepSessionRecord.fromMap(map);
-      case HealthConnectDataType.SleepStage:
-        return SleepStageRecord.fromMap(map);
       case HealthConnectDataType.Speed:
         return SpeedRecord.fromMap(map);
       case HealthConnectDataType.StepsCadence:
