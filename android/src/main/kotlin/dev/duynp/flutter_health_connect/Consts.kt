@@ -86,18 +86,31 @@ const val HEALTH_CONNECT_RESULT_CODE = 16969
 const val MAX_LENGTH = 5000
 
 fun mapTypesToPermissions(
-    types: List<String>?,
-    readOnly: Boolean
+    bothTypes: List<String>?,
+    readTypes: List<String>?,
+    writeTypes: List<String>?
 ): MutableSet<String
         > {
     val permissions = mutableSetOf<String>()
-    if (types != null) {
-        for (item: String in types) {
+    if (bothTypes != null) {
+        for (item: String in bothTypes) {
             HealthConnectRecordTypeMap[item]?.let { classType ->
-                if (!readOnly) {
-                    permissions.add(HealthPermission.getWritePermission(classType))
-                }
+                permissions.add(HealthPermission.getWritePermission(classType))
                 permissions.add(HealthPermission.getReadPermission(classType))
+            }
+        }
+    }
+    if (readTypes != null) {
+        for (item: String in readTypes) {
+            HealthConnectRecordTypeMap[item]?.let { classType ->
+                permissions.add(HealthPermission.getReadPermission(classType))
+            }
+        }
+    }
+    if (writeTypes != null) {
+        for (item: String in writeTypes) {
+            HealthConnectRecordTypeMap[item]?.let { classType ->
+                permissions.add(HealthPermission.getWritePermission(classType))
             }
         }
     }

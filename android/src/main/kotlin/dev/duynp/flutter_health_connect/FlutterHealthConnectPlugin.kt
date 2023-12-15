@@ -94,6 +94,8 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
     override fun onMethodCall(call: MethodCall, result: Result) {
         val args = call.arguments?.let { it as? HashMap<*, *> } ?: hashMapOf<String, Any>()
         val requestedTypes = (args["types"] as? ArrayList<*>)?.filterIsInstance<String>()
+        val readTypes = (args["readOnlyTypes"] as? ArrayList<*>)?.filterIsInstance<String>()
+        val writeTypes = (args["writeOnlyTypes"] as? ArrayList<*>)?.filterIsInstance<String>()
         when (call.method) {
 
             "isApiSupported" -> result.success(context?.let { HealthConnectClient.getSdkStatus(it) } != HealthConnectClient.SDK_UNAVAILABLE)
@@ -115,10 +117,9 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
 
             "hasPermissions" -> {
                 scope.launch {
-                    val isReadOnly = call.argument<Boolean>("readOnly") ?: false
                     val granted = client.permissionController.getGrantedPermissions()
                     val status =
-                        granted.containsAll(mapTypesToPermissions(requestedTypes, isReadOnly))
+                        granted.containsAll(mapTypesToPermissions(requestedTypes, readTypes, writeTypes))
                     result.success(status)
                 }
             }
@@ -126,10 +127,10 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
             "requestPermissions" -> {
                 try {
                     permissionResult = result
-                    val isReadOnly = call.argument<Boolean>("readOnly") ?: false
                     val allPermissions = mapTypesToPermissions(
                         requestedTypes,
-                        isReadOnly
+                        readTypes,
+                        writeTypes
                     )
                     if( healthConnectRequestPermissionsLauncher == null) {
                         result.success(false)
