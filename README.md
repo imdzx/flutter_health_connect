@@ -98,18 +98,71 @@ To create the declaration, add to regular permissions any of.
 <uses-permission android:name="android.permission.health.READ_WHEELCHAIR_PUSHES"/>
 <uses-permission android:name="android.permission.health.WRITE_WHEELCHAIR_PUSHES"/>
 ```
-Inside your MainActivity declaration add a reference to `health_permissions` and an intent filter for the Health Connect permissions action
+Below your MainActivity declaration, add the following intent filters for when the user clicks the privacy policy link:
 ```
-<activity android:name=".MainActivity">
-    <meta-data android:name="health_permissions" android:resource="@array/health_permissions" />
+        <!-- For supported versions through Android 13, create an activity to show the rationale
+     of Health Connect permissions once users click the privacy policy link. -->
+        <activity
+            android:name=".PermissionsRationaleActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE"/>
+            </intent-filter>
+        </activity>
 
-    <intent-filter>
-        <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
-    </intent-filter>
-</activity>
+        <!-- For versions starting Android 14, create an activity alias to show the rationale
+             of Health Connect permissions once users click the privacy policy link. -->
+        <activity-alias
+            android:name="AndroidURationaleActivity"
+            android:exported="true"
+            android:targetActivity=".PermissionsRationaleActivity"
+            android:permission="android.permission.START_VIEW_PERMISSION_USAGE">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW_PERMISSION_USAGE" />
+                <category android:name="android.intent.category.HEALTH_PERMISSIONS" />
+            </intent-filter>
+        </activity-alias>
 ```
 
-Health connect developer toolbox: http://goo.gle/health-connect-toolbox
+You will then need to create the PermissionsRationaleActivity class to open privacy policy link.
+Kotlin:
+```
+package [your_package_name]
+
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
+import android.os.Bundle
+
+class PermissionsRationaleActivity : Activity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("[your_privacy_policy_url]]")))
+    }
+}
+```
+
+Java:
+```
+package [your_package_name];
+
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+
+public class PermissionsRationaleActivity extends Activity {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("[your_privacy_policy_url]")));
+    }
+}
+```
+
+Note: For your app to work on Android 14 you will need to ensure your MainActivity class extends `FlutterFragmentActivity` instead of `FlutterActivity`
+
+Health Connect developer toolbox: http://goo.gle/health-connect-toolbox
 
 ## Usage
 ```dart
@@ -167,7 +220,6 @@ class _MyAppState extends State<MyApp> {
   //   HealthConnectDataType.RestingHeartRate,
   //   HealthConnectDataType.SexualActivity,
   //   HealthConnectDataType.SleepSession,
-  //   HealthConnectDataType.SleepStage,
   //   HealthConnectDataType.Speed,
   //   HealthConnectDataType.StepsCadence,
   //   HealthConnectDataType.Steps,
@@ -180,10 +232,19 @@ class _MyAppState extends State<MyApp> {
   List<HealthConnectDataType> types = [
     HealthConnectDataType.Steps,
     HealthConnectDataType.ExerciseSession,
+    HealthConnectDataType.TotalCaloriesBurned,
     // HealthConnectDataType.HeartRate,
     // HealthConnectDataType.SleepSession,
     // HealthConnectDataType.OxygenSaturation,
     // HealthConnectDataType.RespiratoryRate,
+  ];
+
+  List<HealthConnectDataType> readOnlyTypes = [
+    HealthConnectDataType.Height,
+  ];
+
+  List<HealthConnectDataType> writeOnlyTypes = [
+    HealthConnectDataType.Weight,
   ];
 
   bool readOnly = true;
@@ -245,7 +306,8 @@ class _MyAppState extends State<MyApp> {
               onPressed: () async {
                 var result = await HealthConnectFactory.hasPermissions(
                   types,
-                  readOnly: readOnly,
+                  readOnlyTypes: readOnlyTypes,
+                  writeOnlyTypes: writeOnlyTypes,
                 );
                 resultText = 'hasPermissions: $result';
                 _updateResultText();
@@ -281,7 +343,8 @@ class _MyAppState extends State<MyApp> {
                 try {
                   var result = await HealthConnectFactory.requestPermissions(
                     types,
-                    //readOnly: readOnly,
+                    readOnlyTypes: readOnlyTypes,
+                    writeOnlyTypes: writeOnlyTypes,
                   );
                   resultText = 'requestPermissions: $result';
                 } catch (e) {
@@ -299,7 +362,11 @@ class _MyAppState extends State<MyApp> {
                 try {
                   final requests = <Future>[];
                   Map<String, dynamic> typePoints = {};
-                  for (var type in types) {
+                  List<HealthConnectDataType> readTypes = [
+                    ...types,
+                    ...readOnlyTypes
+                  ];
+                  for (var type in readTypes) {
                     requests.add(HealthConnectFactory.getRecords(
                       type: type,
                       startTime: startTime,
@@ -331,6 +398,16 @@ class _MyAppState extends State<MyApp> {
                   endTime: endTime,
                   exerciseType: ExerciseType.walking,
                 );
+                TotalCaloriesBurnedRecord totalCaloriesBurned =
+                TotalCaloriesBurnedRecord(
+                  startTime: startTime,
+                  endTime: endTime,
+                  energy: const Energy.kilocalories(5),
+                );
+                WeightRecord weightRecord = WeightRecord(
+                  time: startTime,
+                  weight: const Mass.kilograms(60),
+                );
                 try {
                   final requests = <Future>[];
                   Map<String, dynamic> typePoints = {};
@@ -339,7 +416,6 @@ class _MyAppState extends State<MyApp> {
                     data: [stepsRecord],
                   ).then((value) => typePoints.addAll(
                       {HealthConnectDataType.Steps.name: stepsRecord})));
-
                   requests.add(HealthConnectFactory.writeData(
                     type: HealthConnectDataType.ExerciseSession,
                     data: [exerciseSessionRecord],
@@ -347,6 +423,18 @@ class _MyAppState extends State<MyApp> {
                     HealthConnectDataType.ExerciseSession.name:
                     exerciseSessionRecord
                   })));
+                  requests.add(HealthConnectFactory.writeData(
+                    type: HealthConnectDataType.TotalCaloriesBurned,
+                    data: [totalCaloriesBurned],
+                  ).then((value) => typePoints.addAll({
+                    HealthConnectDataType.TotalCaloriesBurned.name:
+                    totalCaloriesBurned
+                  })));
+                  requests.add(HealthConnectFactory.writeData(
+                    type: HealthConnectDataType.Weight,
+                    data: [weightRecord],
+                  ).then((value) => typePoints.addAll(
+                      {HealthConnectDataType.Weight.name: weightRecord})));
                   await Future.wait(requests);
                   resultText = '$typePoints';
                 } catch (e, s) {

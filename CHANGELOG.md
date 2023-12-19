@@ -1,8 +1,10 @@
-## [2.1.1]
+## [2.2.0]
 * Upgrade Health Connect API to `1.1.0-alpha6`
 * Update Gradle plugin to 8.1.2
 * Add type filtering for getRecords
+* Modify requestPermissions and hasPermissions to allow for read and write only permissions
 * Fixed various mapping issues
+* Updated README.md
 ## [2.0.0]
 * Added missing data types
 * Added Models for each data type
