@@ -151,6 +151,17 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                 }
             }
 
+            "revokeAllPermissions" -> {
+                scope.launch {
+                    try {
+                        client.permissionController.revokeAllPermissions()
+                        result.success(true)
+                    } catch (e: Throwable) {
+                        result.error("REVOKE_ALL_PERMISSIONS_FAIL", e.localizedMessage, e)
+                    }
+                }
+            }
+
             "getChanges" -> {
                 val token = call.argument<String>("token") ?: ""
                 scope.launch {

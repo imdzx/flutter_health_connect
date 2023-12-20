@@ -182,6 +182,20 @@ class _MyAppState extends State<MyApp> {
             ),
             ElevatedButton(
               onPressed: () async {
+                try {
+                  // This will only apply after the app has been fully closed.
+                  var result =
+                      await HealthConnectFactory.revokeAllPermissions();
+                  resultText = 'revokeAllPermissions: $result';
+                } catch (e) {
+                  resultText = e.toString();
+                }
+                _updateResultText();
+              },
+              child: const Text('Revoke All Permissions'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
                 var startTime =
                     DateTime.now().subtract(const Duration(days: 4));
                 var endTime = DateTime.now();

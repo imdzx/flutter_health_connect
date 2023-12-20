@@ -125,6 +125,7 @@ Below your MainActivity declaration, add the following intent filters for when t
 ```
 
 You will then need to create the PermissionsRationaleActivity class to open privacy policy link.
+
 Kotlin:
 ```
 package [your_package_name]
@@ -137,7 +138,7 @@ import android.os.Bundle
 class PermissionsRationaleActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("[your_privacy_policy_url]]")))
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("[your_privacy_policy_url]")))
     }
 }
 ```
@@ -162,7 +163,14 @@ public class PermissionsRationaleActivity extends Activity {
 
 Note: For your app to work on Android 14 you will need to ensure your MainActivity class extends `FlutterFragmentActivity` instead of `FlutterActivity`
 
+If you are using ProGuard, you will need to add the following to your proguard-rules file:
+```
+-keep public class androidx.health.** { *; }
+-dontwarn androidx.health.**
+```
+
 Health Connect developer toolbox: http://goo.gle/health-connect-toolbox
+
 
 ## Usage
 ```dart
@@ -353,6 +361,20 @@ class _MyAppState extends State<MyApp> {
                 _updateResultText();
               },
               child: const Text('Request Permissions'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                try {
+                  // This will only apply after the app has been fully closed.
+                  var result =
+                  await HealthConnectFactory.revokeAllPermissions();
+                  resultText = 'revokeAllPermissions: $result';
+                } catch (e) {
+                  resultText = e.toString();
+                }
+                _updateResultText();
+              },
+              child: const Text('Revoke All Permissions'),
             ),
             ElevatedButton(
               onPressed: () async {

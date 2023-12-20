@@ -45,6 +45,11 @@ class HealthConnectFactory {
     });
   }
 
+  // This will only apply after the app has been fully closed.
+  static Future<bool> revokeAllPermissions() async {
+    return await _channel.invokeMethod('revokeAllPermissions');
+  }
+
   static Future<Map<String, dynamic>> getChanges(String token) async {
     return await _channel.invokeMethod('getChanges', {
       'token': token,
