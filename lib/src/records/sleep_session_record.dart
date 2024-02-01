@@ -107,12 +107,12 @@ class SleepSessionRecord extends IntervalRecord {
 class SleepStage {
   DateTime startTime;
   DateTime endTime;
-  SleepStageType type;
+  SleepStageType stage;
 
   SleepStage({
     required this.startTime,
     required this.endTime,
-    required this.type,
+    required this.stage,
   }) : assert(startTime.isBefore(endTime));
 
   @override
@@ -121,16 +121,16 @@ class SleepStage {
       other is SleepStage &&
           startTime == other.startTime &&
           endTime == other.endTime &&
-          type == other.type;
+          stage == other.stage;
 
   @override
-  int get hashCode => startTime.hashCode ^ endTime.hashCode ^ type.hashCode;
+  int get hashCode => startTime.hashCode ^ endTime.hashCode ^ stage.hashCode;
 
   Map<String, dynamic> toMap() {
     return {
       'startTime': startTime.toUtc().toIso8601String(),
       'endTime': endTime.toUtc().toIso8601String(),
-      'type': type.index,
+      'stage': stage.index,
     };
   }
 
@@ -138,16 +138,16 @@ class SleepStage {
     return SleepStage(
       startTime: DateTime.parse(map['startTime']),
       endTime: DateTime.parse(map['endTime']),
-      type: (map['type'] != null &&
-              map['type'] as int < SleepStageType.values.length)
-          ? SleepStageType.values[map['type'] as int]
+      stage: (map['stage'] != null &&
+              map['stage'] as int < SleepStageType.values.length)
+          ? SleepStageType.values[map['stage'] as int]
           : SleepStageType.unknown,
     );
   }
 
   @override
   String toString() {
-    return 'SleepStage{startTime: $startTime, endTime: $endTime, type: $type}';
+    return 'SleepStage{startTime: $startTime, endTime: $endTime, stage: $stage}';
   }
 }
 
