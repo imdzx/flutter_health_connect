@@ -130,7 +130,7 @@ class SleepStage {
     return {
       'startTime': startTime.toUtc().toIso8601String(),
       'endTime': endTime.toUtc().toIso8601String(),
-      'type': type.index,
+      'stage': type.index,
     };
   }
 
@@ -138,9 +138,9 @@ class SleepStage {
     return SleepStage(
       startTime: DateTime.parse(map['startTime']),
       endTime: DateTime.parse(map['endTime']),
-      type: (map['type'] != null &&
-              map['type'] as int < SleepStageType.values.length)
-          ? SleepStageType.values[map['type'] as int]
+      type: (map['stage'] != null &&
+              map['stage'] as int < SleepStageType.values.length)
+          ? SleepStageType.values[map['stage'] as int]
           : SleepStageType.unknown,
     );
   }
