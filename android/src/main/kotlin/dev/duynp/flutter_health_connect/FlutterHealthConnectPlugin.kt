@@ -4,8 +4,10 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import androidx.activity.ComponentActivity
+import androidx.activity.result.ActivityResultLauncher
 import androidx.health.connect.client.HealthConnectClient
-import androidx.health.connect.client.PermissionController.Companion.createRequestPermissionResultContract
+import androidx.health.connect.client.PermissionController
 import androidx.health.connect.client.changes.UpsertionChange
 import androidx.health.connect.client.request.ChangesTokenRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
@@ -42,6 +44,8 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
     private var activity: Activity? = null
     private var context: Context? = null
     private lateinit var scope: CoroutineScope
+    private var healthConnectRequestPermissionsLauncher: ActivityResultLauncher<Set<String>>? = null
+    private var onHealthConnectPermissionCallback = fun (_: Set<String>){}
 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
@@ -50,13 +54,14 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
         context = flutterPluginBinding.applicationContext
         client = HealthConnectClient.getOrCreate(context!!)
         replyMapper.registerModule(JavaTimeModule())
-        replyMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        replyMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
     }
 
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
         scope.cancel()
         channel = null
         activity = null
+        healthConnectRequestPermissionsLauncher = null
     }
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
@@ -65,6 +70,10 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
         }
         binding.addActivityResultListener(this)
         activity = binding.activity
+        val contract = PermissionController.createRequestPermissionResultContract()
+        healthConnectRequestPermissionsLauncher = (activity as ComponentActivity).registerForActivityResult(contract) { granted ->
+            onHealthConnectPermissionCallback(granted)
+        }
     }
 
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
@@ -85,6 +94,8 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
     override fun onMethodCall(call: MethodCall, result: Result) {
         val args = call.arguments?.let { it as? HashMap<*, *> } ?: hashMapOf<String, Any>()
         val requestedTypes = (args["types"] as? ArrayList<*>)?.filterIsInstance<String>()
+        val readTypes = (args["readOnlyTypes"] as? ArrayList<*>)?.filterIsInstance<String>()
+        val writeTypes = (args["writeOnlyTypes"] as? ArrayList<*>)?.filterIsInstance<String>()
         when (call.method) {
 
             "isApiSupported" -> result.success(context?.let { HealthConnectClient.getSdkStatus(it) } != HealthConnectClient.SDK_UNAVAILABLE)
@@ -106,27 +117,53 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
 
             "hasPermissions" -> {
                 scope.launch {
-                    val isReadOnly = call.argument<Boolean>("readOnly") ?: false
-                    val granted = client.permissionController.getGrantedPermissions()
-                    val status =
-                        granted.containsAll(mapTypesToPermissions(requestedTypes, isReadOnly))
-                    result.success(status)
+                    try {
+                        val status = withContext(Dispatchers.IO) {
+                            val granted = client.permissionController.getGrantedPermissions()
+                            granted.containsAll(mapTypesToPermissions(requestedTypes, readTypes, writeTypes))
+                        }
+                        result.success(status)
+                    } catch (e: Throwable) {
+                        result.error("HAS_PERMISSIONS_FAIL", e.localizedMessage, e)
+                    }
                 }
             }
 
             "requestPermissions" -> {
                 try {
                     permissionResult = result
-                    val isReadOnly = call.argument<Boolean>("readOnly") ?: false
                     val allPermissions = mapTypesToPermissions(
                         requestedTypes,
-                        isReadOnly
+                        readTypes,
+                        writeTypes
                     )
-                    val contract = createRequestPermissionResultContract()
-                    val intent = context?.let { contract.createIntent(it, allPermissions) }
-                    activity!!.startActivityForResult(intent, HEALTH_CONNECT_RESULT_CODE)
+                    if( healthConnectRequestPermissionsLauncher == null) {
+                        result.success(false)
+                        return
+                    }
+                    onHealthConnectPermissionCallback = fun (permissionGranted: Set<String>)
+                    {
+                        if (permissionGranted.isEmpty()) {
+                            result.success(false)
+
+                        } else {
+                            result.success(true)
+                        }
+                    }
+                    healthConnectRequestPermissionsLauncher!!.launch(allPermissions)
                 } catch (e: Throwable) {
                     result.error("UNABLE_TO_START_ACTIVITY", e.message, e)
+                }
+            }
+
+            "revokeAllPermissions" -> {
+                scope.launch {
+                    try {
+                        client.permissionController.revokeAllPermissions()
+                        result.success(true)
+                    } catch (e: Throwable) {
+                        result.error("REVOKE_ALL_PERMISSIONS_FAIL", e.localizedMessage, e)
+                    }
                 }
             }
 
@@ -250,12 +287,16 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                                 )
                             )
                             reply.records.forEach {
-                                records.add(
-                                    replyMapper.convertValue(
-                                        it,
-                                        hashMapOf<String, Any?>()::class.java
+                                if (it::class == classType) {
+                                    records.add(
+                                        replyMapper.convertValue(
+                                            it,
+                                            hashMapOf<String, Any?>()::class.java
+                                        )
                                     )
-                                )
+                                } else {
+                                    result.error("GET_RECORDS_FAIL", "Could not retrieve $type", null)
+                                }
                             }
                             result.success(records)
                         } ?: throw Throwable("Unsupported type $type")
@@ -290,11 +331,11 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                                 startTime?.let { Instant.parse(it) } ?: Instant.now()
                                     .minus(1, ChronoUnit.DAYS)
                             val end = endTime?.let { Instant.parse(it) } ?: Instant.now()
-                            val reply = client.deleteRecords(
+                            client.deleteRecords(
                                 recordType = classType,
                                 timeRangeFilter = TimeRangeFilter.between(start, end),
                             )
-                            result.success(reply)
+                            result.success(true)
                         } ?: throw Throwable("Unsupported type $type")
                     } catch (e: Throwable) {
                         result.error("DELETE_RECORDS_FAIL", e.localizedMessage, e)
@@ -305,12 +346,12 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
             "deleteRecordsByIds" -> {
                 scope.launch {
                     val type = call.argument<String>("type") ?: ""
-                    val idList = call.argument<List<String>>("idList") ?: emptyList()
-                    val clientRecordIdsList = call.argument<List<String>>("clientRecordIdsList") ?: emptyList()
+                    val idList: List<String> = call.argument<List<String>>("idList") ?: emptyList()
+                    val clientRecordIdsList: List<String> = call.argument<List<String>>("clientRecordIdsList") ?: emptyList()
                     try {
                         HealthConnectRecordTypeMap[type]?.let { classType ->
-                            val reply = client.deleteRecords(classType, idList, clientRecordIdsList)
-                            result.success(reply)
+                            client.deleteRecords(classType, idList, clientRecordIdsList)
+                            result.success(true)
                         } ?: throw Throwable("Unsupported type $type")
                     } catch (e: Throwable) {
                         result.error("DELETE_RECORDS_FAIL", e.localizedMessage, e)
@@ -326,18 +367,9 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
         if (requestCode == HEALTH_CONNECT_RESULT_CODE) {
-            val result = permissionResult
-            permissionResult = null
             if (resultCode == Activity.RESULT_OK) {
-                if (data != null && result != null) {
-                    scope.launch {
-                        result.success(true)
-                    }
-                    return true
-                }
-            }
-            scope.launch {
-                result?.success(false)
+                permissionResult?.success(true)
+                return true
             }
         }
         return false
@@ -405,8 +437,8 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                         BLOOD_PRESSURE -> BloodPressureRecord(
                             time = Instant.parse(recordMap["time"] as String),
                             zoneOffset = if (recordMap["zoneOffset"] != null) ZoneOffset.ofHours(recordMap["zoneOffset"] as Int) else null,
-                            systolic = Pressure.millimetersOfMercury(recordMap["systolicPressure"] as Double),
-                            diastolic = Pressure.millimetersOfMercury(recordMap["diastolicPressure"] as Double),
+                            systolic = Pressure.millimetersOfMercury(recordMap["systolic"] as Double),
+                            diastolic = Pressure.millimetersOfMercury(recordMap["diastolic"] as Double),
                             bodyPosition = recordMap["bodyPosition"] as Int,
                             measurementLocation = recordMap["measurementLocation"] as Int,
                             metadata = metadata,
@@ -447,7 +479,13 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
                             endTime = Instant.parse(recordMap["endTime"] as String),
                             endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
-                            samples = (recordMap["samples"] as List<*>).filterIsInstance<CyclingPedalingCadenceRecord.Sample>(),
+                            samples = (recordMap["samples"] as List<*>).map {
+                                val sampleMap = it as Map<*, *>
+                                CyclingPedalingCadenceRecord.Sample(
+                                    time = Instant.parse(sampleMap["time"] as String),
+                                    revolutionsPerMinute = (sampleMap["revolutionsPerMinute"] as Double)
+                                )
+                            },
                             metadata = metadata,
                         )
                         DISTANCE -> DistanceRecord(
@@ -475,6 +513,39 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             title = recordMap["title"] as String?,
                             notes = recordMap["notes"] as String?,
                             metadata = metadata,
+                            laps = (recordMap["laps"] as List<*>).map {
+                                val lapMap = it as Map<*, *>
+                                ExerciseLap(
+                                    startTime = Instant.parse(lapMap["startTime"] as String),
+                                    endTime = Instant.parse(lapMap["endTime"] as String),
+                                    length = if (lapMap["length"] != null) Length.meters(lapMap["length"] as Double) else null,
+                                )
+                            },
+                            segments = (recordMap["segments"] as List<*>).map{
+                                val segmentMap = it as Map<*, *>
+                                ExerciseSegment(
+                                    startTime = Instant.parse(segmentMap["startTime"] as String),
+                                    endTime = Instant.parse(segmentMap["endTime"] as String),
+                                    segmentType = segmentMap["segmentType"] as Int,
+                                    repetitions = segmentMap["repetitions"] as Int,
+                                )
+                            },
+                            exerciseRoute = if (recordMap["route"] != null) {
+                                val routeMap = recordMap["route"] as Map<*, *>
+                                ExerciseRoute(
+                                    route = (routeMap["route"] as List<*>).map {
+                                        val routePointMap = it as Map<*, *>
+                                        ExerciseRoute.Location(
+                                            latitude = routePointMap["latitude"] as Double,
+                                            longitude = routePointMap["longitude"] as Double,
+                                            altitude = if (routePointMap["altitude"] != null) Length.meters(routePointMap["altitude"] as Double) else null,
+                                            time = Instant.parse(routePointMap["time"] as String),
+                                            horizontalAccuracy = if (routePointMap["horizontalAccuracy"] != null) Length.meters(routePointMap["horizontalAccuracy"] as Double) else null,
+                                            verticalAccuracy = if (routePointMap["verticalAccuracy"] != null) Length.meters(routePointMap["verticalAccuracy"] as Double) else null,
+                                        )
+                                    },
+                                )
+                            } else null,
                         )
                         FLOORS_CLIMBED -> FloorsClimbedRecord(
                             startTime = Instant.parse(recordMap["startTime"] as String),
@@ -489,7 +560,13 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
                             endTime = Instant.parse(recordMap["endTime"] as String),
                             endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
-                            samples = (recordMap["samples"] as List<*>).filterIsInstance<HeartRateRecord.Sample>(),
+                            samples = (recordMap["samples"] as List<*>).map { sample ->
+                                val sampleMap = sample as Map<*, *>
+                                HeartRateRecord.Sample(
+                                    time = Instant.parse(sampleMap["time"] as String),
+                                    beatsPerMinute = ((sampleMap["beatsPerMinute"] as Int).toLong()),
+                                )
+                            },
                             metadata = metadata,
                         )
                         HEART_RATE_VARIABILITY -> HeartRateVariabilityRmssdRecord(
@@ -604,7 +681,13 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
                             endTime = Instant.parse(recordMap["endTime"] as String),
                             endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
-                            samples = (recordMap["samples"] as List<*>).filterIsInstance<PowerRecord.Sample>(),
+                            samples = (recordMap["samples"] as List<*>).map {
+                                val sampleMap = it as Map<*, *>
+                                PowerRecord.Sample(
+                                    time = Instant.parse(sampleMap["time"] as String),
+                                    power = Power.watts(sampleMap["power"] as Double),
+                                )
+                            },
                             metadata = metadata,
                         )
                         RESPIRATORY_RATE -> RespiratoryRateRecord(
@@ -632,14 +715,14 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
                             title = recordMap["title"] as String?,
                             notes = recordMap["notes"] as String?,
-                            metadata = metadata,
-                        )
-                        SLEEP_STAGE -> SleepStageRecord(
-                            startTime = Instant.parse(recordMap["startTime"] as String),
-                            startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
-                            endTime = Instant.parse(recordMap["endTime"] as String),
-                            endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
-                            stage = recordMap["stage"] as Int,
+                            stages = (recordMap["stages"] as List<*>).map {
+                                val stageMap = it as Map<*, *>
+                                SleepSessionRecord.Stage(
+                                    startTime = Instant.parse(stageMap["startTime"] as String),
+                                    endTime = Instant.parse(stageMap["endTime"] as String),
+                                    stage = stageMap["stage"] as Int,
+                                )
+                            },
                             metadata = metadata,
                         )
                         SPEED -> SpeedRecord(
@@ -647,7 +730,13 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
                             endTime = Instant.parse(recordMap["endTime"] as String),
                             endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
-                            samples = (recordMap["samples"] as List<*>).filterIsInstance<SpeedRecord.Sample>(),
+                            samples = (recordMap["samples"] as List<*>).map {
+                                val sampleMap = it as Map<*, *>
+                                SpeedRecord.Sample(
+                                    time = Instant.parse(sampleMap["time"] as String),
+                                    speed = Velocity.metersPerSecond(sampleMap["speed"] as Double),
+                                )
+                            },
                             metadata = metadata,
                         )
                         STEPS_CADENCE -> StepsCadenceRecord(
@@ -655,7 +744,13 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
                             endTime = Instant.parse(recordMap["endTime"] as String),
                             endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
-                            samples = (recordMap["samples"] as List<*>).filterIsInstance<StepsCadenceRecord.Sample>(),
+                            samples = (recordMap["samples"] as List<*>).map {
+                                val sampleMap = it as Map<*, *>
+                                StepsCadenceRecord.Sample(
+                                    time = Instant.parse(sampleMap["time"] as String),
+                                    rate = (sampleMap["rate"] as Double)
+                                )
+                            },
                             metadata = metadata,
                         )
                         STEPS -> StepsRecord(

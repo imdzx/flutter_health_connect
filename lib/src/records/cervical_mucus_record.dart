@@ -1,4 +1,5 @@
 import 'package:flutter_health_connect/src/records/instantaneous_record.dart';
+import 'package:flutter_health_connect/src/utils.dart';
 
 import 'metadata/metadata.dart';
 
@@ -46,7 +47,7 @@ class CervicalMucusRecord extends InstantaneousRecord {
     return CervicalMucusRecord(
       time: DateTime.parse(map['time']),
       zoneOffset: map['zoneOffset'] != null
-          ? Duration(hours: map['zoneOffset'] as int)
+          ? parseTimeZoneOffset(map['zoneOffset'])
           : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       sensation: (map['sensation'] != null &&

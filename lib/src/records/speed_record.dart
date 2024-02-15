@@ -1,5 +1,6 @@
 import 'package:flutter_health_connect/src/records/series_record.dart';
 import 'package:flutter_health_connect/src/units/velocity.dart';
+import 'package:flutter_health_connect/src/utils.dart';
 
 import 'metadata/metadata.dart';
 
@@ -64,13 +65,13 @@ class SpeedRecord extends SeriesRecord<SpeedSample> {
       endTime: DateTime.parse(map['endTime']),
       endZoneOffset: map['endZoneOffset'] == null
           ? null
-          : Duration(hours: map['endZoneOffset'] as int),
+          : parseTimeZoneOffset(map['endZoneOffset']),
       startTime: DateTime.parse(map['startTime']),
       startZoneOffset: map['startZoneOffset'] == null
           ? null
-          : Duration(hours: map['startZoneOffset'] as int),
+          : parseTimeZoneOffset(map['startZoneOffset']),
       samples: (map['samples'] as List<dynamic>)
-          .map((e) => SpeedSample.fromMap(e as Map<String, dynamic>))
+          .map((e) => SpeedSample.fromMap(Map<String, dynamic>.from(e)))
           .toList(),
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
     );

@@ -19,8 +19,10 @@ class Velocity implements Comparable<Velocity> {
 
   double get inMilesPerHour => _get(unit: VelocityUnits.milesPerHour);
 
-  double _get({required VelocityUnits unit}) =>
-      this.unit == unit ? value : value / unit.metersPerSecondPerUnit;
+  double _get({required VelocityUnits unit}) => this.unit == unit
+      ? value
+      : (value * this.unit.metersPerSecondPerUnit) /
+          unit.metersPerSecondPerUnit;
 
   @override
   int compareTo(Velocity other) => unit == other.unit

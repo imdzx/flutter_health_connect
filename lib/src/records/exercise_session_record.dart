@@ -1,7 +1,9 @@
 import 'package:flutter_health_connect/src/records/interval_record.dart';
+import 'package:flutter_health_connect/src/utils.dart';
 
 import 'exercise_lap.dart';
 import 'exercise_route.dart';
+import 'exercise_route_result.dart';
 import 'exercise_segment.dart';
 import 'metadata/metadata.dart';
 
@@ -21,8 +23,7 @@ class ExerciseSessionRecord extends IntervalRecord {
   String? notes;
   List<ExerciseSegment> segments;
   List<ExerciseLap> laps;
-  ExerciseRoute? route;
-  bool hasRoute;
+  ExerciseRouteResult exerciseRouteResult;
 
   ExerciseSessionRecord({
     required this.endTime,
@@ -35,9 +36,9 @@ class ExerciseSessionRecord extends IntervalRecord {
     this.notes,
     this.segments = const [],
     this.laps = const [],
-    this.route,
+    ExerciseRoute? route,
   })  : metadata = metadata ?? Metadata.empty(),
-        hasRoute = route != null {
+        exerciseRouteResult = route != null ? Data(route) : NoData() {
     assert(startTime.isBefore(endTime), "startTime must not be after endTime.");
     if (segments.isNotEmpty) {
       var sortedSegments = segments
@@ -70,9 +71,8 @@ class ExerciseSessionRecord extends IntervalRecord {
       assert(!sortedLaps.last.endTime.isAfter(endTime),
           "laps can not be out of parent time range.");
     }
-    assert(route == null || hasRoute,
-        "hasRoute must be true if the route is not null");
-    if (route != null) {
+    if (exerciseRouteResult.runtimeType == Data &&
+        exerciseRouteResult.exerciseRoute!.route.isNotEmpty) {
       assert(route!.isWithin(startTime, endTime),
           "route can not be out of parent time range.");
     }
@@ -85,14 +85,28 @@ class ExerciseSessionRecord extends IntervalRecord {
           endTime == other.endTime &&
           endZoneOffset == other.endZoneOffset &&
           startTime == other.startTime &&
-          startZoneOffset == other.startZoneOffset;
+          startZoneOffset == other.startZoneOffset &&
+          metadata == other.metadata &&
+          exerciseType == other.exerciseType &&
+          title == other.title &&
+          notes == other.notes &&
+          segments == other.segments &&
+          laps == other.laps &&
+          exerciseRouteResult == other.exerciseRouteResult;
 
   @override
   int get hashCode =>
       endTime.hashCode ^
       endZoneOffset.hashCode ^
       startTime.hashCode ^
-      startZoneOffset.hashCode;
+      startZoneOffset.hashCode ^
+      metadata.hashCode ^
+      exerciseType.hashCode ^
+      title.hashCode ^
+      notes.hashCode ^
+      segments.hashCode ^
+      laps.hashCode ^
+      exerciseRouteResult.hashCode;
 
   @override
   Map<String, dynamic> toMap() {
@@ -107,8 +121,9 @@ class ExerciseSessionRecord extends IntervalRecord {
       'notes': notes,
       'segments': segments.map((e) => e.toMap()).toList(),
       'laps': laps.map((e) => e.toMap()).toList(),
-      'route': route?.toMap(),
-      'hasRoute': hasRoute,
+      'route': exerciseRouteResult is Data
+          ? (exerciseRouteResult as Data).exerciseRoute!.toMap()
+          : null,
     };
   }
 
@@ -117,11 +132,11 @@ class ExerciseSessionRecord extends IntervalRecord {
     return ExerciseSessionRecord(
       startTime: DateTime.parse(map['startTime']),
       startZoneOffset: map['startZoneOffset'] != null
-          ? Duration(hours: map['startZoneOffset'] as int)
+          ? parseTimeZoneOffset(map['startZoneOffset'])
           : null,
       endTime: DateTime.parse(map['endTime']),
       endZoneOffset: map['endZoneOffset'] != null
-          ? Duration(hours: map['endZoneOffset'] as int)
+          ? parseTimeZoneOffset(map['endZoneOffset'])
           : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       exerciseType: ExerciseType.fromValue(map['exerciseType']),
@@ -137,7 +152,7 @@ class ExerciseSessionRecord extends IntervalRecord {
 
   @override
   String toString() {
-    return 'ExerciseSessionRecord{endTime: $endTime, endZoneOffset: $endZoneOffset, startTime: $startTime, startZoneOffset: $startZoneOffset, metadata: $metadata, exerciseType: $exerciseType, title: $title, notes: $notes, segments: $segments, laps: $laps, route: $route, hasRoute: $hasRoute}';
+    return 'ExerciseSessionRecord{endTime: $endTime, endZoneOffset: $endZoneOffset, startTime: $startTime, startZoneOffset: $startZoneOffset, metadata: $metadata, exerciseType: $exerciseType, title: $title, notes: $notes, segments: $segments, laps: $laps, exerciseRouteResult: $exerciseRouteResult}';
   }
 }
 

@@ -1,5 +1,6 @@
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 import 'package:flutter_health_connect/src/records/series_record.dart';
+import 'package:flutter_health_connect/src/utils.dart';
 
 class HeartRateRecord extends SeriesRecord<HeartRateSample> {
   @override
@@ -64,15 +65,15 @@ class HeartRateRecord extends SeriesRecord<HeartRateSample> {
       endTime: DateTime.parse(map['endTime']),
       endZoneOffset: map['endZoneOffset'] == null
           ? null
-          : Duration(hours: map['endZoneOffset'] as int),
+          : parseTimeZoneOffset(map['endZoneOffset']),
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       samples: (map['samples'] as List<dynamic>)
-          .map((e) => HeartRateSample.fromMap(e as Map<String, dynamic>))
+          .map((e) => HeartRateSample.fromMap(Map<String, dynamic>.from(e)))
           .toList(),
       startTime: DateTime.parse(map['startTime']),
       startZoneOffset: map['startZoneOffset'] == null
           ? null
-          : Duration(hours: map['startZoneOffset'] as int),
+          : parseTimeZoneOffset(map['startZoneOffset']),
     );
   }
 

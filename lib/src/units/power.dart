@@ -13,8 +13,9 @@ class Power implements Comparable<Power> {
 
   double get inKilocaloriesPerDay => _get(unit: PowerUnit.kilocaloriesPerDay);
 
-  double _get({required PowerUnit unit}) =>
-      this.unit == unit ? value : value / unit.wattsPerUnit;
+  double _get({required PowerUnit unit}) => this.unit == unit
+      ? value
+      : (value * this.unit.wattsPerUnit) / unit.wattsPerUnit;
 
   @override
   int compareTo(Power other) => unit == other.unit

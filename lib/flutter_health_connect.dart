@@ -1,7 +1,6 @@
 library flutter_health_connect;
 
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_health_connect/src/records.dart';
