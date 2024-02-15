@@ -117,10 +117,15 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
 
             "hasPermissions" -> {
                 scope.launch {
-                    val granted = client.permissionController.getGrantedPermissions()
-                    val status =
-                        granted.containsAll(mapTypesToPermissions(requestedTypes, readTypes, writeTypes))
-                    result.success(status)
+                    try {
+                        val status = withContext(Dispatchers.IO) {
+                            val granted = client.permissionController.getGrantedPermissions()
+                            granted.containsAll(mapTypesToPermissions(requestedTypes, readTypes, writeTypes))
+                        }
+                        result.success(status)
+                    } catch (e: Throwable) {
+                        result.error("HAS_PERMISSIONS_FAIL", e.localizedMessage, e)
+                    }
                 }
             }
 
