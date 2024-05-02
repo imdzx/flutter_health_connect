@@ -1,6 +1,7 @@
 import 'package:flutter_health_connect/src/records/instantaneous_record.dart';
 import 'package:flutter_health_connect/src/records/meal_type.dart';
 import 'package:flutter_health_connect/src/units/blood_glucose.dart';
+import 'package:flutter_health_connect/src/utils.dart';
 
 import 'metadata/metadata.dart';
 
@@ -24,12 +25,12 @@ class BloodGlucoseRecord extends InstantaneousRecord {
       this.relationToMeal = RelationToMeal.unknown,
       this.mealType = MealType.unknown,
       metadata})
-      : assert(level.value <= _maxLevel.value),
-        assert(level.value >= _minLevel.value),
+      : assert(level.inMillimolesPerLiter <= _maxLevel.inMillimolesPerLiter),
+        assert(level.inMillimolesPerLiter >= _minLevel.inMillimolesPerLiter),
         metadata = metadata ?? Metadata.empty();
 
   static const BloodGlucose _maxLevel = BloodGlucose.millimolesPerLiter(50.0);
-  static const BloodGlucose _minLevel = BloodGlucose.milligramsPerDeciliter(0);
+  static const BloodGlucose _minLevel = BloodGlucose.millimolesPerLiter(0);
 
   @override
   bool operator ==(Object other) =>
@@ -57,7 +58,7 @@ class BloodGlucoseRecord extends InstantaneousRecord {
       'time': time.toUtc().toIso8601String(),
       'zoneOffset': zoneOffset?.inHours,
       'metadata': metadata.toMap(),
-      'level': level.inMilligramsPerDeciliter,
+      'level': level.inMillimolesPerLiter,
       'specimenSource': specimenSource.index,
       'relationToMeal': relationToMeal.index,
       'mealType': mealType.index,
@@ -69,7 +70,7 @@ class BloodGlucoseRecord extends InstantaneousRecord {
     return BloodGlucoseRecord(
       time: DateTime.parse(map['time']),
       zoneOffset: map['zoneOffset'] != null
-          ? Duration(hours: map['zoneOffset'] as int)
+          ? parseTimeZoneOffset(map['zoneOffset'])
           : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       level: BloodGlucose.fromMap(Map<String, dynamic>.from(map['level'])),

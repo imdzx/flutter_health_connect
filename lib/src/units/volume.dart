@@ -17,8 +17,9 @@ class Volume implements Comparable<Volume> {
 
   double get inFluidOuncesUS => _get(VolumeUnit.fluidOuncesUS);
 
-  double _get(VolumeUnit unit) =>
-      this.unit == unit ? value : value / unit.litersPerUnit;
+  double _get(VolumeUnit unit) => this.unit == unit
+      ? value
+      : (value * this.unit.litersPerUnit) / unit.litersPerUnit;
 
   @override
   int compareTo(other) => unit == other.unit

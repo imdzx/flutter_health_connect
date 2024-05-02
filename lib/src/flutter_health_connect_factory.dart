@@ -17,22 +17,37 @@ class HealthConnectFactory {
 
   static Future<bool> hasPermissions(
     List<HealthConnectDataType> types, {
-    bool readOnly = false,
+    @Deprecated('Use readOnlyTypes instead') bool readOnly = false,
+    List<HealthConnectDataType>? readOnlyTypes,
+    List<HealthConnectDataType>? writeOnlyTypes,
   }) async {
     return await _channel.invokeMethod('hasPermissions', {
-      'types': types.map((e) => e.name).toList(),
-      'readOnly': readOnly,
+      'types': readOnly ? null : types.map((e) => e.name).toList(),
+      'readOnlyTypes': readOnly
+          ? types.map((e) => e.name).toList()
+          : readOnlyTypes?.map((e) => e.name).toList(),
+      'writeOnlyTypes': writeOnlyTypes?.map((e) => e.name).toList(),
     });
   }
 
   static Future<bool> requestPermissions(
     List<HealthConnectDataType> types, {
-    bool readOnly = false,
+    @Deprecated('Use readOnlyTypes instead') bool readOnly = false,
+    List<HealthConnectDataType>? readOnlyTypes,
+    List<HealthConnectDataType>? writeOnlyTypes,
   }) async {
     return await _channel.invokeMethod('requestPermissions', {
-      'types': types.map((e) => e.name).toList(),
-      'readOnly': readOnly,
+      'types': readOnly ? null : types.map((e) => e.name).toList(),
+      'readOnlyTypes': readOnly
+          ? types.map((e) => e.name).toList()
+          : readOnlyTypes?.map((e) => e.name).toList(),
+      'writeOnlyTypes': writeOnlyTypes?.map((e) => e.name).toList(),
     });
+  }
+
+  // This will only apply after the app has been fully closed.
+  static Future<bool> revokeAllPermissions() async {
+    return await _channel.invokeMethod('revokeAllPermissions');
   }
 
   static Future<Map<String, dynamic>> getChanges(String token) async {
@@ -166,8 +181,6 @@ class HealthConnectFactory {
         return SexualActivityRecord.fromMap(map);
       case HealthConnectDataType.SleepSession:
         return SleepSessionRecord.fromMap(map);
-      case HealthConnectDataType.SleepStage:
-        return SleepStageRecord.fromMap(map);
       case HealthConnectDataType.Speed:
         return SpeedRecord.fromMap(map);
       case HealthConnectDataType.StepsCadence:

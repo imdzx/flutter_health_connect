@@ -21,8 +21,9 @@ class Energy implements Comparable<Energy> {
 
   double get inKilojoules => _get(unit: EnergyUnit.kilojoules);
 
-  double _get({required EnergyUnit unit}) =>
-      this.unit == unit ? value : value / unit.caloriesPerUnit;
+  double _get({required EnergyUnit unit}) => this.unit == unit
+      ? value
+      : (value * this.unit.caloriesPerUnit) / unit.caloriesPerUnit;
 
   @override
   int compareTo(Energy other) => unit == other.unit

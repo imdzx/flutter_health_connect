@@ -1,5 +1,6 @@
 import 'package:flutter_health_connect/src/records/interval_record.dart';
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
+import 'package:flutter_health_connect/src/utils.dart';
 
 class FloorsClimbedRecord extends IntervalRecord {
   @override
@@ -22,7 +23,7 @@ class FloorsClimbedRecord extends IntervalRecord {
     this.startZoneOffset,
     required this.floors,
   })  : metadata = metadata ?? Metadata.empty(),
-        assert(startTime.isBefore(endTime),
+        assert(!startTime.isAfter(endTime),
             "startTime must not be after endTime."),
         assert(floors >= _minFloors && floors <= _maxFloors);
 
@@ -67,12 +68,12 @@ class FloorsClimbedRecord extends IntervalRecord {
       endTime: DateTime.parse(map['endTime']),
       endZoneOffset: map['endZoneOffset'] == null
           ? null
-          : Duration(hours: map['endZoneOffset'] as int),
+          : parseTimeZoneOffset(map['endZoneOffset']),
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       startTime: DateTime.parse(map['startTime']),
       startZoneOffset: map['startZoneOffset'] == null
           ? null
-          : Duration(hours: map['startZoneOffset'] as int),
+          : parseTimeZoneOffset(map['startZoneOffset']),
       floors: map['floors'] as double,
     );
   }

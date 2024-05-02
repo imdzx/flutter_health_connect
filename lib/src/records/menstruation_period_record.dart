@@ -1,5 +1,6 @@
 import 'package:flutter_health_connect/src/records/interval_record.dart';
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
+import 'package:flutter_health_connect/src/utils.dart';
 
 class MenstruationPeriodRecord extends IntervalRecord {
   @override
@@ -20,7 +21,7 @@ class MenstruationPeriodRecord extends IntervalRecord {
     required this.startTime,
     this.startZoneOffset,
   })  : metadata = metadata ?? Metadata.empty(),
-        assert(startTime.isBefore(endTime),
+        assert(!startTime.isAfter(endTime),
             "startTime must not be after endTime."),
         assert(endTime.difference(startTime) <= maxDuration,
             "Period must not exceed 31 days.");
@@ -59,14 +60,14 @@ class MenstruationPeriodRecord extends IntervalRecord {
   @override
   factory MenstruationPeriodRecord.fromMap(Map<String, dynamic> map) {
     return MenstruationPeriodRecord(
-      endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime']),
+      endTime: DateTime.parse(map['endTime']),
       endZoneOffset: map['endZoneOffset'] != null
-          ? Duration(hours: map['endZoneOffset'] as int)
+          ? parseTimeZoneOffset(map['endZoneOffset'])
           : null,
       metadata: Metadata.fromMap(map['metadata']),
-      startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime']),
+      startTime: DateTime.parse(map['startTime']),
       startZoneOffset: map['startZoneOffset'] != null
-          ? Duration(hours: map['startZoneOffset'] as int)
+          ? parseTimeZoneOffset(map['startZoneOffset'])
           : null,
     );
   }

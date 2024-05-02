@@ -34,7 +34,6 @@ const val RESPIRATORY_RATE = "RespiratoryRate"
 const val RESTING_HEART_RATE = "RestingHeartRate"
 const val SEXUAL_ACTIVITY = "SexualActivity"
 const val SLEEP_SESSION = "SleepSession"
-const val SLEEP_STAGE = "SleepStage"
 const val SPEED = "Speed"
 const val STEPS_CADENCE = "StepsCadence"
 const val STEPS = "Steps"
@@ -75,7 +74,6 @@ val HealthConnectRecordTypeMap = hashMapOf(
     RESTING_HEART_RATE to RestingHeartRateRecord::class,
     SEXUAL_ACTIVITY to SexualActivityRecord::class,
     SLEEP_SESSION to SleepSessionRecord::class,
-    SLEEP_STAGE to SleepStageRecord::class,
     SPEED to SpeedRecord::class,
     STEPS_CADENCE to StepsCadenceRecord::class,
     STEPS to StepsRecord::class,
@@ -85,21 +83,34 @@ val HealthConnectRecordTypeMap = hashMapOf(
     WHEELCHAIR_PUSHES to WheelchairPushesRecord::class,
 )
 const val HEALTH_CONNECT_RESULT_CODE = 16969
-const val MAX_LENGTH = 9999999
+const val MAX_LENGTH = 5000
 
 fun mapTypesToPermissions(
-    types: List<String>?,
-    readOnly: Boolean
+    bothTypes: List<String>?,
+    readTypes: List<String>?,
+    writeTypes: List<String>?
 ): MutableSet<String
         > {
     val permissions = mutableSetOf<String>()
-    if (types != null) {
-        for (item: String in types) {
+    if (bothTypes != null) {
+        for (item: String in bothTypes) {
             HealthConnectRecordTypeMap[item]?.let { classType ->
-                if (!readOnly) {
-                    permissions.add(HealthPermission.getWritePermission(classType))
-                }
+                permissions.add(HealthPermission.getWritePermission(classType))
                 permissions.add(HealthPermission.getReadPermission(classType))
+            }
+        }
+    }
+    if (readTypes != null) {
+        for (item: String in readTypes) {
+            HealthConnectRecordTypeMap[item]?.let { classType ->
+                permissions.add(HealthPermission.getReadPermission(classType))
+            }
+        }
+    }
+    if (writeTypes != null) {
+        for (item: String in writeTypes) {
+            HealthConnectRecordTypeMap[item]?.let { classType ->
+                permissions.add(HealthPermission.getWritePermission(classType))
             }
         }
     }

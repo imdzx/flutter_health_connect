@@ -1,5 +1,6 @@
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 import 'package:flutter_health_connect/src/units/energy.dart';
+import 'package:flutter_health_connect/src/utils.dart';
 
 import 'interval_record.dart';
 
@@ -25,7 +26,7 @@ class ActiveCaloriesBurnedRecord extends IntervalRecord {
       metadata})
       : assert(energy.value >= 0, 'Energy must be positive'),
         assert(
-            startTime.isBefore(endTime), 'Start time must be before end time'),
+            !startTime.isAfter(endTime), 'Start time must be before end time'),
         assert(energy.value <= maxEnergy.value,
             'Energy must be less than $maxEnergy'),
         metadata = metadata ?? Metadata.empty();
@@ -69,11 +70,11 @@ class ActiveCaloriesBurnedRecord extends IntervalRecord {
     return ActiveCaloriesBurnedRecord(
         startTime: DateTime.parse(map['startTime']),
         startZoneOffset: map['startZoneOffset'] != null
-            ? Duration(hours: map['startZoneOffset'] as int)
+            ? parseTimeZoneOffset(map['startZoneOffset'])
             : null,
         endTime: DateTime.parse(map['endTime']),
         endZoneOffset: map['endZoneOffset'] != null
-            ? Duration(hours: map['endZoneOffset'] as int)
+            ? parseTimeZoneOffset(map['endZoneOffset'])
             : null,
         energy: Energy.fromMap(Map<String, dynamic>.from(map['energy'])),
         metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])));

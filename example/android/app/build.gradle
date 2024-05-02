@@ -26,8 +26,10 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion 34
+    compileSdk 34
     ndkVersion flutter.ndkVersion
+
+    namespace = "dev.duynp.flutter_health_connect_example"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

@@ -24,8 +24,9 @@ class Length implements Comparable<Length> {
 
   double get inInches => _get(unit: LengthUnit.inches);
 
-  double _get({required LengthUnit unit}) =>
-      this.unit == unit ? value : value / unit.metersPerUnit;
+  double _get({required LengthUnit unit}) => this.unit == unit
+      ? value
+      : (value * this.unit.metersPerUnit) / unit.metersPerUnit;
 
   @override
   int compareTo(Length other) => unit == other.unit

@@ -9,7 +9,7 @@ class ExerciseLap {
     required this.startTime,
     required this.endTime,
     this.length,
-  })  : assert(startTime.isBefore(endTime),
+  })  : assert(!startTime.isAfter(endTime),
             "startTime must not be after endTime."),
         assert(
             length == null ||
@@ -44,7 +44,7 @@ class ExerciseLap {
       startTime: DateTime.parse(map['startTime']),
       endTime: DateTime.parse(map['endTime']),
       length: map['length'] != null
-          ? Length.fromMap(Map<String, dynamic>.from(map['distance']))
+          ? Length.fromMap(Map<String, dynamic>.from(map['length']))
           : null,
     );
   }

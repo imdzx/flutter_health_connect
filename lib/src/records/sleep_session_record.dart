@@ -1,4 +1,5 @@
 import 'package:flutter_health_connect/src/records/interval_record.dart';
+import 'package:flutter_health_connect/src/utils.dart';
 
 import 'metadata/metadata.dart';
 
@@ -27,12 +28,12 @@ class SleepSessionRecord extends IntervalRecord {
     this.notes,
     this.stages = const [],
   })  : metadata = metadata ?? Metadata.empty(),
-        assert(startTime.isBefore(endTime)) {
+        assert(!startTime.isAfter(endTime)) {
     if (stages.isNotEmpty) {
       List<SleepStage> sortedStages = stages
         ..sort((a, b) => a.startTime.compareTo(b.startTime));
       for (int i = 0; i < sortedStages.length - 1; i++) {
-        assert(sortedStages[i].endTime.isAfter(sortedStages[i + 1].startTime));
+        assert(!sortedStages[i].endTime.isAfter(sortedStages[i + 1].startTime));
       }
       assert(!sortedStages.first.startTime.isBefore(startTime));
       assert(!sortedStages.last.endTime.isAfter(endTime));
@@ -82,17 +83,18 @@ class SleepSessionRecord extends IntervalRecord {
     return SleepSessionRecord(
       startTime: DateTime.parse(map['startTime']),
       startZoneOffset: map['startZoneOffset'] != null
-          ? Duration(hours: map['startZoneOffset'] as int)
+          ? parseTimeZoneOffset(map['startZoneOffset'])
           : null,
       endTime: DateTime.parse(map['endTime']),
       endZoneOffset: map['endZoneOffset'] != null
-          ? Duration(hours: map['endZoneOffset'] as int)
+          ? parseTimeZoneOffset(map['endZoneOffset'])
           : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       title: map['title'] as String?,
       notes: map['notes'] as String?,
-      stages:
-          (map['stages'] as List).map((e) => SleepStage.fromMap(e)).toList(),
+      stages: (map['stages'] as List)
+          .map((e) => SleepStage.fromMap(Map<String, dynamic>.from(e)))
+          .toList(),
     );
   }
 
@@ -105,13 +107,13 @@ class SleepSessionRecord extends IntervalRecord {
 class SleepStage {
   DateTime startTime;
   DateTime endTime;
-  SleepStageType type;
+  SleepStageType stage;
 
   SleepStage({
     required this.startTime,
     required this.endTime,
-    required this.type,
-  }) : assert(startTime.isBefore(endTime));
+    required this.stage,
+  }) : assert(!startTime.isAfter(endTime));
 
   @override
   bool operator ==(Object other) =>
@@ -119,33 +121,33 @@ class SleepStage {
       other is SleepStage &&
           startTime == other.startTime &&
           endTime == other.endTime &&
-          type == other.type;
+          stage == other.stage;
 
   @override
-  int get hashCode => startTime.hashCode ^ endTime.hashCode ^ type.hashCode;
+  int get hashCode => startTime.hashCode ^ endTime.hashCode ^ stage.hashCode;
 
   Map<String, dynamic> toMap() {
     return {
       'startTime': startTime.toUtc().toIso8601String(),
       'endTime': endTime.toUtc().toIso8601String(),
-      'type': type.index,
+      'stage': stage.index,
     };
   }
 
   static SleepStage fromMap(Map<String, dynamic> map) {
     return SleepStage(
-      startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime']),
-      endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime']),
-      type: (map['type'] != null &&
-              map['type'] as int < SleepStageType.values.length)
-          ? SleepStageType.values[map['type'] as int]
+      startTime: DateTime.parse(map['startTime']),
+      endTime: DateTime.parse(map['endTime']),
+      stage: (map['stage'] != null &&
+              map['stage'] as int < SleepStageType.values.length)
+          ? SleepStageType.values[map['stage'] as int]
           : SleepStageType.unknown,
     );
   }
 
   @override
   String toString() {
-    return 'SleepStage{startTime: $startTime, endTime: $endTime, type: $type}';
+    return 'SleepStage{startTime: $startTime, endTime: $endTime, stage: $stage}';
   }
 }
 

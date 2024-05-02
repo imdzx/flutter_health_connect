@@ -11,7 +11,7 @@ class ExerciseSegment {
     required this.endTime,
     required this.segmentType,
     this.repetitions = 0,
-  })  : assert(startTime.isBefore(endTime),
+  })  : assert(!startTime.isAfter(endTime),
             "startTime must not be after endTime."),
         assert(repetitions >= 0,
             "repetitions must be greater than or equal to 0.");
