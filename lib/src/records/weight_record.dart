@@ -1,9 +1,19 @@
 import 'package:flutter_health_connect/src/records/instantaneous_record.dart';
 import 'package:flutter_health_connect/src/units/mass.dart';
+import 'package:flutter_health_connect/src/utils/datetime_utils.dart';
 
 import 'metadata/metadata.dart';
 
 class WeightRecord extends InstantaneousRecord {
+  /// Unit: kilograms
+  static const String aggregationKeyWeightAvg = 'WeightRecordWeightAvg';
+
+  /// Unit: kilograms
+  static const String aggregationKeyWeightMin = 'WeightRecordWeightMin';
+
+  /// Unit: kilograms
+  static const String aggregationKeyWeightMax = 'WeightRecordWeightMax';
+
   @override
   DateTime time;
   @override
@@ -51,9 +61,7 @@ class WeightRecord extends InstantaneousRecord {
   factory WeightRecord.fromMap(Map<String, dynamic> map) {
     return WeightRecord(
       time: DateTime.parse(map['time']),
-      zoneOffset: map['zoneOffset'] != null
-          ? Duration(hours: map['zoneOffset'] as int)
-          : null,
+      zoneOffset: DateTimeUtils.parseDuration(map['zoneOffset']),
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       weight: Mass.fromMap(Map<String, dynamic>.from(map['weight'])),
     );

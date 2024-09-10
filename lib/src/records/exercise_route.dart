@@ -6,7 +6,7 @@ class ExerciseRoute {
   ExerciseRoute({
     required this.route,
   }) {
-    List<Location> sortedRoute = route
+    final List<Location> sortedRoute = route
       ..sort((a, b) => a.time.compareTo(b.time));
     for (int i = 0; i < sortedRoute.length - 1; i++) {
       assert(sortedRoute[i].time.isBefore(sortedRoute[i + 1].time));
@@ -37,7 +37,8 @@ class ExerciseRoute {
 
   factory ExerciseRoute.fromMap(Map<String, dynamic> map) {
     return ExerciseRoute(
-      route: List<Location>.from(map['route']?.map((x) => Location.fromMap(x))),
+      route: List<Location>.from(map['route']
+          ?.map((x) => Location.fromMap(Map<String, dynamic>.from(x)))),
     );
   }
 

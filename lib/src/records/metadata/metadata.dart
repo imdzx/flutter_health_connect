@@ -73,15 +73,15 @@ class Metadata {
   }
 
   factory Metadata.fromMap(Map<String, dynamic> map) {
-    Map<String, dynamic> dataOriginMap =
+    final Map<String, dynamic> dataOriginMap =
         Map<String, dynamic>.from(map['dataOrigin'] ?? {});
-    Map<String, dynamic> deviceMap =
+    final Map<String, dynamic> deviceMap =
         Map<String, dynamic>.from(map['device'] ?? {});
     return Metadata(
       id: map['id'] as String,
       dataOrigin: dataOriginMap.isNotEmpty
           ? DataOrigin(dataOriginMap['packageName'] as String)
-          : const DataOrigin(""),
+          : const DataOrigin(''),
       clientRecordId: map['clientRecordId'] as String?,
       clientRecordVersion: map['clientRecordVersion'] as int,
       device: deviceMap.isNotEmpty

@@ -1,8 +1,13 @@
 import 'package:flutter_health_connect/src/records/interval_record.dart';
+import 'package:flutter_health_connect/src/utils/datetime_utils.dart';
 
 import 'metadata/metadata.dart';
 
 class SleepSessionRecord extends IntervalRecord {
+  /// Unit: seconds
+  static const String aggregationKeySleepDurationTotal =
+      'SleepSessionRecordSleepDurationTotal';
+
   @override
   DateTime startTime;
   @override
@@ -29,7 +34,7 @@ class SleepSessionRecord extends IntervalRecord {
   })  : metadata = metadata ?? Metadata.empty(),
         assert(startTime.isBefore(endTime)) {
     if (stages.isNotEmpty) {
-      List<SleepStage> sortedStages = stages
+      final List<SleepStage> sortedStages = stages
         ..sort((a, b) => a.startTime.compareTo(b.startTime));
       for (int i = 0; i < sortedStages.length - 1; i++) {
         assert(sortedStages[i].endTime.isAfter(sortedStages[i + 1].startTime));
@@ -81,13 +86,9 @@ class SleepSessionRecord extends IntervalRecord {
   factory SleepSessionRecord.fromMap(Map<String, dynamic> map) {
     return SleepSessionRecord(
       startTime: DateTime.parse(map['startTime']),
-      startZoneOffset: map['startZoneOffset'] != null
-          ? Duration(hours: map['startZoneOffset'] as int)
-          : null,
+      startZoneOffset: DateTimeUtils.parseDuration(map['startZoneOffset']),
       endTime: DateTime.parse(map['endTime']),
-      endZoneOffset: map['endZoneOffset'] != null
-          ? Duration(hours: map['endZoneOffset'] as int)
-          : null,
+      endZoneOffset: DateTimeUtils.parseDuration(map['endZoneOffset']),
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       title: map['title'] as String?,
       notes: map['notes'] as String?,

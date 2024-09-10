@@ -25,6 +25,11 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
+    // Conditional for compatibility with AGP <4.2.
+    if  (project.android.hasProperty("namespace")) {
+        namespace 'dev.duynp.flutter_health_connect'
+    }
+
     compileSdkVersion 34
 
     compileOptions {
@@ -47,8 +52,11 @@ android {
 
 dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1'
-    implementation "androidx.health.connect:connect-client:1.1.0-alpha02"
+    implementation "androidx.health.connect:connect-client:1.1.0-alpha07"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.0'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.0'
+
+    def fragment_version = "1.6.2"
+    implementation "androidx.fragment:fragment-ktx:$fragment_version"
 }

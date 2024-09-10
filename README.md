@@ -6,27 +6,193 @@ Flutter plugin for Google Health Connect integration. Health Connect gives you a
 
 ## Requirements
 
-### Android
+NOTE: This plugin only works for Google Health on Android, and will not interact with Apple Health on iOS.
 
 - minSdkVersion: `26` (Recommend 28)
 - compileSdkVersion: `34`
 - This package requires Flutter `2.5.0` or higher.
 
-## How to install
+## Setup
 
-### Android
+**For all the following steps you can look at the example app code for reference.**
+
+### Jackson
+Add the following line to the end of your "android/gradle.properties" file:
+```android.jetifier.ignorelist = jackson-core, jackson-databind, jackson-datatype-jsr310, fastdoubleparser```
+
+### Configure Intents to handle the permissions dialog
 To interact with Health Connect within the app, declare the Health Connect package name in your `AndroidManifest.xml` file:
-```
+```xml
 <!-- Check whether Health Connect is installed or not -->
 <queries>
     <package android:name="com.google.android.apps.healthdata" />
 </queries>
 ```
 
+Inside your MainActivity declaration add a reference to `health_permissions` and an intent filter for the Health Connect permissions action
+```xml
+<activity android:name=".MainActivity">
+    <meta-data android:name="health_permissions" android:resource="@array/health_permissions" />
+
+    <intent-filter>
+        <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
+    </intent-filter>
+</activity>
+```
+
+In the Health Connect permissions activity there is a link to your privacy policy. You need to grant the Health Connect app access in order to link back to your privacy policy. In the example below, you should either replace `.MainActivity` with an activity that presents the privacy policy or have the Main Activity route the user to the policy. This step may be required to pass Google app review when requesting access to sensitive permissions.
+
+```xml
+<activity-alias
+     android:name="ViewPermissionUsageActivity"
+     android:exported="true"
+     android:targetActivity=".MainActivity"
+     android:permission="android.permission.START_VIEW_PERMISSION_USAGE">
+        <intent-filter>
+            <action android:name="android.intent.action.VIEW_PERMISSION_USAGE" />
+            <category android:name="android.intent.category.HEALTH_PERMISSIONS" />
+        </intent-filter>
+</activity-alias>
+```
+
+### Listen to Intents to show your Privacy Policy
+
+*NOTE 1:* The following is derived from the Flutter doc here:
+https://docs.flutter.dev/get-started/flutter-for/android-devs#how-do-i-handle-incoming-intents-from-external-applications-in-flutter
+
+*NOTE 2:* If you have a MainActivity.java instead of a MainActivity.kt then you need to adapt the code under from kotlin to java. This should be easy to do by following the instructions in NOTE 1, since they are using java.
+
+When a user taps the "privacy policy" button in the permission activity you need to intercept the intent and show the privacy policy from within Flutter.
+This can be done in 2 steps:
+
+#### Step 1
+Change or update your MainActivity.kt file to:
+
+```kotlin
+package <your_app_package_name>
+
+import android.content.Intent
+import android.os.Bundle
+import io.flutter.embedding.android.FlutterFragmentActivity
+import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.plugin.common.MethodCall
+import io.flutter.plugin.common.MethodChannel
+import io.flutter.plugins.GeneratedPluginRegistrant
+
+class MainActivity : FlutterFragmentActivity() {
+    companion object {
+        private const val CHANNEL = "app.channel.flutter.health.connect.show.privacy.policy"
+        private const val FUNCTION = "checkIfShouldShowPrivacyPolicy"
+    }
+
+    private var shouldShowPrivacyPolicy: Boolean = false
+
+    // If your application's android:launchMode is set to "standard" or "singleTop" in
+    // your AndroidManifest then "onCreate" will be called when a user taps
+    // the "privacy policy" button in Google Health's permision dialog.
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        handleIntent(intent)
+    }
+
+    // If your application's android:launchMode is set to "singleTask" or "singleInstance" or "singleInstancePerTask" in
+    // your AndroidManifest then "onNewIntent" will be called when a user taps
+    // the "privacy policy" button in Google Health's permision dialog.
+    override fun onNewIntent(intent: Intent) {
+        handleIntent(intent)
+        super.onNewIntent(intent)
+    }
+
+    private fun handleIntent(intent: Intent) {
+        val action = intent.action
+        if (Intent.ACTION_VIEW_PERMISSION_USAGE == action || "androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" == action) {
+            shouldShowPrivacyPolicy = true
+        }
+    }
+
+    override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
+        GeneratedPluginRegistrant.registerWith(flutterEngine)
+
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL)
+            .setMethodCallHandler { call: MethodCall, result: MethodChannel.Result ->
+                if (call.method.contentEquals(FUNCTION)) {
+                    result.success(shouldShowPrivacyPolicy)
+                    shouldShowPrivacyPolicy = false
+                }
+            }
+    }
+}
+```
+
+#### Step 2
+*NOTE:* Depending on how your AndroidManifest is setup you will either handle this with a StatefulWidget in the `initState` method, 
+or you will handle it after calling `HealthConnectFactory.requestPermissions`.
+You technically only need one of the 2, but there is no harm implementing both either.
+
+
+Create a Flutter widget like so to read the intent result:
+```dart
+
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  /// NOTE: [_checkIfShouldShowPrivacyPolicyChannel] needs to match the CHANNEL name defined in Step 1.
+  static const String _checkIfShouldShowPrivacyPolicyChannel = 'app.channel.flutter.health.connect.show.privacy.policy';
+   /// NOTE: [_checkIfShouldShowPrivacyPolicyFunction] needs to match the FUNCTION name defined in Step 1.
+  static const String _checkIfShouldShowPrivacyPolicyFunction = 'checkIfShouldShowPrivacyPolicy';
+  static const MethodChannel platform = MethodChannel(_checkIfShouldShowPrivacyPolicyChannel);
+
+  Future<bool> _checkIfShouldShowPrivacyPolicy() async =>
+      await platform.invokeMethod(_checkIfShouldShowPrivacyPolicyFunction) as bool;
+
+  void initState() {
+    super.initState();
+
+    /// If your application's android:launchMode is set to "standard" or "singleTop" in your AndroidManifest then initState
+    /// will be called when the user taps the "privacy policy" in Google Health's permission dialog.
+    /// If it is instead set to "singleTask" or "singleInstance" or "singleInstancePerTask" then initState will NOT be called.
+    /// See [_onRequestPermissionsButtonTap] for more info.
+    _checkIfShouldShowPrivacyPolicy().then(
+      (shouldShowPrivacyPolicy) {
+        if (shouldShowPrivacyPolicy) {
+          /// The user asked to see your privacy policy.
+        }
+      },
+    );
+  }
+
+ void _onRequestPermissionsButtonTap() async {
+      final bool hasPermissions = await HealthConnectFactory.requestPermissions(
+        [HealthConnectDataType.Steps],
+      );
+
+      /// If your application's android:launchMode is set to "singleTask" or "singleInstance" or
+      /// "singleInstancePerTask" in your AndroidManifest then the app will continue executing the code
+      /// from here when the user taps the "privacy policy" button in Google Health's permission dialog.
+      /// If it is instead set to "standard" or "singleTop" then the code under will NOT be called, and initState
+      /// will be called instead.
+      final bool shouldShowPrivacyPolicy = await _checkIfShouldShowPrivacyPolicy();
+      if (shouldShowPrivacyPolicy) {
+        /// The user asked to see your privacy policy.
+      }
+  }
+
+
+  @override
+  Widget build(BuildContext context)...
+}
+```
+
+
 Every data type your app reads or writes needs to be declared using a permission in your manifest. For the full list of permissions and their corresponding data types, see [List of data types](https://developer.android.com/guide/health-and-fitness/health-connect/data-and-data-types/data-types).
 
-To create the declaration, add to regular permissions any of.
-```
+To create the declaration, add to regular permissions any of:
+```xml
 <uses-permission android:name="android.permission.health.READ_ACTIVE_CALORIES_BURNED"/>
 <uses-permission android:name="android.permission.health.WRITE_ACTIVE_CALORIES_BURNED"/>
 <uses-permission android:name="android.permission.health.READ_BASAL_BODY_TEMPERATURE"/>
@@ -98,274 +264,8 @@ To create the declaration, add to regular permissions any of.
 <uses-permission android:name="android.permission.health.READ_WHEELCHAIR_PUSHES"/>
 <uses-permission android:name="android.permission.health.WRITE_WHEELCHAIR_PUSHES"/>
 ```
-Inside your MainActivity declaration add a reference to `health_permissions` and an intent filter for the Health Connect permissions action
-```
-<activity android:name=".MainActivity">
-    <meta-data android:name="health_permissions" android:resource="@array/health_permissions" />
-
-    <intent-filter>
-        <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
-    </intent-filter>
-</activity>
-```
-
-Health connect developer toolbox: http://goo.gle/health-connect-toolbox
-
-## Usage
-```dart
-import 'package:flutter_health_connect/flutter_health_connect.dart';
-```
 
 ## Example
 
-````dart
-import 'dart:async';
-
-import 'package:flutter/material.dart';
-import 'package:flutter_health_connect/flutter_health_connect.dart';
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  // List<HealthConnectDataType> types = [
-  //   HealthConnectDataType.ActiveCaloriesBurned,
-  //   HealthConnectDataType.BasalBodyTemperature,
-  //   HealthConnectDataType.BasalMetabolicRate,
-  //   HealthConnectDataType.BloodGlucose,
-  //   HealthConnectDataType.BloodPressure,
-  //   HealthConnectDataType.BodyFat,
-  //   HealthConnectDataType.BodyTemperature,
-  //   HealthConnectDataType.BodyWaterMass,
-  //   HealthConnectDataType.BoneMass,
-  //   HealthConnectDataType.CervicalMucus,
-  //   HealthConnectDataType.CyclingPedalingCadence,
-  //   HealthConnectDataType.Distance,
-  //   HealthConnectDataType.ElevationGained,
-  //   HealthConnectDataType.ExerciseSession,
-  //   HealthConnectDataType.FloorsClimbed,
-  //   HealthConnectDataType.HeartRate,
-  //   HealthConnectDataType.HeartRateVariabilityRmssd,
-  //   HealthConnectDataType.Height,
-  //   HealthConnectDataType.Hydration,
-  //   HealthConnectDataType.IntermenstrualBleeding,
-  //   HealthConnectDataType.LeanBodyMass,
-  //   HealthConnectDataType.MenstruationFlow,
-  //   HealthConnectDataType.Nutrition,
-  //   HealthConnectDataType.OvulationTest,
-  //   HealthConnectDataType.OxygenSaturation,
-  //   HealthConnectDataType.Power,
-  //   HealthConnectDataType.RespiratoryRate,
-  //   HealthConnectDataType.RestingHeartRate,
-  //   HealthConnectDataType.SexualActivity,
-  //   HealthConnectDataType.SleepSession,
-  //   HealthConnectDataType.SleepStage,
-  //   HealthConnectDataType.Speed,
-  //   HealthConnectDataType.StepsCadence,
-  //   HealthConnectDataType.Steps,
-  //   HealthConnectDataType.TotalCaloriesBurned,
-  //   HealthConnectDataType.Vo2Max,
-  //   HealthConnectDataType.Weight,
-  //   HealthConnectDataType.WheelchairPushes,
-  // ];
-
-  List<HealthConnectDataType> types = [
-    HealthConnectDataType.Steps,
-    HealthConnectDataType.ExerciseSession,
-    // HealthConnectDataType.HeartRate,
-    // HealthConnectDataType.SleepSession,
-    // HealthConnectDataType.OxygenSaturation,
-    // HealthConnectDataType.RespiratoryRate,
-  ];
-
-  bool readOnly = true;
-  String resultText = '';
-
-  String token = "";
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Health Connect'),
-        ),
-        body: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-            ElevatedButton(
-              onPressed: () async {
-                var result = await HealthConnectFactory.isApiSupported();
-                resultText = 'isApiSupported: $result';
-                _updateResultText();
-              },
-              child: const Text('isApiSupported'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                var result = await HealthConnectFactory.isAvailable();
-                resultText = 'isAvailable: $result';
-                _updateResultText();
-              },
-              child: const Text('Check installed'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                try {
-                  await HealthConnectFactory.installHealthConnect();
-                  resultText = 'Install activity started';
-                } catch (e) {
-                  resultText = e.toString();
-                }
-                _updateResultText();
-              },
-              child: const Text('Install Health Connect'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                try {
-                  await HealthConnectFactory.openHealthConnectSettings();
-                  resultText = 'Settings activity started';
-                } catch (e) {
-                  resultText = e.toString();
-                }
-                _updateResultText();
-              },
-              child: const Text('Open Health Connect Settings'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                var result = await HealthConnectFactory.hasPermissions(
-                  types,
-                  readOnly: readOnly,
-                );
-                resultText = 'hasPermissions: $result';
-                _updateResultText();
-              },
-              child: const Text('Has Permissions'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                try {
-                  token = await HealthConnectFactory.getChangesToken(types);
-                  resultText = 'token: $token';
-                } catch (e) {
-                  resultText = e.toString();
-                }
-                _updateResultText();
-              },
-              child: const Text('Get Changes Token'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                try {
-                  var result = await HealthConnectFactory.getChanges(token);
-                  resultText = 'token: $result';
-                } catch (e) {
-                  resultText = e.toString();
-                }
-                _updateResultText();
-              },
-              child: const Text('Get Changes'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                try {
-                  var result = await HealthConnectFactory.requestPermissions(
-                    types,
-                    //readOnly: readOnly,
-                  );
-                  resultText = 'requestPermissions: $result';
-                } catch (e) {
-                  resultText = e.toString();
-                }
-                _updateResultText();
-              },
-              child: const Text('Request Permissions'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                var startTime =
-                DateTime.now().subtract(const Duration(days: 4));
-                var endTime = DateTime.now();
-                try {
-                  final requests = <Future>[];
-                  Map<String, dynamic> typePoints = {};
-                  for (var type in types) {
-                    requests.add(HealthConnectFactory.getRecords(
-                      type: type,
-                      startTime: startTime,
-                      endTime: endTime,
-                    ).then((value) => typePoints.addAll({type.name: value})));
-                  }
-                  await Future.wait(requests);
-                  resultText = '$typePoints';
-                } catch (e, s) {
-                  resultText = '$e:$s'.toString();
-                }
-                _updateResultText();
-              },
-              child: const Text('Get Record'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                var startTime =
-                DateTime.now().subtract(const Duration(seconds: 5));
-                var endTime = DateTime.now();
-                StepsRecord stepsRecord = StepsRecord(
-                  startTime: startTime,
-                  endTime: endTime,
-                  count: 5,
-                );
-                ExerciseSessionRecord exerciseSessionRecord =
-                ExerciseSessionRecord(
-                  startTime: startTime,
-                  endTime: endTime,
-                  exerciseType: ExerciseType.walking,
-                );
-                try {
-                  final requests = <Future>[];
-                  Map<String, dynamic> typePoints = {};
-                  requests.add(HealthConnectFactory.writeData(
-                    type: HealthConnectDataType.Steps,
-                    data: [stepsRecord],
-                  ).then((value) => typePoints.addAll(
-                      {HealthConnectDataType.Steps.name: stepsRecord})));
-
-                  requests.add(HealthConnectFactory.writeData(
-                    type: HealthConnectDataType.ExerciseSession,
-                    data: [exerciseSessionRecord],
-                  ).then((value) => typePoints.addAll({
-                    HealthConnectDataType.ExerciseSession.name:
-                    exerciseSessionRecord
-                  })));
-                  await Future.wait(requests);
-                  resultText = '$typePoints';
-                } catch (e, s) {
-                  resultText = '$e:$s'.toString();
-                }
-                _updateResultText();
-              },
-              child: const Text('Send Record'),
-            ),
-            Text(resultText),
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _updateResultText() {
-    setState(() {});
-  }
-}
-````
+There is a detailed example app you can check for both functionalities and implementation details.
 

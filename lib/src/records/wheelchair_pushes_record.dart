@@ -1,7 +1,12 @@
 import 'package:flutter_health_connect/src/records/interval_record.dart';
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
+import 'package:flutter_health_connect/src/utils/datetime_utils.dart';
 
 class WheelchairPushesRecord extends IntervalRecord {
+  /// Unit: No unit
+  static const String aggregationKeyCountTotal =
+      'WheelchairPushesRecordCountTotal';
+
   @override
   DateTime endTime;
   @override
@@ -23,7 +28,7 @@ class WheelchairPushesRecord extends IntervalRecord {
     required this.count,
   })  : metadata = metadata ?? Metadata.empty(),
         assert(startTime.isBefore(endTime),
-            "startTime must not be after endTime."),
+            'startTime must not be after endTime.'),
         assert(count >= _minCount && count <= _maxCount);
 
   @override
@@ -65,13 +70,9 @@ class WheelchairPushesRecord extends IntervalRecord {
   factory WheelchairPushesRecord.fromMap(Map<String, dynamic> map) {
     return WheelchairPushesRecord(
       startTime: DateTime.parse(map['startTime']),
-      startZoneOffset: map['startZoneOffset'] != null
-          ? Duration(hours: map['startZoneOffset'] as int)
-          : null,
+      startZoneOffset: DateTimeUtils.parseDuration(map['startZoneOffset']),
       endTime: DateTime.parse(map['endTime']),
-      endZoneOffset: map['endZoneOffset'] != null
-          ? Duration(hours: map['endZoneOffset'] as int)
-          : null,
+      endZoneOffset: DateTimeUtils.parseDuration(map['endZoneOffset']),
       count: map['count'] as int,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
     );

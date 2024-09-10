@@ -1,5 +1,6 @@
 import 'package:flutter_health_connect/src/records/instantaneous_record.dart';
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
+import 'package:flutter_health_connect/src/utils/datetime_utils.dart';
 
 class SexualActivityRecord extends InstantaneousRecord {
   @override
@@ -43,9 +44,7 @@ class SexualActivityRecord extends InstantaneousRecord {
   factory SexualActivityRecord.fromMap(Map<String, dynamic> map) {
     return SexualActivityRecord(
       time: DateTime.parse(map['time']),
-      zoneOffset: map['zoneOffset'] != null
-          ? Duration(hours: map['zoneOffset'] as int)
-          : null,
+      zoneOffset: DateTimeUtils.parseDuration(map['zoneOffset']),
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       protectionUsed: (map['protectionUsed'] != null &&
               map['protectionUsed'] < Protection.values.length)

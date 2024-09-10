@@ -1,9 +1,19 @@
 import 'package:flutter_health_connect/src/records/series_record.dart';
 import 'package:flutter_health_connect/src/units/velocity.dart';
+import 'package:flutter_health_connect/src/utils/datetime_utils.dart';
 
 import 'metadata/metadata.dart';
 
 class SpeedRecord extends SeriesRecord<SpeedSample> {
+  /// Unit: meters per second
+  static const String aggregationKeySpeedAvg = 'SpeedRecordSpeedAvg';
+
+  /// Unit: meters per second
+  static const String aggregationKeySpeedMin = 'SpeedRecordSpeedMin';
+
+  /// Unit: meters per second
+  static const String aggregationKeySpeedMax = 'SpeedRecordSpeedMax';
+
   @override
   DateTime endTime;
   @override
@@ -26,7 +36,7 @@ class SpeedRecord extends SeriesRecord<SpeedSample> {
     metadata,
   })  : metadata = metadata ?? Metadata.empty(),
         assert(startTime.isBefore(endTime),
-            "startTime must not be after endTime.");
+            'startTime must not be after endTime.');
 
   @override
   bool operator ==(Object other) =>
@@ -62,13 +72,9 @@ class SpeedRecord extends SeriesRecord<SpeedSample> {
   factory SpeedRecord.fromMap(Map<String, dynamic> map) {
     return SpeedRecord(
       endTime: DateTime.parse(map['endTime']),
-      endZoneOffset: map['endZoneOffset'] == null
-          ? null
-          : Duration(hours: map['endZoneOffset'] as int),
+      endZoneOffset: DateTimeUtils.parseDuration(map['endZoneOffset']),
       startTime: DateTime.parse(map['startTime']),
-      startZoneOffset: map['startZoneOffset'] == null
-          ? null
-          : Duration(hours: map['startZoneOffset'] as int),
+      startZoneOffset: DateTimeUtils.parseDuration(map['startZoneOffset']),
       samples: (map['samples'] as List<dynamic>)
           .map((e) => SpeedSample.fromMap(e as Map<String, dynamic>))
           .toList(),

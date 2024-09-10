@@ -1,4 +1,5 @@
 import 'package:flutter_health_connect/src/records/instantaneous_record.dart';
+import 'package:flutter_health_connect/src/utils/datetime_utils.dart';
 
 import 'metadata/metadata.dart';
 
@@ -46,9 +47,7 @@ class RespiratoryRateRecord extends InstantaneousRecord {
   factory RespiratoryRateRecord.fromMap(Map<String, dynamic> map) {
     return RespiratoryRateRecord(
       time: DateTime.parse(map['time']),
-      zoneOffset: map['zoneOffset'] != null
-          ? Duration(hours: map['zoneOffset'] as int)
-          : null,
+      zoneOffset: DateTimeUtils.parseDuration(map['zoneOffset']),
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       rate: map['rate'] as double,
     );

@@ -1,8 +1,12 @@
 import 'package:flutter_health_connect/src/records/interval_record.dart';
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 import 'package:flutter_health_connect/src/units/volume.dart';
+import 'package:flutter_health_connect/src/utils/datetime_utils.dart';
 
 class HydrationRecord extends IntervalRecord {
+  /// Unit: liters
+  static const String aggregationKeyVolumeTotal = 'HydrationRecordVolumeTotal';
+
   @override
   DateTime endTime;
   @override
@@ -24,7 +28,7 @@ class HydrationRecord extends IntervalRecord {
     required this.volume,
   })  : metadata = metadata ?? Metadata.empty(),
         assert(startTime.isBefore(endTime),
-            "startTime must not be after endTime."),
+            'startTime must not be after endTime.'),
         assert(volume.inLiters >= _minVolume.inLiters &&
             volume.inLiters <= _maxVolume.inLiters);
 
@@ -67,14 +71,10 @@ class HydrationRecord extends IntervalRecord {
   factory HydrationRecord.fromMap(Map<String, dynamic> map) {
     return HydrationRecord(
       endTime: DateTime.parse(map['endTime']),
-      endZoneOffset: map['endZoneOffset'] != null
-          ? Duration(hours: map['endZoneOffset'] as int)
-          : null,
+      endZoneOffset: DateTimeUtils.parseDuration(map['endZoneOffset']),
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       startTime: DateTime.parse(map['startTime']),
-      startZoneOffset: map['startZoneOffset'] != null
-          ? Duration(hours: map['startZoneOffset'] as int)
-          : null,
+      startZoneOffset: DateTimeUtils.parseDuration(map['startZoneOffset']),
       volume: Volume.fromMap(Map<String, dynamic>.from(map['volume'])),
     );
   }

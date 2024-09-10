@@ -1,5 +1,6 @@
 import 'package:flutter_health_connect/src/records/instantaneous_record.dart';
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
+import 'package:flutter_health_connect/src/utils/datetime_utils.dart';
 
 class IntermenstrualBleedingRecord extends InstantaneousRecord {
   @override
@@ -39,9 +40,7 @@ class IntermenstrualBleedingRecord extends InstantaneousRecord {
   factory IntermenstrualBleedingRecord.fromMap(Map<String, dynamic> map) {
     return IntermenstrualBleedingRecord(
       time: DateTime.parse(map['time']),
-      zoneOffset: map['zoneOffset'] != null
-          ? Duration(hours: map['zoneOffset'] as int)
-          : null,
+      zoneOffset: DateTimeUtils.parseDuration(map['zoneOffset']),
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
     );
   }

@@ -1,9 +1,14 @@
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 import 'package:flutter_health_connect/src/units/energy.dart';
+import 'package:flutter_health_connect/src/utils/datetime_utils.dart';
 
 import 'interval_record.dart';
 
 class ActiveCaloriesBurnedRecord extends IntervalRecord {
+  /// Unit: kilocalories
+  static const aggregationKeyActiveCaloriesTotal =
+      'ActiveCaloriesBurnedRecordActiveCaloriesTotal';
+
   Energy energy;
   @override
   DateTime endTime;
@@ -68,13 +73,9 @@ class ActiveCaloriesBurnedRecord extends IntervalRecord {
   factory ActiveCaloriesBurnedRecord.fromMap(Map<String, dynamic> map) {
     return ActiveCaloriesBurnedRecord(
         startTime: DateTime.parse(map['startTime']),
-        startZoneOffset: map['startZoneOffset'] != null
-            ? Duration(hours: map['startZoneOffset'] as int)
-            : null,
+        startZoneOffset: DateTimeUtils.parseDuration(map['startZoneOffset']),
         endTime: DateTime.parse(map['endTime']),
-        endZoneOffset: map['endZoneOffset'] != null
-            ? Duration(hours: map['endZoneOffset'] as int)
-            : null,
+        endZoneOffset: DateTimeUtils.parseDuration(map['endZoneOffset']),
         energy: Energy.fromMap(Map<String, dynamic>.from(map['energy'])),
         metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])));
   }

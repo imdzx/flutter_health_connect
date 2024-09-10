@@ -10,12 +10,12 @@ class ExerciseLap {
     required this.endTime,
     this.length,
   })  : assert(startTime.isBefore(endTime),
-            "startTime must not be after endTime."),
+            'startTime must not be after endTime.'),
         assert(
             length == null ||
                 (length.inMeters >= _minLength.inMeters &&
                     length.inMeters <= _maxLength.inMeters),
-            "length must be between $_minLength and $_maxLength");
+            'length must be between $_minLength and $_maxLength');
 
   @override
   bool operator ==(Object other) =>

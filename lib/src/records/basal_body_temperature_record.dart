@@ -2,6 +2,7 @@ import 'package:flutter_health_connect/src/records/body_temperature_measurement_
 import 'package:flutter_health_connect/src/records/instantaneous_record.dart';
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 import 'package:flutter_health_connect/src/units/temperature.dart';
+import 'package:flutter_health_connect/src/utils/datetime_utils.dart';
 
 class BasalBodyTemperatureRecord extends InstantaneousRecord {
   @override
@@ -52,9 +53,7 @@ class BasalBodyTemperatureRecord extends InstantaneousRecord {
   factory BasalBodyTemperatureRecord.fromMap(Map<String, dynamic> map) {
     return BasalBodyTemperatureRecord(
       time: DateTime.parse(map['time']),
-      zoneOffset: map['zoneOffset'] != null
-          ? Duration(hours: map['zoneOffset'] as int)
-          : null,
+      zoneOffset: DateTimeUtils.parseDuration(map['zoneOffset']),
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       temperature:
           Temperature.fromMap(Map<String, dynamic>.from(map['temperature'])),

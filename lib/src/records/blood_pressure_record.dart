@@ -1,8 +1,33 @@
 import 'package:flutter_health_connect/src/records/instantaneous_record.dart';
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 import 'package:flutter_health_connect/src/units/pressure.dart';
+import 'package:flutter_health_connect/src/utils/datetime_utils.dart';
 
 class BloodPressureRecord extends InstantaneousRecord {
+  /// Unit: millimeters of mercury
+  static const String aggregationKeySystolicAvg =
+      'BloodPressureRecordSystolicAvg';
+
+  /// Unit: millimeters of mercury
+  static const String aggregationKeySystolicMin =
+      'BloodPressureRecordSystolicMin';
+
+  /// Unit: millimeters of mercury
+  static const String aggregationKeySystolicMax =
+      'BloodPressureRecordSystolicMax';
+
+  /// Unit: millimeters of mercury
+  static const String aggregationKeyDiastolicAvg =
+      'BloodPressureRecordDiastolicAvg';
+
+  /// Unit: millimeters of mercury
+  static const String aggregationKeyDiastolicMin =
+      'BloodPressureRecordDiastolicMin';
+
+  /// Unit: millimeters of mercury
+  static const String aggregationKeyDiastolicMax =
+      'BloodPressureRecordDiastolicMax';
+
   @override
   Metadata metadata;
   @override
@@ -78,9 +103,7 @@ class BloodPressureRecord extends InstantaneousRecord {
     return BloodPressureRecord(
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       time: DateTime.parse(map['time']),
-      zoneOffset: map['zoneOffset'] != null
-          ? Duration(hours: map['zoneOffset'] as int)
-          : null,
+      zoneOffset: DateTimeUtils.parseDuration(map['zoneOffset']),
       systolic: Pressure.fromMap(Map<String, dynamic>.from(map['systolic'])),
       diastolic: Pressure.fromMap(Map<String, dynamic>.from(map['diastolic'])),
       measurementLocation: (map['measurementLocation'] != null &&

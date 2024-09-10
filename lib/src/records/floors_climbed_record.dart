@@ -1,7 +1,12 @@
 import 'package:flutter_health_connect/src/records/interval_record.dart';
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
+import 'package:flutter_health_connect/src/utils/datetime_utils.dart';
 
 class FloorsClimbedRecord extends IntervalRecord {
+  /// Unit: No unit
+  static const String aggregationKeyFloorsClimbedTotal =
+      'FloorsClimbedRecordFloorsClimbedTotal';
+
   @override
   DateTime endTime;
   @override
@@ -23,7 +28,7 @@ class FloorsClimbedRecord extends IntervalRecord {
     required this.floors,
   })  : metadata = metadata ?? Metadata.empty(),
         assert(startTime.isBefore(endTime),
-            "startTime must not be after endTime."),
+            'startTime must not be after endTime.'),
         assert(floors >= _minFloors && floors <= _maxFloors);
 
   @override
@@ -65,14 +70,10 @@ class FloorsClimbedRecord extends IntervalRecord {
   factory FloorsClimbedRecord.fromMap(Map<String, dynamic> map) {
     return FloorsClimbedRecord(
       endTime: DateTime.parse(map['endTime']),
-      endZoneOffset: map['endZoneOffset'] == null
-          ? null
-          : Duration(hours: map['endZoneOffset'] as int),
+      endZoneOffset: DateTimeUtils.parseDuration(map['endZoneOffset']),
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       startTime: DateTime.parse(map['startTime']),
-      startZoneOffset: map['startZoneOffset'] == null
-          ? null
-          : Duration(hours: map['startZoneOffset'] as int),
+      startZoneOffset: DateTimeUtils.parseDuration(map['startZoneOffset']),
       floors: map['floors'] as double,
     );
   }

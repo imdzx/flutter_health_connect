@@ -1,9 +1,14 @@
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 import 'package:flutter_health_connect/src/units/power.dart';
+import 'package:flutter_health_connect/src/utils/datetime_utils.dart';
 
 import 'instantaneous_record.dart';
 
 class BasalMetabolicRateRecord extends InstantaneousRecord {
+  /// Unit: kilocalories
+  static const String aggregationKeyBasalCaloriesTotal =
+      'BasalMetabolicRateRecordBasalCaloriesTotal';
+
   final Power basalMetabolicRate;
   @override
   Metadata metadata;
@@ -54,9 +59,7 @@ class BasalMetabolicRateRecord extends InstantaneousRecord {
   factory BasalMetabolicRateRecord.fromMap(Map<String, dynamic> map) {
     return BasalMetabolicRateRecord(
       time: DateTime.parse(map['time']),
-      zoneOffset: map['zoneOffset'] != null
-          ? Duration(hours: map['zoneOffset'] as int)
-          : null,
+      zoneOffset: DateTimeUtils.parseDuration(map['zoneOffset']),
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       basalMetabolicRate:
           Power.fromMap(Map<String, dynamic>.from(map['basalMetabolicRate'])),

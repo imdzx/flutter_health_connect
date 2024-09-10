@@ -35,7 +35,6 @@ enum HealthConnectDataType {
   RestingHeartRate,
   SexualActivity,
   SleepSession,
-  SleepStage,
   Speed,
   StepsCadence,
   Steps,
@@ -43,10 +42,4 @@ enum HealthConnectDataType {
   Vo2Max,
   Weight,
   WheelchairPushes,
-}
-
-enum HealthConnectDataAccess {
-  READ,
-  WRITE,
-  READ_WRITE,
 }

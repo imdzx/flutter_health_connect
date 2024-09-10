@@ -12,9 +12,9 @@ class ExerciseSegment {
     required this.segmentType,
     this.repetitions = 0,
   })  : assert(startTime.isBefore(endTime),
-            "startTime must not be after endTime."),
+            'startTime must not be after endTime.'),
         assert(repetitions >= 0,
-            "repetitions must be greater than or equal to 0.");
+            'repetitions must be greater than or equal to 0.');
 
   bool isCompatibleWith(ExerciseType sessionType) {
     if (_universalSessionTypes.contains(sessionType)) {

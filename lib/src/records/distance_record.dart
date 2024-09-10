@@ -1,8 +1,13 @@
 import 'package:flutter_health_connect/src/records/interval_record.dart';
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 import 'package:flutter_health_connect/src/units/length.dart';
+import 'package:flutter_health_connect/src/utils/datetime_utils.dart';
 
 class DistanceRecord extends IntervalRecord {
+  /// Unit: meters
+  static const String aggregationKeyDistanceTotal =
+      'DistanceRecordDistanceTotal';
+
   @override
   DateTime endTime;
   @override
@@ -24,7 +29,7 @@ class DistanceRecord extends IntervalRecord {
     required this.distance,
   })  : metadata = metadata ?? Metadata.empty(),
         assert(startTime.isBefore(endTime),
-            "startTime must not be after endTime."),
+            'startTime must not be after endTime.'),
         assert(distance.inMeters >= _minDistance.inMeters &&
             distance.inMeters <= _maxDistance.inMeters);
 
@@ -67,13 +72,9 @@ class DistanceRecord extends IntervalRecord {
   factory DistanceRecord.fromMap(Map<String, dynamic> map) {
     return DistanceRecord(
         startTime: DateTime.parse(map['startTime']),
-        startZoneOffset: map['startZoneOffset'] != null
-            ? Duration(hours: map['startZoneOffset'] as int)
-            : null,
+        startZoneOffset: DateTimeUtils.parseDuration(map['startZoneOffset']),
         endTime: DateTime.parse(map['endTime']),
-        endZoneOffset: map['endZoneOffset'] != null
-            ? Duration(hours: map['endZoneOffset'] as int)
-            : null,
+        endZoneOffset: DateTimeUtils.parseDuration(map['endZoneOffset']),
         distance: Length.fromMap(Map<String, dynamic>.from(map['distance'])),
         metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])));
   }

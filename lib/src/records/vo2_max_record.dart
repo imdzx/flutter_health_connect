@@ -1,4 +1,5 @@
 import 'package:flutter_health_connect/src/records/instantaneous_record.dart';
+import 'package:flutter_health_connect/src/utils/datetime_utils.dart';
 
 import 'metadata/metadata.dart';
 
@@ -56,9 +57,7 @@ class Vo2MaxRecord extends InstantaneousRecord {
   factory Vo2MaxRecord.fromMap(Map<String, dynamic> map) {
     return Vo2MaxRecord(
       time: DateTime.parse(map['time']),
-      zoneOffset: map['zoneOffset'] != null
-          ? Duration(hours: map['zoneOffset'] as int)
-          : null,
+      zoneOffset: DateTimeUtils.parseDuration(map['zoneOffset']),
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       vo2MillilitersPerMinuteKilogram:
           map['vo2MillilitersPerMinuteKilogram'] as double,
@@ -68,6 +67,11 @@ class Vo2MaxRecord extends InstantaneousRecord {
           ? Vo2MaxMeasurementMethod.values[map['measurementMethod'] as int]
           : Vo2MaxMeasurementMethod.other,
     );
+  }
+
+  @override
+  String toString() {
+    return 'Vo2MaxRecord{metadata: $metadata, time: $time, zoneOffset: $zoneOffset, vo2MillilitersPerMinuteKilogram: $vo2MillilitersPerMinuteKilogram}, measurementMethod: $measurementMethod}';
   }
 }
 

@@ -1,4 +1,5 @@
 import 'package:flutter_health_connect/src/records/instantaneous_record.dart';
+import 'package:flutter_health_connect/src/utils/datetime_utils.dart';
 
 import 'metadata/metadata.dart';
 
@@ -42,9 +43,7 @@ class OvulationTestRecord extends InstantaneousRecord {
   factory OvulationTestRecord.fromMap(Map<String, dynamic> map) {
     return OvulationTestRecord(
       time: DateTime.parse(map['time']),
-      zoneOffset: map['zoneOffset'] != null
-          ? Duration(hours: map['zoneOffset'] as int)
-          : null,
+      zoneOffset: DateTimeUtils.parseDuration(map['zoneOffset']),
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       result: (map['result'] != null &&
               map['result'] as int < OvulationTestResult.values.length)
